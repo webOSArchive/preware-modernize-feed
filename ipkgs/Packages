@@ -1,0 +1,143 @@
+Package: com.nizovn.cacert
+Version: 2021-09-30
+Depends: 
+Section: Infrastructure
+Architecture: armv7
+MD5Sum: 0f45f54589c2883ee37f1fe8f599e685
+Size: 116594
+Filename: com.nizovn.cacert_2021-09-30_armv7.ipk
+Description: Bundle of CA Root Certificates
+Maintainer: nizovn <nizovn@gmail.com>
+Source: { "Feed":"WOSA Modernize", "Type":"Linux Application", "Category":"Modernize", "LastUpdated":"1633262859", "Title":"Bundle of CA Root Certificates", "FullDescription":"Bundle of CA Root Certificates from Mozilla for usage in Qt5 based applications.", "Homepage":"https://curl.se/docs/caextract.html", "MinWebOSVersion":"2.2.0", "DeviceCompatibility":["Pre3","TouchPad","Touchpad Go"] }
+
+
+Package: com.nizovn.glibc
+Version: 4.8-2015.06-0
+Depends: org.webosinternals.dbus
+Section: Libraries
+Architecture: armv7
+MD5Sum: b20ab8059e1588d0060888cdfd5841bf
+Size: 58523086
+Filename: com.nizovn.glibc_4.8-2015.06-0_armv7.ipk
+Description: Glibc runtime libraries (linaro)
+Maintainer: nizovn <nizovn@gmail.com>
+Source: { "Feed":"WOSA Modernize", "Type":"Linux Application", "Category":"Modernize", "LastUpdated":"1527627200", "Title":"Glibc runtime libraries (linaro)", "FullDescription":"Linaro glibc shared libraries (libstdc++, libc, etc.).<br><br>Changelog:<br>4.8-2015.06-0: First public release", "Homepage":"https://www.linaro.org", "Icon":"http://stacks.webosarchive.org/feeds/modernize/ipkgs/assets/icons/linaro_logo.png", "MinWebOSVersion":"2.2.0", "DeviceCompatibility":["Pre3","TouchPad","Touchpad Go"] }
+
+
+Package: com.nizovn.openssl
+Version: 1.0.2p
+Depends: com.nizovn.glibc, com.nizovn.cacert
+Section: Libraries
+Architecture: armv7
+MD5Sum: 3154d1de6b77db31463c15204e498352
+Size: 984436
+Filename: com.nizovn.openssl_1.0.2p_armv7.ipk
+Description: Shared OpenSSL libs
+Maintainer: nizovn <nizovn@gmail.com>
+Source: { "Source":"http://www.openssl.org/source/openssl-1.0.2p.tar.gz", "Feed":"WOSA Modernize", "Type":"Linux Application", "Category":"Modernize", "LastUpdated":"1534252123", "Title":"Shared OpenSSL libs", "FullDescription":"Shared OpenSSL libs", "Homepage":"https://www.openssl.org/", "Icon":"http://stacks.webosarchive.org/feeds/modernize/ipkgs/assets/icons/openssl_icon.png", "MinWebOSVersion":"2.2.0", "DeviceCompatibility":["Pre3","TouchPad","Touchpad Go"] }
+
+
+Package: com.nizovn.qt5qpaplugins
+Version: 1.0.3
+Depends: com.nizovn.glibc
+Section: Libraries
+Architecture: armv7
+MD5Sum: c9460176c0920188b8b1857d8724f46f
+Size: 320788
+Filename: com.nizovn.qt5qpaplugins_1.0.3_armv7.ipk
+Description: webOS Qt5 QPA Plugins
+Maintainer: nizovn <nizovn@gmail.com>
+Source: { "Feed":"WOSA Modernize", "Type":"Linux Application", "Category":"Modernize", "LastUpdated":"1579448389", "Title":"webOS Qt5 QPA Plugins", "FullDescription":"webOS Qt5 QPA Plugins<br>Changelog:<br><table> <tr><td valign=top>1.0.3:</td> <td>Add integration with webOS clipboard<br> Use sym key as ctrl on phones, back gestures as esc, unicode handling</td></tr> <tr><td valign=top>1.0.2:</td> <td>Upgrade Qt to 5.9.7; Add screen rotation support.</td></tr> <tr><td valign=top>1.0.1:</td> <td>Upgrade Qt to 5.9.5</td></tr> <tr><td valign=top>1.0.0:</td> <td>First public release</td></tr> </table>", "Homepage":"https://gitlab.com/nizovn/qt5-qpa-webos-plugin", "Icon":"http://stacks.webosarchive.org/feeds/modernize/ipkgs/assets/icons/qt5_64x64.png", "License":"LGPL v3 Open Source", "MinWebOSVersion":"2.2.0", "DeviceCompatibility":["Pre3","TouchPad","Touchpad Go"] }
+
+
+Package: com.nizovn.qt5sdk
+Version: 1.0.2
+Depends: com.nizovn.qt5
+Section: Infrastructure
+Architecture: armv7
+MD5Sum: 9316bb4994b604d745a603c09a3f204c
+Size: 4030
+Filename: com.nizovn.qt5sdk_1.0.2_armv7.ipk
+Description: Qt5 webOS SDK
+Maintainer: nizovn <nizovn@gmail.com>
+Source: { "Feed":"WOSA Modernize", "Type":"OS Application", "Category":"Modernize", "LastUpdated":"1581758044", "Title":"Qt5 webOS SDK", "FullDescription":"This is a webOS package that replaces jailer with wrapper, which processes jailer\'s arguments and provides support for new \'qt5\' jail type.<br><br>Changelog:<br><table> <tr><td valign=top>1.0.2:</td> <td>Allow system-wide clipboard</td></tr> <tr><td valign=top>1.0.1:</td> <td>Enable QQC2 popup menus in qtwebengine by default</td></tr> <tr><td valign=top>1.0.0:</td> <td>First public release</td></tr> </table>", "Homepage":"https://gitlab.com/nizovn/qt5-webos-sdk", "Icon":"http://stacks.webosarchive.org/feeds/modernize/ipkgs/assets/icons/qt5_64x64.png", "License":"LGPL v3 Open Source", "MinWebOSVersion":"2.2.0", "DeviceCompatibility":["Pre3","TouchPad","Touchpad Go"] }
+
+
+Package: com.nizovn.qt5
+Version: 5.9.7-0
+Depends: com.nizovn.glibc, com.nizovn.qt5qpaplugins, com.nizovn.openssl, com.nizovn.cacert
+Section: Frameworks
+Architecture: armv7
+MD5Sum: 1c4f1ee0516446bc185e78570073bd71
+Size: 67413446
+Filename: com.nizovn.qt5_5.9.7-0_armv7.ipk
+Description: Qt5 framework libraries
+Maintainer: nizovn <nizovn@gmail.com>
+Source: { "Feed":"WOSA Modernize", "Type":"Linux Application", "Category":"Modernize", "LastUpdated":"1541010844", "Title":"Qt5 framework libraries", "FullDescription":"Cross-platform application development framework.<br><br>Changelog:<br>5.9.7-0: Upstream upgrade; Fixed broken native fonts.<br> 5.9.5-0: Upstream upgrade<br> 5.9.1-0: First public release", "Homepage":"https://www.qt.io/", "Icon":"http://stacks.webosarchive.org/feeds/modernize/ipkgs/assets/icons/qt5_64x64.png", "License":"LGPL v3 Open Source", "MinWebOSVersion":"2.2.0", "DeviceCompatibility":["Pre3","TouchPad","Touchpad Go"] }
+
+
+Package: com.nizovn.qtwebbrowser
+Version: 1.0.2
+Depends: com.nizovn.qt5sdk
+Section: News And Internet
+Architecture: armv7
+MD5Sum: 92808b3a031833d8ba07eee376ad4036
+Size: 98918
+Filename: com.nizovn.qtwebbrowser_1.0.2_armv7.ipk
+Description: Qt WebBrowser
+Maintainer: nizovn <nizovn@gmail.com>
+Source: { "Feed":"WOSA Modernize", "Type":"Application", "Category":"Modernize", "LastUpdated":"1584293298", "Title":"Qt WebBrowser", "FullDescription":"The Qt WebBrowser is a browser for embedded devices developed using the capabilities of Qt and Qt WebEngine. Using recent Chromium, it features up-to-date HTML technologies behind a minimal but slick touch-friendly user interface written in Qt Quick.<br> All basic browser features are supported: You can search for text (both in history and via Google). You can bookmark pages, navigate in the page history, and open multiple pages concurrently. Depending on the codecs available, full-screen video and audio playback should also just work. You can also enable a private browser mode that leaves no traces after the browser is closed.<br><br>Changelog:<br><table> <tr><td valign=top>1.0.2:</td> <td>Downloading support<br>Android User Agent for small screens (mobile view)</td></tr> <tr><td valign=top>1.0.1:</td> <td>Enable automatic screen rotation<br>Mimic webOS stock browser context menus</td></tr> <tr><td valign=top>1.0.0:</td> <td>Initial version</td></tr> </table>", "Homepage":"https://gitlab.com/nizovn/qtwebbrowser", "Icon":"http://stacks.webosarchive.org/feeds/modernize/ipkgs/assets/icons/qtwebbrowser_icon.png", "Screenshots":[ "http://stacks.webosarchive.org/feeds/modernize/ipkgs/assets/screenshots/qtwebbrowser_screenshot.png" ], "License":"GPL v3 Open Source", "MinWebOSVersion":"2.2.0", "DeviceCompatibility":["Pre3","TouchPad","Touchpad Go"] }
+
+
+Package: com.nizovn.qupzilla
+Version: 2.3.0
+Depends: com.nizovn.qt5sdk
+Section: News And Internet
+Architecture: all
+MD5Sum: a9550c40fb34da6f0d71ecf34a4cf6a0
+Size: 5514684
+Filename: com.nizovn.qupzilla_2.3.0_all.ipk
+Description: QupZilla Web Browser
+Maintainer: nizovn <nizovn@gmail.com>
+Source: { "Feed":"WOSA Modernize", "Type":"Application", "Category":"Modernize", "LastUpdated":"1766867595", "Title":"QupZilla Web Browser", "FullDescription":"QupZilla is a new and very fast QtWebEngine browser. It aims to be a lightweight web browser available through all major platforms. This project has been originally started only for educational purposes. But from its start, QupZilla has grown into a feature-rich browser.<br> QupZilla has all standard functions you expect from a web browser. It includes bookmarks, history (both also in sidebar) and tabs. Above that, it has by default enabled blocking ads with a built-in AdBlock plugin.<br> <br> <b>Note</b>: starting from 2.2.6-1 version the application stopped skipping jail for gaining root rights. So if you are upgrading from an earlier version, you must execute<br> <tt>jailer -D -N -i com.nizovn.qupzilla</tt><br> for new version to work (the command should clean leftovers of previous root jailer configuration).<br><br>Changelog:<br>2.3.0: Add reader mode, strip dead features, resolve crashes.<br>2.2.6-1: Switch to qt5sdk instead of skipping jail<br> 2.2.6-0: Upstream upgrade<br> 2.1.2-2: Split into separate packages, first Preware release, added support for context menus on long tap, added close button to window frames<br> 2.1.2-1: Experimental phone support, enabled support for plugins/proprietary-codecs<br> 2.1.2-0: Initial version", "Homepage":"https://gitlab.com/nizovn/qupzilla", "Icon":"http://stacks.webosarchive.org/feeds/modernize/ipkgs/assets/icons/qupzilla_icon.png", "Screenshots":[ "http://stacks.webosarchive.org/feeds/modernize/ipkgs/assets/screenshots/qupzilla_screenshot.png" ], "License":"GPL v3 Open Source", "MinWebOSVersion":"3.0.0", "DeviceCompatibility":["TouchPad","Touchpad Go"] }
+
+
+Package: com.nizovn.squid
+Version: 4.8-0
+Depends: com.nizovn.glibc, com.nizovn.openssl
+Section: System Utilities
+Architecture: armv7
+MD5Sum: 223e4251da7675718cc27445395b172d
+Size: 3555570
+Filename: com.nizovn.squid_4.8-0_armv7.ipk
+Description: Squid SSL Bump
+Maintainer: nizovn <nizovn@gmail.com>
+Source: { "Source":"http://www.squid-cache.org/Versions/v4/squid-4.8.tar.gz", "Feed":"WOSA Modernize", "Type":"Application", "Category":"Modernize", "LastUpdated":"1562703619", "Title":"Squid SSL Bump", "FullDescription":"Squid Web Proxy allows bumping insecure SSL connections when required in a sense providing TLS 1.2 support to webOS.<br> This is done transparently by intercepting webOS connections, decrypting them, and then encrypting using higher protocol. Squid certificate should be installed in webOS certificate manager to get rid of validation errors.<br> The proxy forwarding must be enabled by any suitable webOS proxy application, e.g. ProxySwitch.<br><br>Changelog:<br><table> <tr><td valign=top>4.8-0:</td> <td>Initial version</td></tr> </table>", "Homepage":"http://www.squid-cache.org", "Icon":"http://stacks.webosarchive.org/feeds/modernize/ipkgs/assets/icons/squid_icon.png", "Screenshots":[ "http://stacks.webosarchive.org/feeds/modernize/ipkgs/assets/screenshots/squid_screenshot.png" ], "License":"GPL v2 Open Source", "MinWebOSVersion":"1.3.5", "DeviceCompatibility":["Pre3","TouchPad","Touchpad Go"] }
+
+
+Package: org.webosarchive.vlcplayer
+Version: 1.0.0
+Depends: com.nizovn.qt5sdk
+Section: Multimedia
+Architecture: all
+MD5Sum: 9b7f9884756c210c018db9ecbe2ba828
+Size: 22578400
+Filename: org.webosarchive.vlcplayer_1.0.0_all.ipk
+Description: VLC Player
+Maintainer: webOS Archive <admin@webosarchive.org>
+Source: { "Feed":"WOSA Modernize", "Type":"Application", "Category":"Modernize", "LastUpdated":"1766867348", "Title":"VLC Player", "FullDescription":"", "Homepage":"http://www.webosarchive.org", "Icon":"http://stacks.webosarchive.org/feeds/modernize/ipkgs/assets/icons/vlc-icon.png", "Screenshots":[ "http://stacks.webosarchive.org/feeds/modernize/ipkgs/assets/screenshots/vlc-screenshot.png" ], "License":"LGPL", "MinWebOSVersion":"3.0.0", "DeviceCompatibility":["TouchPad","Touchpad Go"] }
+
+
+Package: org.webosinternals.dbus
+Version: 1.4.16-3
+Depends:
+Section: Libraries
+Architecture: armv7
+MD5Sum: d5ca4ec8043910482e156ab6175f0367
+Size: 1115898
+Filename: org.webosinternals.dbus_1.4.16-3_armv7.ipk
+Description: D-Bus message bus system
+Maintainer: WebOS Internals <support@webos-internals.org>
+Source: { "Feed":"WOSA Modernize", "Type":"Linux Application", "Category":"Modernize", "LastUpdated":"1735327200", "Title":"D-Bus message bus system", "FullDescription":"D-Bus is a message bus system, a simple way for applications to talk to one another. In addition to interprocess communication, D-Bus helps coordinate process lifecycle.", "Homepage":"https://www.freedesktop.org/wiki/Software/dbus/", "MinWebOSVersion":"1.3.5", "DeviceCompatibility":["Pre3","TouchPad","Touchpad Go"] }
+
+

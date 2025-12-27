@@ -1,0 +1,216 @@
+<!DOCTYPE html><html lang="en"> <head><title>Page Not Found | Linaro</title><meta property="description" content="404 page not found
+"><meta name="viewport" content="width=device-width, initial-scale=1"><meta charset="utf-8"><script type="text/javascript">
+    (function (w, d, s, l, i) {
+      w[l] = w[l] || [];
+      w[l].push({ "gtm.start": new Date().getTime(), event: "gtm.js" });
+      var f = d.getElementsByTagName(s)[0],
+        j = d.createElement(s),
+        dl = l != "dataLayer" ? "&l=" + l : "";
+      j.async = true;
+      j.src = "https://www.googletagmanager.com/gtm.js?id=" + i + dl;
+      f.parentNode.insertBefore(j, f);
+    })(window, document, "script", "dataLayer", "GTM-5DLPJQ");
+  </script><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png"><link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="manifest" href="/site.webmanifest"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#000000"><link rel="alternate" type="application/rss+xml" title="Linaro.org" href="https://www.linaro.org/rss/news.xml"><link rel="alternate" type="application/rss+xml" title="Linaro.org" href="https://www.linaro.org/rss/blog.xml"><link rel="alternate" type="application/rss+xml" title="Linaro.org" href="https://www.linaro.org/feed.xml"><meta name="msapplication-TileColor" content="#da532c"><meta name="theme-color" content="#ffffff"><title>Page Not Found | Linaro</title><link rel="canonical" href="https://www.linaro.org/404/"><meta name="description" content="404 page not found
+"><meta name="robots" content="index, follow"><meta property="og:title" content="Page Not Found | Linaro"><meta property="og:type" content="website"><meta property="og:image" content=""><meta property="og:url" content="https://www.linaro.org/404/"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Page Not Found | Linaro"><meta name="twitter:description" content="404 page not found
+..."><meta name="twitter:creator" content="@LinaroOrg"><link rel="me" href="https://mastodon.org.uk/@LinaroLtd@mastodon.social"><meta name="twitter:image" content=""><meta property="og:image" content=""><meta property="og:description" content="404 page not found
+"><link rel="stylesheet" href="https://use.typekit.net/job6bfm.css"><script type="module">
+</script><style>dialog[data-astro-cid-q6mfjifq]::backdrop{position:fixed;inset:0;background:#0006}
+</style><style>.container-background-image[data-astro-cid-ekmpyda2]{background-image:var(--backgroundUrl)}
+</style><style>.expanded-card[data-astro-cid-u5ghfpqf]{grid-column:span 3 / span 3}.card[data-astro-cid-u5ghfpqf]{transition:all .4s ease}
+</style><style>.hero-background-image[data-astro-cid-ar5v7lgx]{background-image:var(--backgroundUrl)}
+</style><style>dialog[data-astro-cid-46a3xhej]::backdrop{position:fixed;inset:0;background:#0006}
+</style><style>.member-image[data-astro-cid-wj54qfbm]{margin-top:1em;margin-bottom:1em}
+</style><style>dialog[data-astro-cid-y7bqqv2v]::backdrop{position:fixed;inset:0;background:#0006}
+</style><style>.teamtailor-jobs__job-title{font-size:1.25rem;line-height:1.75rem}
+</style><style>.open[data-astro-cid-e7c5y66u] button[data-astro-cid-e7c5y66u]{background-image:linear-gradient(102deg,#ffce00 -.43%,#6715e8 95.75%);-webkit-background-clip:text;background-clip:text;color:transparent}
+</style><style>dialog[data-astro-cid-vaub4oed]{position:fixed;top:10%;right:0;left:0;margin:0 auto}dialog[data-astro-cid-vaub4oed]::backdrop{position:fixed;inset:0;background:#0006}
+</style><link rel="stylesheet" href="/_astro/cookies.CGBTE-pX.css"><link rel="stylesheet" href="/_astro/global.oEkxsJ4q.css"><link rel="stylesheet" href="/_astro/index.BCBNzTOw.css"><script src="/_astro/CardGrid.astro_astro_type_script_index_0_lang.-Ys6ukQY.js" type="module"></script><script src="/_astro/ExpandingCards.astro_astro_type_script_index_0_lang.D-yxYfbN.js" type="module"></script><script src="/_astro/StatGrid.astro_astro_type_script_index_0_lang.gSJnYUJg.js" type="module"></script><script src="/_astro/Tabs.astro_astro_type_script_index_0_lang.3_YhZAti.js" type="module"></script><script src="/_astro/BaseLayout.astro_astro_type_script_index_0_lang.BTIZuALp.js" type="module"></script><script src="/_astro/Cookies.astro_astro_type_script_index_0_lang.I_h-APB6.js" type="module"></script><script src="/_astro/SearchModal.astro_astro_type_script_index_0_lang.DPWNzqdz.js" type="module"></script><script src="/_astro/ContactButtons.astro_astro_type_script_index_0_lang.-Ys6ukQY.js" type="module"></script><script src="/_astro/BaseLayout.astro_astro_type_script_index_1_lang.Dl45coIv.js" type="module"></script></head><body class="min-h-screen flex flex-col text-white"> <header class="w-full relative fade-border-bottom bg-background z-50" id="top-nav"> <div class="flex flex-col lg:flex-row justify-start items-center lg:items-start text-white max-w-7xl xl:container mx-auto px-8 my-3 lg:mt-4 lg:mb-5 lg:text-sm xl:text-[1rem] w-full py-4"> <div class="flex w-full lg:w-auto items-start justify-between pt-1 min-w-[125px] xl:min-w-[150px]"> <a href="/" class="text-lg"><img src="/_astro/logo_20Fg4F.webp" loading="lazy" alt="Linaro Logo" class="h-auto w-[125px] xl:w-[150px] mt-[-2px] ml-[-10px]" width="500" height="500" decoding="async"></a> <div class="block lg:hidden pr-8"> <button id="astronav-menu" aria-label="Toggle Menu">  <svg fill="currentColor" class="w-6 h-6 text-white" width="24" height="24" viewBox="0 0 24 24" xmlns="https://www.w3.org/2000/svg"> <title>Toggle Menu</title> <path class="astronav-close-icon astronav-toggle hidden" fill-rule="evenodd" clip-rule="evenodd" d="M18.278 16.864a1 1 0 01-1.414 1.414l-4.829-4.828-4.828 4.828a1 1 0 01-1.414-1.414l4.828-4.829-4.828-4.828a1 1 0 011.414-1.414l4.829 4.828 4.828-4.828a1 1 0 111.414 1.414l-4.828 4.829 4.828 4.828z"></path> <path class="astronav-open-icon astronav-toggle" fill-rule="evenodd" d="M4 5h16a1 1 0 010 2H4a1 1 0 110-2zm0 6h16a1 1 0 010 2H4a1 1 0 010-2zm0 6h16a1 1 0 010 2H4a1 1 0 010-2z"></path> </svg>  </button> </div> </div> <div class="w-full basis-full"> <nav class="astronav-items astronav-toggle hidden w-full lg:w-auto mt-2 lg:flex lg:mt-0 font-medium lg:justify-start "> <ul class="flex flex-col lg:flex-row items-start lg:items-center lg:mx-auto max-w-2xl lg:mx-0 w-full lg:max-w-full relative gap-4 lg:gap-0 my-8 lg:my-0 has-[.open]:mb-4"> <menu class="astronav-dropdown group " aria-expanded="false" data-nav-group="Products &#38; Solutions" data-astro-cid-e7c5y66u> <div class="duration-300" data-astro-cid-e7c5y66u> <button class="flex items-center gap-1 w-full lg:w-auto lg:px-3 py-2 xl:py-3 hover:linaro-gradient-text nav-inactive" data-astro-cid-e7c5y66u> <span data-astro-cid-e7c5y66u>Products &amp; Solutions</span> </button> </div> <div class=" astronav-dropdown dropdown-toggle hidden" aria-expanded="false" data-astro-cid-e7c5y66u> <div class=" lg:absolute w-full z-10 mt-1 lg:left-0" data-astro-cid-e7c5y66u> <div class="flex flex-col lg:flex-row w-full" data-astro-cid-e7c5y66u> <a href="https://www.linaroforge.com" class=" lg:px-3 py-2 text-grey  hover:text-linaro-yellow cursor-pointer whitespace-nowrap text-sm" target="_blank" data-astro-cid-e7c5y66u> HPC </a><a href="/solutions/iot-embedded" class=" lg:px-3 py-2 text-grey  hover:text-linaro-yellow cursor-pointer whitespace-nowrap text-sm" target="_self" data-astro-cid-e7c5y66u> IoT &amp; Embedded Systems </a><a href="/solutions/ai-ml" class=" lg:px-3 py-2 text-grey  hover:text-linaro-yellow cursor-pointer whitespace-nowrap text-sm" target="_self" data-astro-cid-e7c5y66u> AI &amp; Machine Learning </a><a href="/solutions/automotive" class=" lg:px-3 py-2 text-grey  hover:text-linaro-yellow cursor-pointer whitespace-nowrap text-sm" target="_self" data-astro-cid-e7c5y66u> Automotive </a><a href="/solutions/lts" class=" lg:px-3 py-2 text-grey  hover:text-linaro-yellow cursor-pointer whitespace-nowrap text-sm" target="_self" data-astro-cid-e7c5y66u> Long Term Support </a> </div> </div> </div> </menu> <menu class="astronav-dropdown group " aria-expanded="false" data-nav-group="Services &#38; Support" data-astro-cid-e7c5y66u> <div class="duration-300" data-astro-cid-e7c5y66u> <button class="flex items-center gap-1 w-full lg:w-auto lg:px-3 py-2 xl:py-3 hover:linaro-gradient-text nav-inactive" data-astro-cid-e7c5y66u> <span data-astro-cid-e7c5y66u>Services &amp; Support</span> </button> </div> <div class=" astronav-dropdown dropdown-toggle hidden" aria-expanded="false" data-astro-cid-e7c5y66u> <div class=" lg:absolute w-full z-10 mt-1 lg:left-0" data-astro-cid-e7c5y66u> <div class="flex flex-col lg:flex-row w-full" data-astro-cid-e7c5y66u> <a href="/services/consulting" class=" lg:px-3 py-2 text-grey  hover:text-linaro-yellow cursor-pointer whitespace-nowrap text-sm" target="_self" data-astro-cid-e7c5y66u> Consulting </a><a href="/services/training" class=" lg:px-3 py-2 text-grey  hover:text-linaro-yellow cursor-pointer whitespace-nowrap text-sm" target="_self" data-astro-cid-e7c5y66u> Training &amp; Learning </a><a href="/services/bsp-development" class=" lg:px-3 py-2 text-grey  hover:text-linaro-yellow cursor-pointer whitespace-nowrap text-sm" target="_self" data-astro-cid-e7c5y66u> BSP Development </a><a href="/services/nxp-platform-services" class=" lg:px-3 py-2 text-grey  hover:text-linaro-yellow cursor-pointer whitespace-nowrap text-sm" target="_self" data-astro-cid-e7c5y66u> NXP Platform Services </a><a href="/projects/qualcomm-platform" class=" lg:px-3 py-2 text-grey  hover:text-linaro-yellow cursor-pointer whitespace-nowrap text-sm" target="_self" data-astro-cid-e7c5y66u> Qualcomm Platform Services </a> </div> </div> </div> </menu> <menu class="astronav-dropdown group " aria-expanded="false" data-nav-group="Ecosystem Projects" data-astro-cid-e7c5y66u> <div class="duration-300" data-astro-cid-e7c5y66u> <button class="flex items-center gap-1 w-full lg:w-auto lg:px-3 py-2 xl:py-3 hover:linaro-gradient-text nav-inactive" data-astro-cid-e7c5y66u> <span data-astro-cid-e7c5y66u>Ecosystem Projects</span> </button> </div> <div class=" astronav-dropdown dropdown-toggle hidden" aria-expanded="false" data-astro-cid-e7c5y66u> <div class=" lg:absolute w-full z-10 mt-1 lg:left-0" data-astro-cid-e7c5y66u> <div class="flex flex-col lg:flex-row w-full" data-astro-cid-e7c5y66u> <a href="/projects/windows-on-arm" class=" lg:px-3 py-2 text-grey  hover:text-linaro-yellow cursor-pointer whitespace-nowrap text-sm" target="_self" data-astro-cid-e7c5y66u> Windows on Arm </a><a href="/projects/automotive-iot-edge" class=" lg:px-3 py-2 text-grey  hover:text-linaro-yellow cursor-pointer whitespace-nowrap text-sm" target="_self" data-astro-cid-e7c5y66u> Automotive, IoT &amp; Edge </a><a href="/projects/cloud-computing" class=" lg:px-3 py-2 text-grey  hover:text-linaro-yellow cursor-pointer whitespace-nowrap text-sm" target="_self" data-astro-cid-e7c5y66u> Cloud Computing &amp; Servers </a><a href="https://ecosystemdashboard.linaro.org" class=" lg:px-3 py-2 text-grey  hover:text-linaro-yellow cursor-pointer whitespace-nowrap text-sm" target="_blank" data-astro-cid-e7c5y66u> Ecosystem Dashboard </a> </div> </div> </div> </menu> <menu class="astronav-dropdown group " aria-expanded="false" data-nav-group="Resource Center" data-astro-cid-e7c5y66u> <div class="duration-300" data-astro-cid-e7c5y66u> <button class="flex items-center gap-1 w-full lg:w-auto lg:px-3 py-2 xl:py-3 hover:linaro-gradient-text nav-inactive" data-astro-cid-e7c5y66u> <span data-astro-cid-e7c5y66u>Resource Center</span> </button> </div> <div class=" astronav-dropdown dropdown-toggle hidden" aria-expanded="false" data-astro-cid-e7c5y66u> <div class=" lg:absolute w-full z-10 mt-1 lg:left-0" data-astro-cid-e7c5y66u> <div class="flex flex-col lg:flex-row w-full" data-astro-cid-e7c5y66u> <a href="/downloads" class=" lg:px-3 py-2 text-grey  hover:text-linaro-yellow cursor-pointer whitespace-nowrap text-sm" target="_self" data-astro-cid-e7c5y66u> Downloads </a><a href="/blog" class=" lg:px-3 py-2 text-grey  hover:text-linaro-yellow cursor-pointer whitespace-nowrap text-sm" target="_self" data-astro-cid-e7c5y66u> Blog </a><a href="/whitepapers" class=" lg:px-3 py-2 text-grey  hover:text-linaro-yellow cursor-pointer whitespace-nowrap text-sm" target="_self" data-astro-cid-e7c5y66u> White Papers </a><a href="/news" class=" lg:px-3 py-2 text-grey  hover:text-linaro-yellow cursor-pointer whitespace-nowrap text-sm" target="_self" data-astro-cid-e7c5y66u> Newsroom </a><a href="https://resources.linaro.org/" class=" lg:px-3 py-2 text-grey  hover:text-linaro-yellow cursor-pointer whitespace-nowrap text-sm" target="_blank" data-astro-cid-e7c5y66u> Videos &amp; Webinars </a><a href="/events" class=" lg:px-3 py-2 text-grey  hover:text-linaro-yellow cursor-pointer whitespace-nowrap text-sm" target="_self" data-astro-cid-e7c5y66u> Events </a><a href="/connect" class=" lg:px-3 py-2 text-grey  hover:text-linaro-yellow cursor-pointer whitespace-nowrap text-sm" target="_self" data-astro-cid-e7c5y66u> Connect 2025 </a> </div> </div> </div> </menu> <menu class="astronav-dropdown group " aria-expanded="false" data-nav-group="Company" data-astro-cid-e7c5y66u> <div class="duration-300" data-astro-cid-e7c5y66u> <button class="flex items-center gap-1 w-full lg:w-auto lg:px-3 py-2 xl:py-3 hover:linaro-gradient-text nav-inactive" data-astro-cid-e7c5y66u> <span data-astro-cid-e7c5y66u>Company</span> </button> </div> <div class=" astronav-dropdown dropdown-toggle hidden" aria-expanded="false" data-astro-cid-e7c5y66u> <div class=" lg:absolute w-full z-10 mt-1 lg:left-0" data-astro-cid-e7c5y66u> <div class="flex flex-col lg:flex-row w-full" data-astro-cid-e7c5y66u> <a href="/about" class=" lg:px-3 py-2 text-grey  hover:text-linaro-yellow cursor-pointer whitespace-nowrap text-sm" target="_self" data-astro-cid-e7c5y66u> About </a><a href="/careers" class=" lg:px-3 py-2 text-grey  hover:text-linaro-yellow cursor-pointer whitespace-nowrap text-sm" target="_self" data-astro-cid-e7c5y66u> Careers </a> </div> </div> </div> </menu>  <li class="ml-0 lg:ml-2 xl:ml-8 mt-[2px]"> <a href="/contact"> <div class="linaro-gradient-button-small ">
+Contact us
+</div> </a> </li> <li class="grow mt-4 lg:mt-0"> <button id="search-modal-open-button" class="ml-auto mr-4 float-right p-2" data-astro-cid-vaub4oed><svg width="20" height="20" viewBox="0 0 27 27" data-astro-cid-vaub4oed data-icon="search">  <symbol id="ai:local:search"><g fill="none"><path fill="url(#a)" d="M11.707.033C5.25.033 0 5.285 0 11.74c0 6.455 5.251 11.707 11.707 11.707 1.973 0 3.913-.469 5.552-1.372.131.158.277.304.435.435l3.344 3.345a3.41 3.41 0 1 0 4.817-4.817l-3.345-3.344a3.346 3.346 0 0 0-.535-.435c.903-1.64 1.471-3.546 1.471-5.552C23.447 5.25 18.197 0 11.74 0l-.034.033Zm0 3.345a8.322 8.322 0 0 1 8.361 8.362c0 2.207-.802 4.248-2.207 5.753l-.1.1a3.352 3.352 0 0 0-.435.435c-1.472 1.338-3.479 2.107-5.653 2.107a8.322 8.322 0 0 1-8.362-8.362 8.322 8.322 0 0 1 8.362-8.361l.034-.034Z"/><defs><linearGradient id="a" x1="0" x2="27.9" y1=".9" y2="28.8" gradientUnits="userSpaceOnUse"><stop stop-color="#FFCE00"/><stop offset="1" stop-color="#6715E8"/></linearGradient></defs></g></symbol><use xlink:href="#ai:local:search"></use>  </svg></button> <div class="relative w-full" data-astro-cid-vaub4oed> <dialog id="search-modal-dialog" class="bg-transparent rounded-xl mx-auto w-full max-w-6xl" data-astro-cid-vaub4oed> <div class="relative bg-background text-white p-4 rounded-xl" data-astro-cid-vaub4oed> <style>astro-island,astro-slot,astro-static-slot{display:contents}</style><script>(()=>{var e=async t=>{await(await t())()};(self.Astro||(self.Astro={})).only=e;window.dispatchEvent(new Event("astro:only"));})();;(()=>{var v=Object.defineProperty;var A=(c,s,a)=>s in c?v(c,s,{enumerable:!0,configurable:!0,writable:!0,value:a}):c[s]=a;var d=(c,s,a)=>(A(c,typeof s!="symbol"?s+"":s,a),a);var u;{let c={0:t=>m(t),1:t=>a(t),2:t=>new RegExp(t),3:t=>new Date(t),4:t=>new Map(a(t)),5:t=>new Set(a(t)),6:t=>BigInt(t),7:t=>new URL(t),8:t=>new Uint8Array(t),9:t=>new Uint16Array(t),10:t=>new Uint32Array(t)},s=t=>{let[e,n]=t;return e in c?c[e](n):void 0},a=t=>t.map(s),m=t=>typeof t!="object"||t===null?t:Object.fromEntries(Object.entries(t).map(([e,n])=>[e,s(n)]));customElements.get("astro-island")||customElements.define("astro-island",(u=class extends HTMLElement{constructor(){super(...arguments);d(this,"Component");d(this,"hydrator");d(this,"hydrate",async()=>{var f;if(!this.hydrator||!this.isConnected)return;let e=(f=this.parentElement)==null?void 0:f.closest("astro-island[ssr]");if(e){e.addEventListener("astro:hydrate",this.hydrate,{once:!0});return}let n=this.querySelectorAll("astro-slot"),r={},l=this.querySelectorAll("template[data-astro-template]");for(let o of l){let i=o.closest(this.tagName);i!=null&&i.isSameNode(this)&&(r[o.getAttribute("data-astro-template")||"default"]=o.innerHTML,o.remove())}for(let o of n){let i=o.closest(this.tagName);i!=null&&i.isSameNode(this)&&(r[o.getAttribute("name")||"default"]=o.innerHTML)}let h;try{h=this.hasAttribute("props")?m(JSON.parse(this.getAttribute("props"))):{}}catch(o){let i=this.getAttribute("component-url")||"<unknown>",b=this.getAttribute("component-export");throw b&&(i+=` (export ${b})`),console.error(`[hydrate] Error parsing props for component ${i}`,this.getAttribute("props"),o),o}let p;await this.hydrator(this)(this.Component,h,r,{client:this.getAttribute("client")}),this.removeAttribute("ssr"),this.dispatchEvent(new CustomEvent("astro:hydrate"))});d(this,"unmount",()=>{this.isConnected||this.dispatchEvent(new CustomEvent("astro:unmount"))})}disconnectedCallback(){document.removeEventListener("astro:after-swap",this.unmount),document.addEventListener("astro:after-swap",this.unmount,{once:!0})}connectedCallback(){if(!this.hasAttribute("await-children")||document.readyState==="interactive"||document.readyState==="complete")this.childrenConnectedCallback();else{let e=()=>{document.removeEventListener("DOMContentLoaded",e),n.disconnect(),this.childrenConnectedCallback()},n=new MutationObserver(()=>{var r;((r=this.lastChild)==null?void 0:r.nodeType)===Node.COMMENT_NODE&&this.lastChild.nodeValue==="astro:end"&&(this.lastChild.remove(),e())});n.observe(this,{childList:!0}),document.addEventListener("DOMContentLoaded",e)}}async childrenConnectedCallback(){let e=this.getAttribute("before-hydration-url");e&&await import(e),this.start()}async start(){let e=JSON.parse(this.getAttribute("opts")),n=this.getAttribute("client");if(Astro[n]===void 0){window.addEventListener(`astro:${n}`,()=>this.start(),{once:!0});return}try{await Astro[n](async()=>{let r=this.getAttribute("renderer-url"),[l,{default:h}]=await Promise.all([import(this.getAttribute("component-url")),r?import(r):()=>()=>{}]),p=this.getAttribute("component-export")||"default";if(!p.includes("."))this.Component=l[p];else{this.Component=l;for(let y of p.split("."))this.Component=this.Component[y]}return this.hydrator=h,this.hydrate},e,this)}catch(r){console.error(`[astro-island] Error hydrating ${this.getAttribute("component-url")}`,r)}}attributeChangedCallback(){this.hydrate()}},d(u,"observedAttributes",["props"]),u))}})();</script><astro-island uid="Z1AxAzA" component-url="/_astro/NavSearch.CEIo0-ri.js" component-export="default" renderer-url="/_astro/client.CsLszWIp.js" props="{&quot;data-astro-cid-vaub4oed&quot;:[0,true]}" ssr="" client="only" opts="{&quot;name&quot;:&quot;NavSearch&quot;,&quot;value&quot;:&quot;solid-js&quot;}"></astro-island> </div> </dialog> </div>  </li> </ul> </nav> </div> </div> <script>(function(){const closeOnClick = false;
+
+    ["DOMContentLoaded", "astro:after-swap"].forEach((event) => {
+      document.addEventListener(event, addListeners);
+    });
+
+    // Function to clone and replace elements
+    function cloneAndReplace(element) {
+      const clone = element.cloneNode(true);
+      element.parentNode.replaceChild(clone, element);
+    }
+
+    function addListeners() {
+      // Clean up existing listeners
+      const oldMenuButton = document.getElementById("astronav-menu");
+      if (oldMenuButton) {
+        cloneAndReplace(oldMenuButton);
+      }
+
+      const oldDropdownMenus = document.querySelectorAll(".astronav-dropdown");
+      oldDropdownMenus.forEach((menu) => {
+        cloneAndReplace(menu);
+      });
+
+      // Mobile nav toggle
+      const menuButton = document.getElementById("astronav-menu");
+      menuButton && menuButton.addEventListener("click", toggleMobileNav);
+
+      // Dropdown menus
+      const dropdownMenus = document.querySelectorAll(".astronav-dropdown");
+      dropdownMenus.forEach((menu) => {
+        const button = menu.querySelector("button");
+        button &&
+          button.addEventListener("click", (event) =>
+            toggleDropdownMenu(event, menu, dropdownMenus)
+          );
+
+        // Handle Submenu Dropdowns
+        const dropDownSubmenus = menu.querySelectorAll(
+          ".astronav-dropdown-submenu"
+        );
+
+        dropDownSubmenus.forEach((submenu) => {
+          const submenuButton = submenu.querySelector("button");
+          submenuButton &&
+            submenuButton.addEventListener("click", (event) => {
+              event.stopImmediatePropagation();
+              toggleSubmenuDropdown(event, submenu);
+            });
+        });
+      });
+
+      // Clicking away from dropdown will remove the dropdown class
+      document.addEventListener("click", closeAllDropdowns);
+
+      if (closeOnClick) {
+        handleCloseOnClick();
+      }
+    }
+
+    function toggleMobileNav() {
+      [...document.querySelectorAll(".astronav-toggle")].forEach((el) => {
+        el.classList.toggle("hidden");
+      });
+    }
+
+    function toggleDropdownMenu(event, menu, dropdownMenus) {
+      toggleMenu(menu);
+
+      // Close one dropdown when selecting another
+      Array.from(dropdownMenus)
+        .filter((el) => el !== menu && !menu.contains(el))
+        .forEach(closeMenu);
+
+      event.stopPropagation();
+    }
+
+    function toggleSubmenuDropdown(event, submenu) {
+      event.stopPropagation();
+      toggleMenu(submenu);
+
+      // Close sibling submenus at the same nesting level
+      const siblingSubmenus = submenu
+        .closest(".astronav-dropdown")
+        .querySelectorAll(".astronav-dropdown-submenu");
+      Array.from(siblingSubmenus)
+        .filter((el) => el !== submenu && !submenu.contains(el))
+        .forEach(closeMenu);
+    }
+
+    function closeAllDropdowns(event) {
+      const dropdownMenus = document.querySelectorAll(".dropdown-toggle");
+      const dropdownParent = document.querySelectorAll(
+        ".astronav-dropdown, .astronav-dropdown-submenu"
+      );
+      const isButtonInsideDropdown = [
+        ...document.querySelectorAll(
+          ".astronav-dropdown button, .astronav-dropdown-submenu button, #astronav-menu"
+        ),
+      ].some((button) => button.contains(event.target));
+      if (!isButtonInsideDropdown) {
+        dropdownMenus.forEach((d) => {
+          d.classList.remove("open");
+          d.removeAttribute("open");
+          d.classList.add("hidden");
+        });
+        dropdownParent.forEach((d) => {
+          d.classList.remove("open");
+          d.removeAttribute("open");
+          d.setAttribute("aria-expanded", "false");
+        });
+      }
+    }
+
+    function toggleMenu(menu) {
+      menu.classList.toggle("open");
+      const expanded = menu.getAttribute("aria-expanded") === "true";
+      menu.setAttribute("aria-expanded", expanded ? "false" : "true");
+      menu.hasAttribute("open")
+        ? menu.removeAttribute("open")
+        : menu.setAttribute("open", "");
+
+      const dropdownToggle = menu.querySelector(".dropdown-toggle");
+      const dropdownExpanded = dropdownToggle.getAttribute("aria-expanded");
+      dropdownToggle.classList.toggle("hidden");
+      dropdownToggle.setAttribute(
+        "aria-expanded",
+        dropdownExpanded === "true" ? "false" : "true"
+      );
+    }
+
+    function closeMenu(menu) {
+      menu.classList.remove("open");
+      menu.removeAttribute("open");
+      menu.setAttribute("aria-expanded", "false");
+      const dropdownToggles = menu.querySelectorAll(".dropdown-toggle");
+      dropdownToggles.forEach((toggle) => {
+        toggle.classList.add("hidden");
+        toggle.setAttribute("aria-expanded", "false");
+      });
+    }
+
+    function handleCloseOnClick() {
+      const navMenuItems = document.querySelector(".astronav-items");
+      const navToggle = document.getElementById("astronav-menu");
+      const navLink = navMenuItems && navMenuItems.querySelectorAll("a");
+
+      const MenuIcons = navToggle.querySelectorAll(".astronav-toggle");
+
+      navLink &&
+        navLink.forEach((item) => {
+          item.addEventListener("click", () => {
+            navMenuItems?.classList.add("hidden");
+            MenuIcons.forEach((el) => {
+              el.classList.toggle("hidden");
+            });
+          });
+        });
+    }
+  })();</script> </header>  <main class="prose mx-0 max-w-full prose-invert marker:text-white " data-pagefind-body data-pagefind-filter="type:page"> <span data-pagefind-meta="title" class="hidden">Page Not Found</span>   <section class="w-full" data-astro-cid-ekmpyda2 style="--backgroundUrl: url();"> <div class="container mx-auto px-4 md:px-8" data-astro-cid-ekmpyda2 style="--backgroundUrl: url();">  <div class="animate-delay-100 py-24" data-astro-cid-ekmpyda2 style="--backgroundUrl: url();"> <div class="text-center max-w-4xl mx-auto text-xl"><h1>Page Not Found</h1>
+<p>We’re sorry but the page you are trying to access cannot be found.</p>
+<p><a href="/">Return to homepage</a></p>
+</div> </div> </div> </section>  </main>  <footer class="container mx-auto px-8 text-grey text-sm flex flex-col items-center mt-auto z-50"> <div class="fade-border"></div> <div class="pt-12 flex gap-16 xl:gap-24 justify-center lg:justify-between w-full"> <div class="max-w-[30ch]"> <a href="/" class="text-lg"><img src="/_astro/logo-white_ZGxQ18.webp" loading="lazy" alt="Linaro Logo" class="h-auto w-[125px] xl:w-[150px] mb-8" width="500" height="500" decoding="async"></a> <p>Linaro Limited</p> <p>Harston Mill, Harston</p> <p class="mb-4">Cambridgeshire, CB22 7GG, UK</p> <ul class="not-prose flex flex-wrap gap-6 justify-start"><li class="border-grey border-none"><a href="https://x.com/linaroorg" target="_blank" aria-label="X"><svg width="15" height="15" viewBox="0 0 110.38 99.79" class="text-grey hover:text-linaro-yellow" data-icon="X">  <symbol id="ai:local:X"><path fill="currentColor" d="M110.38 99.77h-1.51c-10.38 0-20.77-.02-31.15.03-1.06 0-1.68-.34-2.3-1.16-8.37-11-16.78-21.97-25.18-32.95-.17-.22-.36-.44-.61-.75-1.57 1.79-3.11 3.53-4.64 5.28-8.33 9.52-16.66 19.03-24.97 28.56-.61.7-1.23 1.03-2.19 1.01-4.74-.05-9.49-.02-14.23-.02H2.19C15.46 84.6 28.55 69.64 41.73 54.58 27.87 36.46 14.03 18.37 0 .02h1.45c10.78 0 21.56 0 32.34-.02.85 0 1.36.27 1.86.93 7.6 10.09 15.23 20.17 22.86 30.25.15.2.31.38.54.67 1.74-1.98 3.44-3.91 5.13-5.85C71.49 17.65 78.81 9.3 86.09.93 86.7.23 87.32 0 88.22 0c4.74.04 9.49.02 14.23.02h1.41C91.43 14.23 79.19 28.21 66.89 42.27c14.46 19.11 28.89 38.19 43.5 57.5ZM90.3 89.62c-.34-.48-.51-.75-.7-.99L50.55 37.01c-6.67-8.82-13.35-17.63-19.99-26.47-.53-.7-1.06-.99-1.95-.97-2.62.07-5.24.02-7.87.03-.26 0-.51.05-.86.09.2.29.3.47.43.64 13.02 17.02 26.05 34.04 39.07 51.06 7 9.15 14 18.3 21.02 27.44.24.32.62.74.94.74 2.9.06 5.8.03 8.95.03Z" class="cls-1"/></symbol><use xlink:href="#ai:local:X"></use>  </svg></a></li><li class="border-grey border-none"><a href="https://www.facebook.com/LinaroOrg" target="_blank" aria-label="Facebook"><svg width="15" height="15" viewBox="0 0 17 26" class="text-grey hover:text-linaro-yellow" data-icon="facebook">  <symbol id="ai:local:facebook"><path fill="currentColor" d="M12.113 5.685c-.252 0-.56.117-.92.351-.361.235-.542.587-.542 1.056V8.5h4.277v5.63h-4.277V25.5h-5.63V14.13H.744V8.5h4.277V5.685c0-.722.162-1.426.487-2.112a5.577 5.577 0 0 1 1.38-1.814A7.333 7.333 0 0 1 8.974.487 6.798 6.798 0 0 1 11.572 0h4.764v5.685h-4.223Z"/></symbol><use xlink:href="#ai:local:facebook"></use>  </svg></a></li><li class="border-grey border-none"><a href="https://www.linkedin.com/company/linaro" target="_blank" aria-label="LinkedIn"><svg width="15" height="15" viewBox="0 0 26 26" class="text-grey hover:text-linaro-yellow" data-icon="linkedin">  <symbol id="ai:local:linkedin"><path fill="currentColor" d="M.336 7.069h5.612v18.347H.336V7.069Zm21.53 1.133c1.116.612 2.033 1.538 2.753 2.78.719 1.24 1.079 2.508 1.079 3.803v10.63h-5.666v-10.63c0-.287-.108-.611-.324-.97-.216-.36-.414-.594-.593-.702-.288-.18-.684-.27-1.188-.27-.503 0-.9.072-1.187.216l-2.32 1.133v11.224H8.754V7.069h5.666v.863c1.115-.503 2.374-.737 3.777-.701 1.403.036 2.626.36 3.67.971ZM3.142 0c.791 0 1.457.27 1.996.81.54.539.81 1.205.81 1.996 0 .791-.27 1.466-.81 2.024-.54.557-1.205.836-1.996.836-.792 0-1.457-.279-1.997-.836a2.805 2.805 0 0 1-.81-2.024c0-.791.27-1.457.81-1.997S2.35 0 3.142 0Z"/></symbol><use xlink:href="#ai:local:linkedin"></use>  </svg></a></li><li class="border-grey border-none"><a href="https://www.youtube.com/linaroorg" target="_blank" aria-label="YouTube"><svg width="15" height="15" viewBox="0 0 27 26" class="text-grey hover:text-linaro-yellow" data-icon="youtube">  <symbol id="ai:local:youtube"><path fill="currentColor" d="M1.993 0h2.323l1.512 5.239h.162L7.448 0H9.77l-2.7 7.669v5.4H4.748V7.885L1.993 0Zm7.94 5.617c0-.757.287-1.35.863-1.783.54-.432 1.278-.648 2.214-.648.9 0 1.603.234 2.107.702.54.504.81 1.098.81 1.783v5.022c0 .828-.252 1.458-.756 1.89-.576.504-1.314.756-2.215.756-.9 0-1.638-.252-2.214-.756-.54-.468-.81-1.116-.81-1.944V5.617Zm2.16 5.184c0 .288.071.504.215.648a.72.72 0 0 0 .243.162c.09.036.225.054.405.054.253 0 .469-.09.649-.27.143-.108.215-.306.215-.594V5.563c0-.216-.072-.379-.216-.487-.143-.144-.36-.216-.648-.216-.288 0-.504.072-.648.216-.144.108-.216.27-.216.487V10.8ZM23.54 3.402v9.667h-2.106v-1.08c-.324.396-.72.702-1.188.918a2.46 2.46 0 0 1-1.188.324c-.432 0-.792-.144-1.08-.432-.252-.36-.378-.792-.378-1.296v-8.1h2.106V10.8c0 .288.036.45.108.486a.584.584 0 0 0 .432.162c.108 0 .306-.054.594-.162.288-.216.486-.396.594-.54V3.402h2.106ZM7.016 13.34H.697v1.674h2.106v10.153h2.053V15.013h2.16V13.34Zm4.212 9.721a1.32 1.32 0 0 1-.594.486c-.18.108-.342.162-.486.162a.87.87 0 0 1-.378-.108 1.072 1.072 0 0 1-.108-.486v-6.696H7.826v7.344c0 .504.108.882.324 1.134.216.288.54.432.972.432.36 0 .702-.108 1.026-.324a3.28 3.28 0 0 0 1.08-.81v.972h1.836v-8.748h-1.836v6.642Zm8.047-6.21c-.36-.36-.81-.54-1.35-.54-.288 0-.576.072-.864.216-.18.072-.432.27-.756.594v-3.78h-1.836v11.826h1.836v-.648c.108.144.225.261.35.351.127.09.262.171.406.243.324.108.648.162.972.162.54 0 .954-.162 1.242-.486.288-.288.432-.756.432-1.404v-4.86c0-.72-.144-1.278-.432-1.674Zm-1.458 6.264c0 .288-.054.486-.162.594-.108.144-.27.216-.486.216-.072 0-.216-.036-.432-.108-.108-.036-.252-.144-.432-.324v-5.454c.108-.108.234-.198.378-.27.072-.036.198-.054.378-.054.252 0 .45.072.594.216.108.18.162.414.162.702v4.482Zm8.263-2.106v-2.214c0-.792-.216-1.44-.648-1.944-.504-.432-1.152-.649-1.945-.649-.864 0-1.53.235-1.998.703-.54.504-.81 1.134-.81 1.89v3.888c0 .792.234 1.458.702 1.998.504.504 1.152.756 1.944.756.9 0 1.585-.234 2.053-.702.468-.432.702-1.116.702-2.052v-.432h-1.89v.432c0 .504-.055.828-.163.972-.143.144-.36.216-.648.216-.288 0-.504-.09-.648-.27-.108-.144-.162-.45-.162-.918v-1.674h3.51Zm-3.51-2.268c0-.36.071-.612.215-.756.108-.18.306-.27.594-.27.252 0 .468.09.648.27.108.18.162.432.162.756v.918h-1.62v-.918Z"/></symbol><use xlink:href="#ai:local:youtube"></use>  </svg></a></li><li class="border-grey border-none"><a href="https://mastodon.social/@LinaroLtd" target="_blank" aria-label="Mastodon"><svg width="15" height="15" viewBox="0 0 480 511.475" class="text-grey hover:text-linaro-yellow" data-icon="mastodon">  <symbol id="ai:local:mastodon"><path fill="currentColor" d="M478.065 113.237c-7.393-54.954-55.29-98.266-112.072-106.656C356.413 5.162 320.121 0 236.043 0h-.626c-84.099 0-102.141 5.162-111.72 6.581C68.498 14.738 18.089 53.653 5.859 109.26c-5.882 27.384-6.51 57.747-5.416 85.594C2 234.794 2.302 274.662 5.93 314.438a562.647 562.647 0 0 0 13.09 78.437c11.625 47.653 58.686 87.311 104.793 103.494a281.07 281.07 0 0 0 153.315 8.09 223.879 223.879 0 0 0 16.578-4.533c12.368-3.929 26.855-8.323 37.507-16.043a1.198 1.198 0 0 0 .486-.928v-38.544a1.12 1.12 0 0 0-.437-.879 1.134 1.134 0 0 0-.957-.215 424.764 424.764 0 0 1-99.49 11.626c-57.665 0-73.172-27.361-77.611-38.75a120.008 120.008 0 0 1-6.745-30.549 1.048 1.048 0 0 1 .094-.51c.07-.161.178-.304.317-.415a1.094 1.094 0 0 1 .982-.213 417.004 417.004 0 0 0 97.865 11.624c7.927 0 15.834 0 23.761-.213 33.156-.928 68.105-2.625 100.722-8.997.816-.16 1.63-.301 2.327-.508 51.455-9.883 100.423-40.894 105.397-119.421.184-3.092.652-32.382.652-35.588.021-10.904 3.509-77.344-.511-118.166zm-82.796 61.744V311.51h-54.104V179.003c0-27.897-11.627-42.126-35.273-42.126-25.998 0-39.018 16.834-39.018 50.073v72.534h-53.776V186.95c0-33.239-13.045-50.073-39.04-50.073-23.507 0-35.249 14.229-35.249 42.126V311.51H84.73V174.981c0-27.896 7.121-50.059 21.366-66.488 14.693-16.388 33.969-24.805 57.893-24.805 27.692 0 48.618 10.648 62.569 31.919l13.464 22.597 13.485-22.597c13.95-21.271 34.876-31.919 62.52-31.919 23.903 0 43.177 8.417 57.919 24.805 14.231 16.413 21.337 38.576 21.323 66.488z"/></symbol><use xlink:href="#ai:local:mastodon"></use>  </svg></a></li></ul><ul class="not-prose flex flex-wrap mt-2 gap-6 justify-start"><li class="flex basis-3/7 items-center gap-1"><a href="feed.xml" target="_blank" aria-label="RSS-feed" class="flex items-center hover:text-linaro-yellow"><svg width="15" height="15" viewBox="0 0 32 32" class="text-current" data-icon="rss">  <symbol id="ai:local:rss"><path fill="currentColor" d="M5 5v4c9.93 0 18 8.07 18 18h4C27 14.85 17.15 5 5 5zm0 7v4c6.07 0 11 4.93 11 11h4c0-8.28-6.72-15-15-15zm3 9a3 3 0 0 0 0 6 3 3 0 0 0 0-6z"/></symbol><use xlink:href="#ai:local:rss"></use>  </svg>
+Feed
+</a></li><li class="flex basis-3/7 items-center gap-1"><a href="rss/news.xml" target="_blank" aria-label="RSS-feed" class="flex items-center hover:text-linaro-yellow"><svg width="15" height="15" viewBox="0 0 32 32" class="text-current" data-icon="rss">  <use xlink:href="#ai:local:rss"></use>  </svg>
+News
+</a></li><li class="flex basis-3/7 items-center gap-1"><a href="rss/blog.xml" target="_blank" aria-label="RSS-feed" class="flex items-center hover:text-linaro-yellow"><svg width="15" height="15" viewBox="0 0 32 32" class="text-current" data-icon="rss">  <use xlink:href="#ai:local:rss"></use>  </svg>
+Blog
+</a></li></ul> </div> <ul class="gap-8 hidden lg:flex mb-8"> <li class="max-w-[15ch]"> <p class="text-white text-[1rem] mb-4">Products &amp; Solutions</p> <ul> <li class="mb-2"> <a href="https://www.linaroforge.com" class="hover:text-linaro-yellow"> HPC </a>  </li><li class="mb-2"> <a href="/solutions/iot-embedded" class="hover:text-linaro-yellow"> IoT &amp; Embedded Systems </a> <ul class="mt-2"> <li class="ml-4 mb-2"> <a href="/solutions/codelinaro" class="hover:text-linaro-yellow"> CodeLinaro </a> </li><li class="ml-4 mb-2"> <a href="/solutions/onelab" class="hover:text-linaro-yellow"> ONELab </a> </li> </ul> </li><li class="mb-2"> <a href="/solutions/ai-ml" class="hover:text-linaro-yellow"> AI &amp; Machine Learning </a>  </li><li class="mb-2"> <a href="/solutions/automotive" class="hover:text-linaro-yellow"> Automotive </a>  </li><li class="mb-2"> <a href="/solutions/lts" class="hover:text-linaro-yellow"> Long Term Support </a>  </li> </ul> </li><li class="max-w-[15ch]"> <p class="text-white text-[1rem] mb-4">Services &amp; Support</p> <ul> <li class="mb-2"> <a href="/services/consulting" class="hover:text-linaro-yellow"> Consulting </a>  </li><li class="mb-2"> <a href="/services/training" class="hover:text-linaro-yellow"> Training &amp; Learning </a>  </li><li class="mb-2"> <a href="/services/nxp-platform-services" class="hover:text-linaro-yellow"> NXP Platform Services </a>  </li><li class="mb-2"> <a href="/projects/qualcomm-platform" class="hover:text-linaro-yellow"> Qualcomm Platform Services </a>  </li> </ul> </li><li class="max-w-[15ch]"> <p class="text-white text-[1rem] mb-4">Ecosystem Projects</p> <ul> <li class="mb-2"> <a href="/projects/windows-on-arm" class="hover:text-linaro-yellow"> Windows on Arm </a>  </li><li class="mb-2"> <a href="/projects/automotive-iot-edge" class="hover:text-linaro-yellow"> Automotive, IoT &amp; Edge </a>  </li><li class="mb-2"> <a href="/projects/cloud-computing" class="hover:text-linaro-yellow"> Cloud Computing &amp; Servers </a>  </li><li class="mb-2"> <a href="https://ecosystemdashboard.linaro.org" class="hover:text-linaro-yellow"> Ecosystem Dashboard </a>  </li> </ul> </li><li class="max-w-[15ch]"> <p class="text-white text-[1rem] mb-4">Resource Center</p> <ul> <li class="mb-2"> <a href="/downloads" class="hover:text-linaro-yellow"> Downloads </a>  </li><li class="mb-2"> <a href="/blog" class="hover:text-linaro-yellow"> Blog </a>  </li><li class="mb-2"> <a href="/whitepapers" class="hover:text-linaro-yellow"> White Papers </a>  </li><li class="mb-2"> <a href="/news" class="hover:text-linaro-yellow"> Newsroom </a>  </li><li class="mb-2"> <a href="https://resources.linaro.org/" class="hover:text-linaro-yellow"> Videos &amp; Webinars </a>  </li><li class="mb-2"> <a href="/events" class="hover:text-linaro-yellow"> Events </a>  </li><li class="mb-2"> <a href="/connect" class="hover:text-linaro-yellow"> Connect 2025 </a>  </li> </ul> </li><li class="max-w-[15ch]"> <p class="text-white text-[1rem] mb-4">Company</p> <ul> <li class="mb-2"> <a href="/about" class="hover:text-linaro-yellow"> About </a>  </li><li class="mb-2"> <a href="/careers" class="hover:text-linaro-yellow"> Careers </a>  </li> </ul> </li> </ul> </div> <a class="text-lg text-white my-8 flex lg:hidden items-center gap-2" href="/404/#top-nav">Back to top<svg width="1em" height="1em" viewBox="0 0 24 24" data-icon="mdi:arrow-up-right">  <symbol id="ai:mdi:arrow-up-right"><path fill="currentColor" d="m21.5 9.5l-1.41 1.42L17 7.83v5.67a6.5 6.5 0 0 1-6.5 6.5H4v-2h6.5c2.5 0 4.5-2 4.5-4.5V7.83l-3.09 3.08L10.5 9.5L16 4z"/></symbol><use xlink:href="#ai:mdi:arrow-up-right"></use>  </svg></a> <div class="fade-border"></div> <div class="flex flex-col md:flex-row mb-12 md:mb-24 gap-4 xl:gap-24 items-center justify-start md:justify-between w-full mt-8"> <ul class="flex gap-4"> <li> <a href="/contact" class="hover:text-linaro-yellow"> Contact </a> </li><li> <a href="/legal" class="hover:text-linaro-yellow"> Legal </a> </li> </ul> <span>Copyright © 2025 Linaro Limited</span> </div> <!-- LinkedIn Insight Tag --> <script type="text/javascript">
+    _linkedin_partner_id = "2545073";
+    window._linkedin_data_partner_ids = window._linkedin_data_partner_ids || [];
+    window._linkedin_data_partner_ids.push(_linkedin_partner_id);
+  </script> <script type="text/javascript">
+    (function (l) {
+      if (!l) {
+        window.lintrk = function (a, b) {
+          window.lintrk.q.push([a, b]);
+        };
+        window.lintrk.q = [];
+      }
+      var s = document.getElementsByTagName("script")[0];
+      var b = document.createElement("script");
+      b.type = "text/javascript";
+      b.async = true;
+      b.src = "https://snap.licdn.com/li.lms-analytics/insight.min.js";
+      s.parentNode.insertBefore(b, s);
+    })(window.lintrk);
+  </script> <noscript> <img height="1" width="1" style="display:none;" alt="" src="https://px.ads.linkedin.com/collect/?pid=2545073&fmt=gif"> </noscript> </footer>   </body> </html>
