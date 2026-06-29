@@ -247,9 +247,9 @@ Architecture: armv7
 MD5Sum: 12889c64ccb557bdb2b78eecb335b1c0
 Size: 1664446
 Filename: org.webosce.luna-update_3.1.0_armv7.ipk
-Description: webOS CE 3.1.0 (version string + LunaCE launcher)
-Maintainer: webOS CE
-Source: { "Type":"Application", "Feed":"WOSA Modernize", "Category":"Modernize", "Title":"webOS CE 3.1.0", "FullDescription":"Improves the launcher and establishes a baselines for future updates.<br>This sets the OS version string to 'webOS CE 3.1.0' and installs the community LunaCE launcher (custom LunaSysMgr + Tweaks presets).<br>Installing this pulls in the full modernization chain: all TLS 1.2/1.3 updates, the Enyo App Catalog, the mojomail IMAP fix, updated root certificates, and the QupZilla browser. Stock files are backed up and restored on removal.<br>Suggested (optional, not required): install Tweaks from the WebOS Internals feed for a UI to toggle the LunaCE tweaks. The update does not require it and installs fine if that feed is unavailable.", "MinWebOSVersion":"3.0.0", "DeviceCompatibility":["TouchPad","Touchpad Go"], "PostInstallFlags":"RestartDevice", "PostUpdateFlags":"RestartDevice", "PostRemoveFlags":"RestartDevice", "Icon":"http://stacks.webosarchive.org/feeds/modernize/ipkgs/assets/icons/updates.png" }
+Description: webOS Community Edition 3.1.0 (version string + LunaCE launcher)
+Maintainer: webOS Archive
+Source: { "Type":"Application", "Feed":"WOSA Modernize", "Category":"Modernize", "Title":"webOS CE 3.1.0", "FullDescription":"This deploys the LunaCE (Community Edition) Launcher, pulling all IPK updates, TLS upgrades, and establishing a baseline for future system updates.<br>- OS version string will be set to 'webOS CE 3.1.0'<br>- Replaces the launcher with LunaCE (custom LunaSysMgr + Tweaks presets).<br>- Pulls in the full modernization chain: all TLS 1.2/1.3 updates, the Enyo App Catalog, the mojomail IMAP fix, updated root certificates, and the QupZilla browser. Stock files are backed up and restored on removal.<br>Suggested (optional, not required): install Tweaks from the WebOS Internals feed for a UI to toggle the LunaCE tweaks. The update does not require it and installs fine if that feed is unavailable.", "MinWebOSVersion":"3.0.0", "DeviceCompatibility":["TouchPad","Touchpad Go"], "PostInstallFlags":"RestartDevice", "PostUpdateFlags":"RestartDevice", "PostRemoveFlags":"RestartDevice", "Icon":"http://stacks.webosarchive.org/feeds/modernize/ipkgs/assets/icons/updates.png" }
 
 Package: org.webosinternals.preware
 Version: 1.9.17
