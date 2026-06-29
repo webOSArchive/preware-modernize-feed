@@ -10,7 +10,6 @@ Description: Bundle of CA Root Certificates
 Maintainer: nizovn <nizovn@gmail.com>
 Source: { "Feed":"WOSA Modernize", "Type":"Linux Application", "Category":"Modernize", "LastUpdated":"1633262859", "Title":"Bundle of CA Root Certificates", "FullDescription":"Bundle of CA Root Certificates from Mozilla for usage in Qt5 based applications.", "Homepage":"https://curl.se/docs/caextract.html", "MinWebOSVersion":"2.2.0", "DeviceCompatibility":["Pre3","TouchPad","Touchpad Go"] }
 
-
 Package: com.nizovn.glibc
 Version: 4.8-2015.06-0
 Depends: org.webosinternals.dbus
@@ -22,7 +21,6 @@ Filename: com.nizovn.glibc_4.8-2015.06-0_armv7.ipk
 Description: Glibc runtime libraries (linaro)
 Maintainer: nizovn <nizovn@gmail.com>
 Source: { "Feed":"WOSA Modernize", "Type":"Linux Application", "Category":"Modernize", "LastUpdated":"1527627200", "Title":"Glibc runtime libraries (linaro)", "FullDescription":"Linaro glibc shared libraries (libstdc++, libc, etc.).<br><br>Changelog:<br>4.8-2015.06-0: First public release", "Homepage":"https://www.linaro.org", "Icon":"http://stacks.webosarchive.org/feeds/modernize/ipkgs/assets/icons/linaro_logo.png", "MinWebOSVersion":"2.2.0", "DeviceCompatibility":["Pre3","TouchPad","Touchpad Go"] }
-
 
 Package: com.nizovn.openssl
 Version: 1.0.2p
@@ -36,7 +34,6 @@ Description: Shared OpenSSL libs
 Maintainer: nizovn <nizovn@gmail.com>
 Source: { "Source":"http://www.openssl.org/source/openssl-1.0.2p.tar.gz", "Feed":"WOSA Modernize", "Type":"Linux Application", "Category":"Modernize", "LastUpdated":"1534252123", "Title":"Shared OpenSSL libs", "FullDescription":"Shared OpenSSL libs", "Homepage":"https://www.openssl.org/", "Icon":"http://stacks.webosarchive.org/feeds/modernize/ipkgs/assets/icons/openssl_icon.png", "MinWebOSVersion":"2.2.0", "DeviceCompatibility":["Pre3","TouchPad","Touchpad Go"] }
 
-
 Package: com.nizovn.qt5qpaplugins
 Version: 1.0.3
 Depends: com.nizovn.glibc
@@ -48,7 +45,6 @@ Filename: com.nizovn.qt5qpaplugins_1.0.3_armv7.ipk
 Description: webOS Qt5 QPA Plugins
 Maintainer: nizovn <nizovn@gmail.com>
 Source: { "Feed":"WOSA Modernize", "Type":"Linux Application", "Category":"Modernize", "LastUpdated":"1579448389", "Title":"webOS Qt5 QPA Plugins", "FullDescription":"webOS Qt5 QPA Plugins<br>Changelog:<br><table> <tr><td valign=top>1.0.3:</td> <td>Add integration with webOS clipboard<br> Use sym key as ctrl on phones, back gestures as esc, unicode handling</td></tr> <tr><td valign=top>1.0.2:</td> <td>Upgrade Qt to 5.9.7; Add screen rotation support.</td></tr> <tr><td valign=top>1.0.1:</td> <td>Upgrade Qt to 5.9.5</td></tr> <tr><td valign=top>1.0.0:</td> <td>First public release</td></tr> </table>", "Homepage":"https://gitlab.com/nizovn/qt5-qpa-webos-plugin", "Icon":"http://stacks.webosarchive.org/feeds/modernize/ipkgs/assets/icons/qt5_64x64.png", "License":"LGPL v3 Open Source", "MinWebOSVersion":"2.2.0", "DeviceCompatibility":["Pre3","TouchPad","Touchpad Go"] }
-
 
 Package: com.nizovn.qt5sdk
 Version: 1.0.2
@@ -62,7 +58,6 @@ Description: Qt5 webOS SDK
 Maintainer: nizovn <nizovn@gmail.com>
 Source: { "Feed":"WOSA Modernize", "Type":"OS Application", "Category":"Modernize", "LastUpdated":"1581758044", "Title":"Qt5 webOS SDK", "FullDescription":"This is a webOS package that replaces jailer with wrapper, which processes jailer\'s arguments and provides support for new \'qt5\' jail type.<br><br>Changelog:<br><table> <tr><td valign=top>1.0.2:</td> <td>Allow system-wide clipboard</td></tr> <tr><td valign=top>1.0.1:</td> <td>Enable QQC2 popup menus in qtwebengine by default</td></tr> <tr><td valign=top>1.0.0:</td> <td>First public release</td></tr> </table>", "Homepage":"https://gitlab.com/nizovn/qt5-webos-sdk", "Icon":"http://stacks.webosarchive.org/feeds/modernize/ipkgs/assets/icons/qt5_64x64.png", "License":"LGPL v3 Open Source", "MinWebOSVersion":"2.2.0", "DeviceCompatibility":["Pre3","TouchPad","Touchpad Go"] }
 
-
 Package: com.nizovn.qt5
 Version: 5.9.7-0
 Depends: com.nizovn.glibc, com.nizovn.qt5qpaplugins, com.nizovn.openssl, com.nizovn.cacert
@@ -74,7 +69,6 @@ Filename: com.nizovn.qt5_5.9.7-0_armv7.ipk
 Description: Qt5 framework libraries
 Maintainer: nizovn <nizovn@gmail.com>
 Source: { "Feed":"WOSA Modernize", "Type":"Linux Application", "Category":"Modernize", "LastUpdated":"1541010844", "Title":"Qt5 framework libraries", "FullDescription":"Cross-platform application development framework.<br><br>Changelog:<br>5.9.7-0: Upstream upgrade; Fixed broken native fonts.<br> 5.9.5-0: Upstream upgrade<br> 5.9.1-0: First public release", "Homepage":"https://www.qt.io/", "Icon":"http://stacks.webosarchive.org/feeds/modernize/ipkgs/assets/icons/qt5_64x64.png", "License":"LGPL v3 Open Source", "MinWebOSVersion":"2.2.0", "DeviceCompatibility":["Pre3","TouchPad","Touchpad Go"] }
-
 
 Package: com.nizovn.qtwebbrowser
 Version: 1.0.2
@@ -88,7 +82,6 @@ Description: Qt WebBrowser
 Maintainer: nizovn <nizovn@gmail.com>
 Source: { "Feed":"WOSA Modernize", "Type":"Application", "Category":"Modernize", "LastUpdated":"1584293298", "Title":"Qt WebBrowser", "FullDescription":"The Qt WebBrowser is a browser for embedded devices developed using the capabilities of Qt and Qt WebEngine. Using recent Chromium, it features up-to-date HTML technologies behind a minimal but slick touch-friendly user interface written in Qt Quick.<br> All basic browser features are supported: You can search for text (both in history and via Google). You can bookmark pages, navigate in the page history, and open multiple pages concurrently. Depending on the codecs available, full-screen video and audio playback should also just work. You can also enable a private browser mode that leaves no traces after the browser is closed.<br><br>Changelog:<br><table> <tr><td valign=top>1.0.2:</td> <td>Downloading support<br>Android User Agent for small screens (mobile view)</td></tr> <tr><td valign=top>1.0.1:</td> <td>Enable automatic screen rotation<br>Mimic webOS stock browser context menus</td></tr> <tr><td valign=top>1.0.0:</td> <td>Initial version</td></tr> </table>", "Homepage":"https://gitlab.com/nizovn/qtwebbrowser", "Icon":"http://stacks.webosarchive.org/feeds/modernize/ipkgs/assets/icons/qtwebbrowser_icon.png", "Screenshots":[ "http://stacks.webosarchive.org/feeds/modernize/ipkgs/assets/screenshots/qtwebbrowser_screenshot.png" ], "License":"GPL v3 Open Source", "MinWebOSVersion":"2.2.0", "DeviceCompatibility":["Pre3","TouchPad","Touchpad Go"] }
 
-
 Package: com.nizovn.qupzilla
 Version: 2.3.0
 Depends: com.nizovn.qt5sdk
@@ -100,7 +93,6 @@ Filename: com.nizovn.qupzilla_2.3.0_all.ipk
 Description: QupZilla Web Browser
 Maintainer: nizovn <nizovn@gmail.com>
 Source: { "Feed":"WOSA Modernize", "Type":"Application", "Category":"Modernize", "LastUpdated":"1766867595", "Title":"QupZilla Web Browser", "FullDescription":"QupZilla is a new and very fast QtWebEngine browser. It aims to be a lightweight web browser available through all major platforms. This project has been originally started only for educational purposes. But from its start, QupZilla has grown into a feature-rich browser.<br> QupZilla has all standard functions you expect from a web browser. It includes bookmarks, history (both also in sidebar) and tabs. Above that, it has by default enabled blocking ads with a built-in AdBlock plugin.<br> <br> <b>Note</b>: starting from 2.2.6-1 version the application stopped skipping jail for gaining root rights. So if you are upgrading from an earlier version, you must execute<br> <tt>jailer -D -N -i com.nizovn.qupzilla</tt><br> for new version to work (the command should clean leftovers of previous root jailer configuration).<br><br>Changelog:<br>2.3.0: Add reader mode, strip dead features, resolve crashes.<br>2.2.6-1: Switch to qt5sdk instead of skipping jail<br> 2.2.6-0: Upstream upgrade<br> 2.1.2-2: Split into separate packages, first Preware release, added support for context menus on long tap, added close button to window frames<br> 2.1.2-1: Experimental phone support, enabled support for plugins/proprietary-codecs<br> 2.1.2-0: Initial version", "Homepage":"https://gitlab.com/nizovn/qupzilla", "Icon":"http://stacks.webosarchive.org/feeds/modernize/ipkgs/assets/icons/qupzilla_icon.png", "Screenshots":[ "http://stacks.webosarchive.org/feeds/modernize/ipkgs/assets/screenshots/qupzilla_screenshot.png" ], "License":"GPL v3 Open Source", "MinWebOSVersion":"3.0.0", "DeviceCompatibility":["TouchPad","Touchpad Go"] }
-
 
 Package: com.nizovn.squid
 Version: 4.8-0
@@ -114,7 +106,6 @@ Description: Squid SSL Bump
 Maintainer: nizovn <nizovn@gmail.com>
 Source: { "Source":"http://www.squid-cache.org/Versions/v4/squid-4.8.tar.gz", "Feed":"WOSA Modernize", "Type":"Application", "Category":"Modernize", "LastUpdated":"1562703619", "Title":"Squid SSL Bump", "FullDescription":"Squid Web Proxy allows bumping insecure SSL connections when required in a sense providing TLS 1.2 support to webOS.<br> This is done transparently by intercepting webOS connections, decrypting them, and then encrypting using higher protocol. Squid certificate should be installed in webOS certificate manager to get rid of validation errors.<br> The proxy forwarding must be enabled by any suitable webOS proxy application, e.g. ProxySwitch.<br><br>Changelog:<br><table> <tr><td valign=top>4.8-0:</td> <td>Initial version</td></tr> </table>", "Homepage":"http://www.squid-cache.org", "Icon":"http://stacks.webosarchive.org/feeds/modernize/ipkgs/assets/icons/squid_icon.png", "Screenshots":[ "http://stacks.webosarchive.org/feeds/modernize/ipkgs/assets/screenshots/squid_screenshot.png" ], "License":"GPL v2 Open Source", "MinWebOSVersion":"1.3.5", "DeviceCompatibility":["Pre3","TouchPad","Touchpad Go"] }
 
-
 Package: org.webosarchive.vlcplayer
 Version: 1.0.0
 Depends: com.nizovn.qt5sdk
@@ -126,7 +117,6 @@ Filename: org.webosarchive.vlcplayer_1.0.0_all.ipk
 Description: VLC Player
 Maintainer: webOS Archive <admin@webosarchive.org>
 Source: { "Feed":"WOSA Modernize", "Type":"Application", "Category":"Modernize", "LastUpdated":"1766867348", "Title":"VLC Player", "FullDescription":"", "Homepage":"http://www.webosarchive.org", "Icon":"http://stacks.webosarchive.org/feeds/modernize/ipkgs/assets/icons/vlc-icon.png", "Screenshots":[ "http://stacks.webosarchive.org/feeds/modernize/ipkgs/assets/screenshots/vlc-screenshot.png" ], "License":"LGPL", "MinWebOSVersion":"3.0.0", "DeviceCompatibility":["TouchPad","Touchpad Go"] }
-
 
 Package: org.webosinternals.dbus
 Version: 1.4.16-3
@@ -140,4 +130,136 @@ Description: D-Bus message bus system
 Maintainer: WebOS Internals <support@webos-internals.org>
 Source: { "Feed":"WOSA Modernize", "Type":"Linux Application", "Category":"Modernize", "LastUpdated":"1735327200", "Title":"D-Bus message bus system", "FullDescription":"D-Bus is a message bus system, a simple way for applications to talk to one another. In addition to interprocess communication, D-Bus helps coordinate process lifecycle.", "Homepage":"https://www.freedesktop.org/wiki/Software/dbus/", "MinWebOSVersion":"1.3.5", "DeviceCompatibility":["Pre3","TouchPad","Touchpad Go"] }
 
+Package: com.palm.rootcertsupdate
+Version: 1.0-5
+Depends: 
+Section: Infrastructure
+Architecture: all
+MD5Sum: 7276c41de3c55688d0fe904446bf1e4a
+Size: 395426
+Filename: com.palm_.rootcertsupdate_1.0-5_all.ipk
+Description: RootCertsUpdate (Updated 2025-12-28 with Mozilla CA bundle from 2025-12-02, fixed postinst)
+Maintainer: Herrie (https://github.com/herrie82)
+Source: 
+
+Package: org.webosinternals.browser-tls13
+Version: 1.1.1
+Depends: com.palm.rootcertsupdate
+Section: Libraries
+Architecture: armv7
+MD5Sum: 0d49621d1c7bbb897e45adc73fee9b46
+Size: 1945498
+Filename: org.webosinternals.browser-tls13_1.1.1_armv7.ipk
+Description: Modern TLS 1.2/1.3 for the stock webOS TouchPad browser
+Maintainer: WebOS Internals <support@webos-internals.org>
+Source: { "Type":"Application", "Feed":"WebOS Internals", "Category":"System", "Title":"Browser TLS 1.3", "FullDescription":"Adds a process-private OpenSSL 1.1.1w + curl(zlib) under /usr/lib/ssl11 and points the stock BrowserServer at it via RPATH, so the 2011 browser can reach modern TLS 1.2/1.3 sites. Requires a current /etc/ssl/certs/ca-certificates.crt (Mozilla ca-certificates).", "License":"OpenSSL/curl" }
+
+Package: org.webosinternals.curl-tls13
+Version: 1.0.1
+Depends: org.webosinternals.browser-tls13
+Section: System
+Architecture: armv7
+MD5Sum: a8d20f45ef6251545f02d7e23b709d7c
+Size: 1994870
+Filename: org.webosinternals.curl-tls13_1.0.1_armv7.ipk
+Description: Modern command-line curl (7.88.1, TLS 1.2/1.3) for the webOS TouchPad
+Maintainer: WebOS Internals <support@webos-internals.org>
+Source: { "Type":"Application", "Feed":"WebOS Internals", "Category":"System", "Title":"curl TLS 1.3", "FullDescription":"curl 7.88.1 (OpenSSL 1.1.1w + zlib) under /usr/lib/curl11, installed as /usr/bin/curl11 AND /usr/bin/curl (stock 0.9.8 backed up to /usr/bin/curl.0.9.8-orig, restored on uninstall). Wrapper defaults the CA bundle to /etc/ssl/certs/ca-certificates.crt.", "License":"OpenSSL/curl" }
+
+Package: org.webosinternals.luna-tls13
+Version: 1.0.0
+Depends: org.webosinternals.browser-tls13
+Section: System
+Architecture: armv7
+MD5Sum: 0b3a382e156d13244fb71e8a124d4ff2
+Size: 1992
+Filename: org.webosinternals.luna-tls13_1.0.0_armv7.ipk
+Description: Modern TLS 1.2/1.3 for webOS apps (Mojo/Enyo WebKit)
+Maintainer: WebOS Internals <support@webos-internals.org>
+Source: { "Type":"Application", "Feed":"WebOS Internals", "Category":"System", "Title":"Luna TLS 1.3", "FullDescription":"Routes the app WebKit host (LunaSysMgr/WebAppMgr) through the OpenSSL 1.1.1w stack under /usr/lib/ssl11 so in-app HTTPS (Mojo/Enyo XHR, enyo.WebService) negotiates TLS 1.2/1.3. REQUIRES org.webosinternals.browser-tls13 (provides /usr/lib/ssl11). Edits the LunaSysMgr upstart launcher; REBOOT after install. Recovery: novacomd survives a UI failure -- restore /var/luna/LunaSysMgr.tls13-orig to /etc/event.d/LunaSysMgr and reboot.", "License":"OpenSSL/curl" }
+
+Package: org.webosinternals.mail-tls13
+Version: 1.3.1
+Depends: org.webosinternals.browser-tls13
+Section: System
+Architecture: armv7
+MD5Sum: c8cc303d0f6c506c204013da2dce33f9
+Size: 235162
+Filename: org.webosinternals.mail-tls13_1.3.1_armv7.ipk
+Description: Modern TLS 1.2/1.3 for the webOS mail client (EAS/IMAP/POP/SMTP)
+Maintainer: WebOS Internals <support@webos-internals.org>
+Source: { "Type":"Application", "Feed":"WebOS Internals", "Category":"System", "Title":"Mail TLS 1.3", "FullDescription":"Routes the native mail transports (mojomail-eas/imap/pop/smtp) through a purpose-built libcurl (compiled against OpenSSL 1.1.1w) under /usr/lib/ssl11mail, so the stock Email app can sync Exchange ActiveSync/IMAP/POP/SMTP accounts on modern TLS 1.2/1.3 servers (Zoho, Gmail, etc.). Patches the four D-Bus service launchers (backups in /var/luna). REQUIRES org.webosinternals.browser-tls13 (provides /usr/lib/ssl11) and a current /etc/ssl/certs/ca-certificates.crt. No reboot needed.", "License":"OpenSSL/curl" }
+
+Package: org.webosinternals.ntpdate-sync
+Version: 2.0.1
+Depends: org.webosinternals.browser-tls13
+Section: System
+Architecture: armv7
+MD5Sum: aa6a610b2c6f782419de4272835104b6
+Size: 2346
+Filename: org.webosinternals.ntpdate-sync_2.0.1_armv7.ipk
+Description: NTP clock sync for webOS TouchPad
+Maintainer: WebOS Internals <support@webos-internals.org>
+Source: { "Type":"Application", "Feed":"WebOS Internals", "Category":"System", "Title":"NTP Clock Sync", "FullDescription":"webOS time sync targets dead palm.com servers; this installs an upstart job that syncs from public NTP (retry-until-success + IP fallbacks) at boot and every 6h, fixing TLS cert validity windows.", "License":"MIT" }
+
+Package: org.webosinternals.mojomail-imap-tagfix
+Version: 1.0.0
+Depends: org.webosinternals.mail-tls13
+Section: System
+Architecture: armv7
+MD5Sum: 11acd1774d503a8053f3a781e017a7af
+Size: 2390
+Filename: org.webosinternals.mojomail-imap-tagfix_1.0.0_armv7.ipk
+Description: Patch mojomail-imap's IMAP command tag (~A -> AA) for strict modern servers
+Maintainer: WebOS Internals <support@webos-internals.org>
+Source: { "Type":"Application", "Feed":"WebOS Internals", "Category":"System", "Title":"Mojomail IMAP Tag Fix", "FullDescription":"Optional, standalone one-byte patch of /usr/bin/mojomail-imap: changes its hard-coded IMAP command tag prefix from ~A to AA. mojomail tags IMAP commands ~A1, ~A2, ...; some strict modern servers (e.g. Fastmail) reject a tilde in the tag with an untagged BAD response, which the stock client can never match to its request, so IMAP account validation hangs and fails (error 3099). AA1.. is accepted by every server. Independent of the TLS packages -- take it or leave it. md5-guarded to the stock webOS 3.0.5 binary, backed up to /var/luna, restored on removal. Useful together with org.webosinternals.mail-tls13 (which provides modern TLS for the mail transports).", "License":"Public Domain" }
+
+Package: com.palm.app.findapps
+Version: 3.0.23300
+Depends: 
+Section: misc
+Architecture: all
+MD5Sum: 8f58ddae42d33c7232a80b4f6fe7f969
+Size: 2580022
+Filename: com.palm.app.findapps_3.0.23300_all.ipk
+Description: This is a webOS application.
+Maintainer: N/A <nobody@example.com>
+Source: { "Type":"Application", "Feed":"WOSA Modernize", "Category":"Modernize", "Title":"HP App Catalog (webOS 2.x Phones)", "FullDescription":"Updated HP App Catalog (findapps) client for webOS 2.x phones. Installable on webOS 2.2.4 and higher within the 2.x series.", "MinWebOSVersion":"2.2.4", "MaxWebOSVersion":"2.9.9" }
+
+Package: com.palm.app.enyo-findapps
+Version: 6.0.2900
+Depends: 
+Section: misc
+Architecture: all
+MD5Sum: 805100ac66b6ff9cb183c6751ad52525
+Size: 14904938
+Filename: com.palm.app.enyo-findapps_6.0.2900_all.ipk
+Description: This is a webOS application.
+Maintainer: N/A <nobody@example.com>
+Source: { "Type":"Application", "Feed":"WOSA Modernize", "Category":"Modernize", "Title":"HP App Catalog (TouchPad)", "FullDescription":"Updated Enyo-based HP App Catalog (enyo-findapps) for the webOS 3.0.x TouchPad and higher.", "MinWebOSVersion":"3.0.0" }
+
+Package: org.webosce.luna-update
+Version: 3.1.0
+Depends: org.webosinternals.browser-tls13, org.webosinternals.curl-tls13, org.webosinternals.luna-tls13, org.webosinternals.mail-tls13, com.palm.app.enyo-findapps, org.webosinternals.mojomail-imap-tagfix, com.palm.rootcertsupdate, com.nizovn.qupzilla
+Suggests: org.webosinternals.tweaks
+Section: System
+Architecture: armv7
+MD5Sum: 12889c64ccb557bdb2b78eecb335b1c0
+Size: 1664446
+Filename: org.webosce.luna-update_3.1.0_armv7.ipk
+Description: webOS CE 3.1.0 (version string + LunaCE launcher)
+Maintainer: webOS CE
+Source: { "Type":"Application", "Feed":"WOSA Modernize", "Category":"Modernize", "Title":"webOS CE 3.1.0", "FullDescription":"Top of the webOS CE 3.1.0 stack. Sets the OS version string to 'webOS CE 3.1.0' and installs the community LunaCE launcher (custom LunaSysMgr + Tweaks presets). Pulls in the full modernization chain: all TLS 1.2/1.3 updates, the Enyo App Catalog, the mojomail IMAP fix, updated root certificates, and the QupZilla browser. Stock files are backed up and restored on removal.<br>Suggested (optional, not required): install Tweaks from the WebOS Internals feed for a UI to toggle the LunaCE tweaks. The update does not require it and installs fine if that feed is unavailable.", "MinWebOSVersion":"3.0.0", "DeviceCompatibility":["TouchPad","Touchpad Go"], "PostInstallFlags":"RestartDevice", "PostUpdateFlags":"RestartDevice", "PostRemoveFlags":"RestartDevice" }
+
+Package: org.webosinternals.preware
+Version: 1.9.17
+Depends: 
+Section: System Utilities
+Architecture: all
+MD5Sum: 9b8ddbaf1f6036f2daee3fc9f91ab2d8
+Size: 383502
+Filename: org.webosinternals.preware_1.9.17_arm.ipk
+Description: Preware homebrew package manager
+Maintainer: N/A <nobody@example.com>
+Source: { "Type":"Application", "Feed":"WOSA Modernize", "Category":"Modernize", "Title":"Preware", "FullDescription":"Preware, the webOS homebrew package manager (1.9.17). This build adds and enables the webOS Archive Modernize feed (TLS 1.2/1.3, root certificates, QupZilla, webOS CE) in the default feed set.", "PostInstallFlags":"RestartLuna", "PostUpdateFlags":"RestartLuna" }
 
