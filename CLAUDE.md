@@ -2,6 +2,24 @@
 
 Guidance + hard-won context for this repo. Read this first when resuming.
 
+## Current state / next steps (resume here)
+
+The feed (23 pkgs) is built, committed, and live. A freshly-Doctored 3.0.x TouchPad can:
+enable Dev Mode → WOSQI-install **Preware 1.9.17** (in the feed; carries the modernize feed in
+its postinst) → Update Feeds → install **`org.webosarchive.tls-updates`** (the recommended one-tap
+"TLS 1.3 Updates" bundle: SSL/TLS stack + root certs + mail/mojomail fix + Help redirect + Enyo
+App Catalog; **no** QupZilla/LunaCE). Help app + content (help.webosarchive.org) work end-to-end.
+
+**Open / TODO:**
+- **Deploy current `ipkgs/` to the server** if not already (rsync `--delete`); push any local commits.
+- **`~/Projects/preware`** (Preware 1.9.17 source: version bump, http modernize feed, injected
+  control.tar.gz postinst) is still **uncommitted** by the user's instruction — commit/push when ready.
+- **OTA / `swupdate-redirect`** held in `staging/` — needs the UpdateDaemon carrier/domain binary
+  patch (see `staging/swupdate-redirect-FINDINGS.md`) before the OTA-in-a-feed goal is real.
+- **`webOS CE 3.1.0` / `luna-update`** held in `staging/` — the LunaCE LunaSysMgr swap must become
+  its own opt-in, tested-standalone package (it bricked a device combined with luna-tls13). The
+  tls-updates bundle is the safe stand-in for now.
+
 ## What this is
 
 A **Preware feed** ("WOSA Modernize" / `modernize`) of `.ipk` packages that modernize
@@ -154,6 +172,31 @@ On a fresh Doctor: enable Dev Mode → WOSQI-install Preware 1.9.17 → its post
 `modernize.conf` → Update Feeds → patches appear. **Verify** `/media/cryptofs/apps/etc/ipkg/
 modernize.conf` exists after install (the one spot that depends on the install hook running).
 The `~/Projects/preware` source edits are still uncommitted per the user's instruction.
+
+## Help content server (`help.webosarchive.org`) — separate repo `~/Projects/help.palm.com`
+
+`org.webosarchive.help-redirect` only points the Help app at `help.webosarchive.org`; the
+*content* is mirrored palm.com help, served from that repo (committed + deployed by the user;
+on Cloudflare). The mirror had absolute palm.com/dev URLs baked in. We rewrote them to the
+serving host, **anchored to `//host` so subdomains aren't corrupted** (BSD macOS, batch xargs to
+avoid arg limits):
+```
+grep -rIl --exclude-dir=.git '//<host>' . | tr '\n' '\0' \
+  | xargs -0 -n 300 sed -i '' 's#//<host>#//help.webosarchive.org#g'
+```
+Rewrote (all fetched-resource hosts → `help.webosarchive.org`): `help.palm.com` (images/TOC/
+articles), `ws-dev.help.palm.com` (article CSS, `/css/*`), `downloads.help.webosarchive.org`
+(videos `/devicehelp/*.mp4`). **Preserved** (not re-hosted, not content): `stage-help.palm.com`
+(chat), `dev-help.palm.com`, `kb.palm.com`, `www.palm.com`, `developer.palm.com`, and the bare
+Omniture `s.prop30="help.palm.com"` analytics labels. The app fetches `.json` catalogs AND
+article `.html`; `index.html`→`index.json` is auto-rewritten by the app, so mirror `.json` must
+exist. Videos need byte-range support — Cloudflare returns `206`, good.
+
+**Cache gotcha (cost us an hour):** after deploying a content fix, the Enyo Help app kept replaying
+the OLD cached URLs (videos 404'd against stale hosts) even though the server was correct. webOS
+caches Enyo apps + their fetched content hard. **A full reboot cleared it.** When verifying any
+content change on-device, reboot (or at least relaunch→Luna restart) before concluding it's broken.
+Consider short `Cache-Control` on the help `*.json` at Cloudflare while iterating.
 
 ## Conventions
 - Namespaces are mixed: `com.palm.*` (stock), `org.webosinternals.*` (TLS chain), `com.nizovn.*`,
