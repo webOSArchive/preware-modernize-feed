@@ -140,7 +140,7 @@ Size: 395426
 Filename: com.palm_.rootcertsupdate_1.0-5_all.ipk
 Description: RootCertsUpdate (Updated 2025-12-28 with Mozilla CA bundle from 2025-12-02, fixed postinst)
 Maintainer: Herrie (https://github.com/herrie82)
-Source: { "Type":"Application", "Feed":"WOSA Modernize", "Category":"Modernize", "Title":"Root Certificates Update", "FullDescription":"Updated Mozilla CA root certificate bundle (ca-certificates.crt) for modern TLS certificate validation. Required by the TLS 1.2/1.3 packages.", "Icon":"http://stacks.webosarchive.org/feeds/modernize/ipkgs/assets/icons/openssl_icon.png" }
+Source: { "LastUpdated":"1782744397", "Type":"Application", "Feed":"WOSA Modernize", "Category":"Modernize", "Title":"Root Certificates Update", "FullDescription":"Updated Mozilla CA root certificate bundle (ca-certificates.crt) for modern TLS certificate validation. Required by the TLS 1.2/1.3 packages.", "Icon":"http://stacks.webosarchive.org/feeds/modernize/ipkgs/assets/icons/openssl_icon.png" }
 
 Package: org.webosinternals.browser-tls13
 Version: 1.1.1
@@ -152,7 +152,7 @@ Size: 1945498
 Filename: org.webosinternals.browser-tls13_1.1.1_armv7.ipk
 Description: Modern TLS 1.2/1.3 for the stock webOS TouchPad browser
 Maintainer: WebOS Internals <support@webos-internals.org>
-Source: { "Type":"Application", "Feed":"WOSA Modernize", "Category":"Modernize", "Title":"Browser TLS 1.3", "FullDescription":"Adds a process-private OpenSSL 1.1.1w + curl(zlib) under /usr/lib/ssl11 and points the stock BrowserServer at it via RPATH, so the 2011 browser can reach modern TLS 1.2/1.3 sites. Requires a current /etc/ssl/certs/ca-certificates.crt (Mozilla ca-certificates).", "License":"OpenSSL/curl", "Icon":"http://stacks.webosarchive.org/feeds/modernize/ipkgs/assets/icons/openssl_icon.png" }
+Source: { "LastUpdated":"1782744397", "Type":"Application", "Feed":"WOSA Modernize", "Category":"Modernize", "Title":"Browser TLS 1.3", "FullDescription":"Adds a process-private OpenSSL 1.1.1w + curl(zlib) under /usr/lib/ssl11 and points the stock BrowserServer at it via RPATH, so the 2011 browser can reach modern TLS 1.2/1.3 sites. Requires a current /etc/ssl/certs/ca-certificates.crt (Mozilla ca-certificates).", "License":"OpenSSL/curl", "Icon":"http://stacks.webosarchive.org/feeds/modernize/ipkgs/assets/icons/openssl_icon.png" }
 
 Package: org.webosinternals.curl-tls13
 Version: 1.0.1
@@ -164,7 +164,7 @@ Size: 1994870
 Filename: org.webosinternals.curl-tls13_1.0.1_armv7.ipk
 Description: Modern command-line curl (7.88.1, TLS 1.2/1.3) for the webOS TouchPad
 Maintainer: WebOS Internals <support@webos-internals.org>
-Source: { "Type":"Application", "Feed":"WOSA Modernize", "Category":"Modernize", "Title":"curl TLS 1.3", "FullDescription":"This enables Synergy (and other services) to access the modern Internet.<br>curl 7.88.1 (OpenSSL 1.1.1w + zlib) under /usr/lib/curl11, installed as /usr/bin/curl11 AND /usr/bin/curl<br>Stock curl 0.9.8 backed up to /usr/bin/curl.0.9.8-orig, restored on uninstall. Wrapper defaults the CA bundle to /etc/ssl/certs/ca-certificates.crt.", "License":"OpenSSL/curl", "Icon":"http://stacks.webosarchive.org/feeds/modernize/ipkgs/assets/icons/openssl_icon.png" }
+Source: { "LastUpdated":"1782744397", "Type":"Application", "Feed":"WOSA Modernize", "Category":"Modernize", "Title":"curl TLS 1.3", "FullDescription":"This enables Synergy (and other services) to access the modern Internet.<br>curl 7.88.1 (OpenSSL 1.1.1w + zlib) under /usr/lib/curl11, installed as /usr/bin/curl11 AND /usr/bin/curl<br>Stock curl 0.9.8 backed up to /usr/bin/curl.0.9.8-orig, restored on uninstall. Wrapper defaults the CA bundle to /etc/ssl/certs/ca-certificates.crt.", "License":"OpenSSL/curl", "Icon":"http://stacks.webosarchive.org/feeds/modernize/ipkgs/assets/icons/openssl_icon.png" }
 
 Package: org.webosinternals.luna-tls13
 Version: 1.0.0
@@ -176,7 +176,7 @@ Size: 1992
 Filename: org.webosinternals.luna-tls13_1.0.0_armv7.ipk
 Description: Modern TLS 1.2/1.3 for webOS apps (Mojo/Enyo WebKit)
 Maintainer: WebOS Internals <support@webos-internals.org>
-Source: { "Type":"Application", "Feed":"WOSA Modernize", "Category":"Modernize", "Title":"Luna TLS 1.3", "FullDescription":"Enables webOS apps to access the modern Internet, by routing the app WebKit host (LunaSysMgr/WebAppMgr) through the OpenSSL 1.1.1w stack under /usr/lib/ssl11 so in-app HTTPS (Mojo/Enyo XHR, enyo.WebService) negotiates TLS 1.2/1.3. REQUIRES org.webosinternals.browser-tls13 (provides /usr/lib/ssl11). Edits the LunaSysMgr upstart launcher; REBOOT after install. Recovery: novacomd survives a UI failure -- restore /var/luna/LunaSysMgr.tls13-orig to /etc/event.d/LunaSysMgr and reboot.", "License":"OpenSSL/curl", "Icon":"http://stacks.webosarchive.org/feeds/modernize/ipkgs/assets/icons/openssl_icon.png" }
+Source: { "LastUpdated":"1782744397", "Type":"Application", "Feed":"WOSA Modernize", "Category":"Modernize", "Title":"Luna TLS 1.3", "FullDescription":"Enables webOS apps to access the modern Internet, by routing the app WebKit host (LunaSysMgr/WebAppMgr) through the OpenSSL 1.1.1w stack under /usr/lib/ssl11 so in-app HTTPS (Mojo/Enyo XHR, enyo.WebService) negotiates TLS 1.2/1.3. REQUIRES org.webosinternals.browser-tls13 (provides /usr/lib/ssl11). Edits the LunaSysMgr upstart launcher; REBOOT after install. Recovery: novacomd survives a UI failure -- restore /var/luna/LunaSysMgr.tls13-orig to /etc/event.d/LunaSysMgr and reboot.", "License":"OpenSSL/curl", "Icon":"http://stacks.webosarchive.org/feeds/modernize/ipkgs/assets/icons/openssl_icon.png" }
 
 Package: org.webosinternals.mail-tls13
 Version: 1.3.1
@@ -188,7 +188,7 @@ Size: 235162
 Filename: org.webosinternals.mail-tls13_1.3.1_armv7.ipk
 Description: Modern TLS 1.2/1.3 for the webOS mail client (EAS/IMAP/POP/SMTP)
 Maintainer: WebOS Internals <support@webos-internals.org>
-Source: { "Type":"Application", "Feed":"WOSA Modernize", "Category":"Modernize", "Title":"Mail TLS 1.3", "FullDescription":"This enables the stock email app to get mail over the modern internet, by routing the native mail transports (mojomail-eas/imap/pop/smtp) through a purpose-built libcurl (compiled against OpenSSL 1.1.1w) under /usr/lib/ssl11mail, so the stock Email app can sync Exchange ActiveSync/IMAP/POP/SMTP accounts on modern TLS 1.2/1.3 servers (Zoho, Gmail, etc.). Patches the four D-Bus service launchers (backups in /var/luna). REQUIRES org.webosinternals.browser-tls13 (provides /usr/lib/ssl11) and a current /etc/ssl/certs/ca-certificates.crt. No reboot needed.", "License":"OpenSSL/curl", "Icon":"http://stacks.webosarchive.org/feeds/modernize/ipkgs/assets/icons/openssl_icon.png" }
+Source: { "LastUpdated":"1782744397", "Type":"Application", "Feed":"WOSA Modernize", "Category":"Modernize", "Title":"Mail TLS 1.3", "FullDescription":"This enables the stock email app to get mail over the modern internet, by routing the native mail transports (mojomail-eas/imap/pop/smtp) through a purpose-built libcurl (compiled against OpenSSL 1.1.1w) under /usr/lib/ssl11mail, so the stock Email app can sync Exchange ActiveSync/IMAP/POP/SMTP accounts on modern TLS 1.2/1.3 servers (Zoho, Gmail, etc.). Patches the four D-Bus service launchers (backups in /var/luna). REQUIRES org.webosinternals.browser-tls13 (provides /usr/lib/ssl11) and a current /etc/ssl/certs/ca-certificates.crt. No reboot needed.", "License":"OpenSSL/curl", "Icon":"http://stacks.webosarchive.org/feeds/modernize/ipkgs/assets/icons/openssl_icon.png" }
 
 Package: org.webosinternals.ntpdate-sync
 Version: 2.0.1
@@ -200,7 +200,7 @@ Size: 2346
 Filename: org.webosinternals.ntpdate-sync_2.0.1_armv7.ipk
 Description: NTP clock sync for webOS TouchPad
 Maintainer: WebOS Internals <support@webos-internals.org>
-Source: { "Type":"Application", "Feed":"WOSA Modernize", "Category":"Modernize", "Title":"NTP Clock Sync", "FullDescription":"webOS time sync targets dead palm.com servers; this installs an upstart job that syncs from public NTP (retry-until-success + IP fallbacks) at boot and every 6h, fixing TLS cert validity windows.", "License":"MIT", "Icon":"http://stacks.webosarchive.org/feeds/modernize/ipkgs/assets/icons/clock.png" }
+Source: { "LastUpdated":"1782744397", "Type":"Application", "Feed":"WOSA Modernize", "Category":"Modernize", "Title":"NTP Clock Sync", "FullDescription":"webOS time sync targets dead palm.com servers; this installs an upstart job that syncs from public NTP (retry-until-success + IP fallbacks) at boot and every 6h, fixing TLS cert validity windows.", "License":"MIT", "Icon":"http://stacks.webosarchive.org/feeds/modernize/ipkgs/assets/icons/clock.png" }
 
 Package: org.webosinternals.mojomail-imap-tagfix
 Version: 1.0.0
@@ -212,7 +212,7 @@ Size: 2390
 Filename: org.webosinternals.mojomail-imap-tagfix_1.0.0_armv7.ipk
 Description: Patch mojomail-imap's IMAP command tag (~A -> AA) for strict modern servers
 Maintainer: WebOS Internals <support@webos-internals.org>
-Source: { "Type":"Application", "Feed":"WOSA Modernize", "Category":"Modernize", "Title":"Mojomail IMAP Tag Fix", "FullDescription":"Optional, standalone one-byte patch of /usr/bin/mojomail-imap: changes its hard-coded IMAP command tag prefix from ~A to AA. mojomail tags IMAP commands ~A1, ~A2, ...; some strict modern servers (e.g. Fastmail) reject a tilde in the tag with an untagged BAD response, which the stock client can never match to its request, so IMAP account validation hangs and fails (error 3099). AA1.. is accepted by every server. Independent of the TLS packages -- take it or leave it. md5-guarded to the stock webOS 3.0.5 binary, backed up to /var/luna, restored on removal. Useful together with org.webosinternals.mail-tls13 (which provides modern TLS for the mail transports).", "License":"Public Domain", "Icon":"http://stacks.webosarchive.org/feeds/modernize/ipkgs/assets/icons/mail.png" }
+Source: { "LastUpdated":"1782744397", "Type":"Application", "Feed":"WOSA Modernize", "Category":"Modernize", "Title":"Mojomail IMAP Tag Fix", "FullDescription":"Optional, standalone one-byte patch of /usr/bin/mojomail-imap: changes its hard-coded IMAP command tag prefix from ~A to AA. mojomail tags IMAP commands ~A1, ~A2, ...; some strict modern servers (e.g. Fastmail) reject a tilde in the tag with an untagged BAD response, which the stock client can never match to its request, so IMAP account validation hangs and fails (error 3099). AA1.. is accepted by every server. Independent of the TLS packages -- take it or leave it. md5-guarded to the stock webOS 3.0.5 binary, backed up to /var/luna, restored on removal. Useful together with org.webosinternals.mail-tls13 (which provides modern TLS for the mail transports).", "License":"Public Domain", "Icon":"http://stacks.webosarchive.org/feeds/modernize/ipkgs/assets/icons/mail.png" }
 
 Package: com.palm.app.findapps
 Version: 3.0.23300
@@ -224,7 +224,7 @@ Size: 2580022
 Filename: com.palm.app.findapps_3.0.23300_all.ipk
 Description: This is a webOS application.
 Maintainer: N/A <nobody@example.com>
-Source: { "Type":"Application", "Feed":"WOSA Modernize", "Category":"Modernize", "Title":"HP App Catalog (webOS 2.x Phones)", "FullDescription":"Community updated HP App Catalog (findapps) client for webOS 2.x phones. Installable on webOS 2.2.4 and higher within the 2.x series.", "MinWebOSVersion":"2.2.4", "MaxWebOSVersion":"2.9.9", "Icon":"http://stacks.webosarchive.org/feeds/modernize/ipkgs/assets/icons/hp-appcatalog.png" }
+Source: { "LastUpdated":"1782744397", "Type":"Application", "Feed":"WOSA Modernize", "Category":"Modernize", "Title":"HP App Catalog (webOS 2.x Phones)", "FullDescription":"Community updated HP App Catalog (findapps) client for webOS 2.x phones. Installable on webOS 2.2.4 and higher within the 2.x series.", "MinWebOSVersion":"2.2.4", "MaxWebOSVersion":"2.9.9", "Icon":"http://stacks.webosarchive.org/feeds/modernize/ipkgs/assets/icons/hp-appcatalog.png" }
 
 Package: com.palm.app.enyo-findapps
 Version: 6.0.2900
@@ -236,7 +236,7 @@ Size: 14904938
 Filename: com.palm.app.enyo-findapps_6.0.2900_all.ipk
 Description: This is a webOS application.
 Maintainer: N/A <nobody@example.com>
-Source: { "Type":"Application", "Feed":"WOSA Modernize", "Category":"Modernize", "Title":"HP App Catalog (TouchPad)", "FullDescription":"Community updated Enyo-based HP App Catalog (enyo-findapps) for the webOS 3.0.x TouchPad and higher.", "MinWebOSVersion":"3.0.0", "Icon":"http://stacks.webosarchive.org/feeds/modernize/ipkgs/assets/icons/hp-appcatalog.png" }
+Source: { "LastUpdated":"1782744397", "Type":"Application", "Feed":"WOSA Modernize", "Category":"Modernize", "Title":"HP App Catalog (TouchPad)", "FullDescription":"Community updated Enyo-based HP App Catalog (enyo-findapps) for the webOS 3.0.x TouchPad and higher.", "MinWebOSVersion":"3.0.0", "Icon":"http://stacks.webosarchive.org/feeds/modernize/ipkgs/assets/icons/hp-appcatalog.png" }
 
 Package: org.webosce.luna-update
 Version: 3.1.0
@@ -261,5 +261,5 @@ Size: 383502
 Filename: org.webosinternals.preware_1.9.17_arm.ipk
 Description: Preware homebrew package manager
 Maintainer: N/A <nobody@example.com>
-Source: { "Type":"Application", "Feed":"WOSA Modernize", "Category":"Modernize", "Title":"Preware", "FullDescription":"Preware, the webOS homebrew package manager (1.9.17). This build adds and enables the webOS Archive Modernize feed (TLS 1.2/1.3, root certificates, QupZilla, webOS CE) in the default feed set.", "PostInstallFlags":"RestartLuna", "PostUpdateFlags":"RestartLuna", "Icon":"http://stacks.webosarchive.org/feeds/modernize/ipkgs/assets/icons/preware-icon.png" }
+Source: { "LastUpdated":"1782744397", "Type":"Application", "Feed":"WOSA Modernize", "Category":"Modernize", "Title":"Preware", "FullDescription":"Preware, the webOS homebrew package manager (1.9.17). This build adds and enables the webOS Archive Modernize feed (TLS 1.2/1.3, root certificates, QupZilla, webOS CE) in the default feed set.", "PostInstallFlags":"RestartLuna", "PostUpdateFlags":"RestartLuna", "Icon":"http://stacks.webosarchive.org/feeds/modernize/ipkgs/assets/icons/preware-icon.png" }
 
