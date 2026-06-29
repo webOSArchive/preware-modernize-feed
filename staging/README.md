@@ -17,3 +17,17 @@ Pulled pending community review of which packages the update should require.
    `ipkgs/Packages` (update the `Depends:` line if the required set changed;
    if the .ipk is rebuilt, refresh `MD5Sum`/`Size`).
 3. Regenerate `ipkgs/Packages.gz` from `ipkgs/Packages`.
+
+## org.webosce.swupdate-redirect (OTA server redirect)
+
+Repoints the OMA-DM software-update client to webOS Archive. Held because the
+DmTree URL change alone doesn't drive OTA — the daemon gates on a carrier/domain
+layer first. Full investigation in `swupdate-redirect-FINDINGS.md`.
+
+Note: `luna-update`'s stanza lists this as a dependency; both are held together
+and should be re-added (with the carrier/domain fix) as a unit.
+
+### To re-add to the feed
+1. `git mv staging/org.webosce.swupdate-redirect_1.0.0_all.ipk ipkgs/`
+2. Append `org.webosce.swupdate-redirect.Packages-stanza.txt` to `ipkgs/Packages`.
+3. Regenerate `ipkgs/Packages.gz`.

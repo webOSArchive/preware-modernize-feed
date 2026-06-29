@@ -250,15 +250,3 @@ Description: Preware homebrew package manager
 Maintainer: N/A <nobody@example.com>
 Source: { "LastUpdated":"1782744397", "Type":"Application", "Feed":"WOSA Modernize", "Category":"Modernize", "Title":"Preware", "FullDescription":"Preware, the webOS homebrew package manager (1.9.17). This build adds and enables the webOS Archive Modernize feed (TLS 1.2/1.3, root certificates, QupZilla, webOS CE) in the default feed set.", "PostInstallFlags":"RestartLuna", "PostUpdateFlags":"RestartLuna", "Icon":"http://stacks.webosarchive.org/feeds/modernize/ipkgs/assets/icons/preware-icon.png" }
 
-Package: org.webosce.swupdate-redirect
-Version: 1.0.0
-Depends: 
-Section: System
-Architecture: all
-MD5Sum: a2fba5a103a4fe2ae591bcc448b5b6f8
-Size: 1754
-Filename: org.webosce.swupdate-redirect_1.0.0_all.ipk
-Description: Point the OS software-update (OTA) client at the webOS Archive server
-Maintainer: webOS Archive
-Source: { "Type":"Application", "Feed":"WOSA Modernize", "Category":"Modernize", "LastUpdated":"1782744397", "Title":"Update Server Redirect", "FullDescription":"Repoints the built-in System Updates (OMA-DM / OTA) client from the decommissioned Palm/HP server (ps.palmws.com, https/443) to the webOS Archive community update server at http://www.webosarchive.org/swupdateserver (http/80, to avoid the stock TLS 1.0 limitation). Patches /usr/share/omadm/DmTree.xml (template) plus the runtime /var/lib/software/DmTree.xml and its backup, then restarts UpdateDaemon. Stock files are backed up and restored on removal.", "MinWebOSVersion":"1.3.5", "DeviceCompatibility":["Pre3","TouchPad","Touchpad Go"], "Icon":"http://stacks.webosarchive.org/feeds/modernize/ipkgs/assets/icons/updates.png" }
-
