@@ -1,0 +1,19 @@
+These newer browsers bypass the built-in SSL and rendering engine, and let you use the web in a slightly (circa 2018) more modern way.
+
+These MUST be installed with Preware or WOSQI in the order listed. Using the SDK command line will result in borked installs and much frustration.
+
+org.webosinternals.dbus
+com.nizovn.cacert
+com.nizovn.glibc
+com.nizovn.openssl
+com.nizovn.qt5qpaplugins
+com.nizovn.qt5
+com.nizovn.qt5sdk
+
+For Pre3
+com.nizovn.qtwebbrowserpalm (Pre3)
+
+For TouchPad
+com.nizovn.qupzilla_2.3.0_all.ipk (2025 version)
+or 
+com.nizovn.qupzilla_2.2.6-1_armv7.ipk (2018 version)

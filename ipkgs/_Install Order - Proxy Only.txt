@@ -1,0 +1,9 @@
+The proxy enables older apps (including the built-in browser) to use the modern encrypted Internet. After install, you need to launch them app, generate and install a cert, then turn the proxy on.
+
+These MUST be installed with Preware or WOSQI in the order listed. Using the SDK command line will result in borked installs and much frustration.
+
+org.webosinternals.dbus (I didn't bother enabling alpha feeds, just downloaded directly via a PC)
+com.nizovn.cacert
+com.nizovn.glibc
+com.nizovn.openssl
+com.nizovn.squid_4.8-0_armv7.ipk
