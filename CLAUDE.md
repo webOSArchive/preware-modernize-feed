@@ -10,8 +10,10 @@ its postinst) → Update Feeds → install **`org.webosarchive.tls-updates`** (t
 "TLS 1.3 Updates" bundle: SSL/TLS stack + root certs + mail/mojomail fix + Help redirect + Enyo
 App Catalog; **no** QupZilla/LunaCE). Help app + content (help.webosarchive.org) work end-to-end.
 
+Latest revs (committed `59b81f0` + deployed): `browser-tls13 1.1.2`, `luna-tls13 1.1.1`
+(1.1.0 was faulty — media wedged), `tls-updates 1.0.2` (now version-floors its browser/luna deps).
+
 **Open / TODO:**
-- **Deploy current `ipkgs/` to the server** if not already (rsync `--delete`); push any local commits.
 - **`~/Projects/preware`** (Preware 1.9.17 source: version bump, http modernize feed, injected
   control.tar.gz postinst) is still **uncommitted** by the user's instruction — commit/push when ready.
 - **OTA / `swupdate-redirect`** held in `staging/` — needs the UpdateDaemon carrier/domain binary
@@ -85,8 +87,29 @@ for display). Keys that matter: `Type` (`Application`/`OS Application`/`Linux Ap
 self-consistent), pull the edited `Source`/`Description` back into the build control and rebuild
 the ipk (changes md5 → re-stanza). Editing only the index keeps ipk md5s unchanged → smaller deploy.
 
+**Offering updates (Preware update mechanics — cost us a session):**
+- **Preware compares the `Version` STRING only.** To ship an update you MUST bump the version number.
+  Rebuilding an ipk *in place at the same version* (new md5, new content) will **never** show as an
+  update — the device sees `1.0.1 == 1.0.1` and ignores it. This bit us on `tls-updates`: we changed
+  its deps but kept it `1.0.1`; fix was to bump to `1.0.2`.
+- **Replacing one package by name** (e.g. luna `1.1.0`→`1.1.1`, single stanza, higher version, old ipk
+  removed) is all you need: Preware shows it as an *update* to anyone on the old version and a fresh
+  *install* to anyone with neither. There's no feed way to offer an update "only if already installed".
+- **Version floors** (`Depends: foo (>= 1.1.2)`) are the ONLY way to make a meta package drag an
+  already-installed dep up: unversioned depends are "is any version installed?" → satisfied → no
+  upgrade. So a meta that should force new deps needs BOTH the floor AND its own version bumped
+  (see `tls-updates` 1.0.2). `(>= x)` syntax is standard opkg/Preware; validated in-repo but worth an
+  on-device sanity check since nothing else here uses it.
+- **"No update showing" debugging:** the feed is usually fine — verify first with
+  `curl http://stacks.../Packages.gz | gunzip` that the version is really > installed AND that the
+  `.gz` decompresses to `Packages` (a stale rsync'd `.gz` = Preware reads old versions). `stacks` is
+  Cloudflare but serves `Packages.gz` as `DYNAMIC` (not edge-cached). If the server is right, the
+  stale spot is the **device's** Preware feed cache → Update Feeds, else remove+re-add the feed, else
+  reboot (webOS caches hard).
+
 **Validate before commit:** 1:1 between `ipkgs/*.ipk` and index `Filename`s; every index `MD5Sum`/
-`Size` matches the actual file; all `Source` JSON parses; full dependency closure resolves.
+`Size` matches the actual file; all `Source` JSON parses; full dependency closure (incl. version
+floors) resolves.
 
 ## Deploy
 
@@ -113,21 +136,29 @@ the ipk (changes md5 → re-stanza). Editing only the index keeps ipk md5s uncha
 
 - **nizovn stack** (hand-curated stanzas): cacert, glibc, openssl, qt5*, qtwebbrowser, qupzilla,
   squid (kept for old phones, min 1.3.5), + vlcplayer, dbus.
-- **TLS 1.2/1.3 chain** (`org.webosinternals.*`, armv7): `browser-tls13`→`com.palm.rootcertsupdate`;
-  `curl-tls13`, `luna-tls13`, `mail-tls13` → browser-tls13; `mojomail-imap-tagfix` → mail-tls13;
-  `ntpdate-sync`. (These came with `Feed:"WebOS Internals"` in their control — we retagged the
-  index `Source` to `WOSA Modernize`/`Modernize` so they show in the modernize group; icon
-  `openssl_icon.png`.)
+- **TLS 1.2/1.3 chain** (`org.webosinternals.*`, armv7): `browser-tls13` (**1.1.2**)→`com.palm.rootcertsupdate`;
+  `curl-tls13` (1.0.1), `luna-tls13` (**1.1.1**), `mail-tls13` (1.3.1) → browser-tls13;
+  `mojomail-imap-tagfix` → mail-tls13; `ntpdate-sync`. (These came with `Feed:"WebOS Internals"` in
+  their control — we retagged the index `Source` to `WOSA Modernize`/`Modernize` so they show in the
+  modernize group; icon `openssl_icon.png`.) **These incoming ipks are GNU-ar** (member names end
+  `/`, `//` longname table) — macOS BSD `ar x` chokes ("File exists"); extract them with the Python
+  ar parser (`ar_members`, handles `#1/N` + `//` + plain) we reuse for the index scripts.
+  - **`luna-tls13` history:** 1.0.0 (launcher edit only) → 1.1.0 (**faulty:** HTML5 media wedged
+    after one track) → **1.1.1** adds a `/usr/bin/media-pipeline` wrapper that keeps the ssl11 stack
+    out of the media worker so streaming/local media play. Its FullDescription is synced in BOTH the
+    index stanza and the ipk's own control.
 - **App Catalog:** `com.palm.app.findapps` (phones, Min 2.2.4/Max 2.9.9, icon hp-appcatalog),
   `com.palm.app.enyo-findapps` (TouchPad, Min 3.0.0). These were stock Palm-packaged ipks with no
   `Source` — we injected one.
 - **`org.webosarchive.help-redirect`** (built + verified this session): patches `com.palm.app.help`
   `UrlManager.js` `helpUrl` (drives all content) + `HelpApp.js` palm.com domain check + device.do
   → `http://help.webosarchive.org`. Backs up `*.webosce-orig`, restores on removal, RestartLuna.
-- **`org.webosarchive.tls-updates`** ("TLS 1.3 Updates") — payload-free **meta** package. Depends:
-  rootcerts, browser/curl/luna/mail-tls13, mojomail-imap-tagfix, help-redirect, enyo-findapps.
-  Excludes QupZilla + LunaCE. `Type: OS Application`, no icon, **webOS 3.0.X only**
-  (Min 3.0.0/Max 3.0.9, TouchPad/Touchpad Go), RestartDevice. This is the recommended one-tap install.
+- **`org.webosarchive.tls-updates`** ("TLS 1.3 Updates", **1.0.2**) — payload-free **meta** package.
+  Depends: rootcerts, browser/curl/luna/mail-tls13, mojomail-imap-tagfix, help-redirect, enyo-findapps.
+  Now carries **version floors** on the two packages that get revved: `browser-tls13 (>= 1.1.2)`,
+  `luna-tls13 (>= 1.1.1)` (rest unversioned). Excludes QupZilla + LunaCE. `Type: OS Application`,
+  no icon, **webOS 3.0.X only** (Min 3.0.0/Max 3.0.9, TouchPad/Touchpad Go), RestartDevice. This is
+  the recommended one-tap install.
 
 ## Held in `staging/` (NOT in the live feed)
 
