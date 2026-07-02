@@ -35,13 +35,13 @@ Maintainer: nizovn <nizovn@gmail.com>
 Source: { "Source":"http://www.openssl.org/source/openssl-1.0.2p.tar.gz", "Feed":"WOSA Modernize", "Type":"Linux Application", "Category":"Modernize", "LastUpdated":"1534252123", "Title":"Shared OpenSSL libs", "FullDescription":"Shared OpenSSL libs", "Homepage":"https://www.openssl.org/", "Icon":"http://stacks.webosarchive.org/feeds/modernize/ipkgs/assets/icons/openssl_icon.png", "MinWebOSVersion":"2.2.0", "DeviceCompatibility":["Pre3","TouchPad","Touchpad Go"] }
 
 Package: com.nizovn.qt5qpaplugins
-Version: 1.0.3
+Version: 1.0.4
 Depends: com.nizovn.glibc
 Section: Libraries
 Architecture: armv7
-MD5Sum: c9460176c0920188b8b1857d8724f46f
-Size: 320788
-Filename: com.nizovn.qt5qpaplugins_1.0.3_armv7.ipk
+MD5Sum: f7b4d9c756caf6ef95f59c97a9145fef
+Size: 320878
+Filename: com.nizovn.qt5qpaplugins_1.0.4_armv7.ipk
 Description: webOS Qt5 QPA Plugins
 Maintainer: nizovn <nizovn@gmail.com>
 Source: { "Feed":"WOSA Modernize", "Type":"Linux Application", "Category":"Modernize", "LastUpdated":"1579448389", "Title":"webOS Qt5 QPA Plugins", "FullDescription":"webOS Qt5 QPA Plugins<br>Changelog:<br><table> <tr><td valign=top>1.0.3:</td> <td>Add integration with webOS clipboard<br> Use sym key as ctrl on phones, back gestures as esc, unicode handling</td></tr> <tr><td valign=top>1.0.2:</td> <td>Upgrade Qt to 5.9.7; Add screen rotation support.</td></tr> <tr><td valign=top>1.0.1:</td> <td>Upgrade Qt to 5.9.5</td></tr> <tr><td valign=top>1.0.0:</td> <td>First public release</td></tr> </table>", "Homepage":"https://gitlab.com/nizovn/qt5-qpa-webos-plugin", "Icon":"http://stacks.webosarchive.org/feeds/modernize/ipkgs/assets/icons/qt5_64x64.png", "License":"LGPL v3 Open Source", "MinWebOSVersion":"2.2.0", "DeviceCompatibility":["Pre3","TouchPad","Touchpad Go"] }
@@ -83,13 +83,13 @@ Maintainer: nizovn <nizovn@gmail.com>
 Source: { "Feed":"WOSA Modernize", "Type":"Application", "Category":"Modernize", "LastUpdated":"1584293298", "Title":"Qt WebBrowser", "FullDescription":"The Qt WebBrowser is a browser for embedded devices developed using the capabilities of Qt and Qt WebEngine. Using recent Chromium, it features up-to-date HTML technologies behind a minimal but slick touch-friendly user interface written in Qt Quick.<br> All basic browser features are supported: You can search for text (both in history and via Google). You can bookmark pages, navigate in the page history, and open multiple pages concurrently. Depending on the codecs available, full-screen video and audio playback should also just work. You can also enable a private browser mode that leaves no traces after the browser is closed.<br><br>Changelog:<br><table> <tr><td valign=top>1.0.2:</td> <td>Downloading support<br>Android User Agent for small screens (mobile view)</td></tr> <tr><td valign=top>1.0.1:</td> <td>Enable automatic screen rotation<br>Mimic webOS stock browser context menus</td></tr> <tr><td valign=top>1.0.0:</td> <td>Initial version</td></tr> </table>", "Homepage":"https://gitlab.com/nizovn/qtwebbrowser", "Icon":"http://stacks.webosarchive.org/feeds/modernize/ipkgs/assets/icons/qtwebbrowser_icon.png", "Screenshots":[ "http://stacks.webosarchive.org/feeds/modernize/ipkgs/assets/screenshots/qtwebbrowser_screenshot.png" ], "License":"GPL v3 Open Source", "MinWebOSVersion":"2.2.0", "DeviceCompatibility":["Pre3","TouchPad","Touchpad Go"] }
 
 Package: com.nizovn.qupzilla
-Version: 2.3.0
+Version: 2.3.1
 Depends: com.nizovn.qt5sdk
 Section: News And Internet
 Architecture: all
-MD5Sum: a9550c40fb34da6f0d71ecf34a4cf6a0
-Size: 5514684
-Filename: com.nizovn.qupzilla_2.3.0_all.ipk
+MD5Sum: 0228c34ae1050b0612fa3b79b44a9099
+Size: 5514682
+Filename: com.nizovn.qupzilla_2.3.1_all.ipk
 Description: QupZilla Web Browser
 Maintainer: nizovn <nizovn@gmail.com>
 Source: { "Feed":"WOSA Modernize", "Type":"Application", "Category":"Modernize", "LastUpdated":"1766867595", "Title":"QupZilla Web Browser", "FullDescription":"QupZilla is a new and very fast QtWebEngine browser. It aims to be a lightweight web browser available through all major platforms. This project has been originally started only for educational purposes. But from its start, QupZilla has grown into a feature-rich browser.<br> QupZilla has all standard functions you expect from a web browser. It includes bookmarks, history (both also in sidebar) and tabs. Above that, it has by default enabled blocking ads with a built-in AdBlock plugin.<br> <br> <b>Note</b>: starting from 2.2.6-1 version the application stopped skipping jail for gaining root rights. So if you are upgrading from an earlier version, you must execute<br> <tt>jailer -D -N -i com.nizovn.qupzilla</tt><br> for new version to work (the command should clean leftovers of previous root jailer configuration).<br><br>Changelog:<br>2.3.0: Add reader mode, strip dead features, resolve crashes.<br>2.2.6-1: Switch to qt5sdk instead of skipping jail<br> 2.2.6-0: Upstream upgrade<br> 2.1.2-2: Split into separate packages, first Preware release, added support for context menus on long tap, added close button to window frames<br> 2.1.2-1: Experimental phone support, enabled support for plugins/proprietary-codecs<br> 2.1.2-0: Initial version", "Homepage":"https://gitlab.com/nizovn/qupzilla", "Icon":"http://stacks.webosarchive.org/feeds/modernize/ipkgs/assets/icons/qupzilla_icon.png", "Screenshots":[ "http://stacks.webosarchive.org/feeds/modernize/ipkgs/assets/screenshots/qupzilla_screenshot.png" ], "License":"GPL v3 Open Source", "MinWebOSVersion":"3.0.0", "DeviceCompatibility":["TouchPad","Touchpad Go"] }
