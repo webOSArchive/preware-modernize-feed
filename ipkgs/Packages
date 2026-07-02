@@ -263,14 +263,14 @@ Maintainer: webOS Archive
 Source: { "Type":"Application", "Feed":"WOSA Modernize", "Category":"Modernize", "LastUpdated":"1782744397", "Title":"Help Content Redirect", "FullDescription":"Repoints the built-in Help app (com.palm.app.help) from the decommissioned help.palm.com to the webOS Archive community help server at http://help.webosarchive.org. Patches the Enyo help source (UrlManager.js base URL, plus the palm.com domain check and device.do link in HelpApp.js); all tips/clips/featured/search content derives from the base URL. Originals backed up and restored on removal. Restart Luna (or relaunch Help) to apply.", "MinWebOSVersion":"3.0.0", "DeviceCompatibility":["TouchPad","Touchpad Go"], "PostInstallFlags":"RestartLuna", "PostUpdateFlags":"RestartLuna", "Icon":"http://stacks.webosarchive.org/feeds/modernize/ipkgs/assets/icons/help.png" }
 
 Package: org.webosarchive.tls-updates
-Version: 1.0.2
-Depends: com.palm.rootcertsupdate, org.webosinternals.browser-tls13 (>= 1.1.2), org.webosinternals.curl-tls13, org.webosinternals.luna-tls13 (>= 1.1.1), org.webosinternals.mail-tls13, org.webosinternals.mojomail-imap-tagfix, org.webosarchive.help-redirect, com.palm.app.enyo-findapps
+Version: 1.0.3
+Depends: com.palm.rootcertsupdate, org.webosinternals.browser-tls13 (>= 1.1.2), org.webosinternals.ntpdate-sync, org.webosinternals.curl-tls13, org.webosinternals.luna-tls13 (>= 1.1.1), org.webosinternals.mail-tls13, org.webosinternals.mojomail-imap-tagfix, org.webosarchive.help-redirect, com.palm.app.enyo-findapps
 Section: System
 Architecture: all
-MD5Sum: 6fca51e6f77fd7e93baaa06d8ab5e312
-Size: 1432
-Filename: org.webosarchive.tls-updates_1.0.2_all.ipk
+MD5Sum: 0266e4f07817761f2950383f60657cf9
+Size: 1486
+Filename: org.webosarchive.tls-updates_1.0.3_all.ipk
 Description: TLS 1.3 Updates - SSL/TLS, root certs, App Catalog, and Help fixes
 Maintainer: webOS Archive
-Source: { "Type":"OS Application", "Feed":"WOSA Modernize", "Category":"Modernize", "LastUpdated":"1782955200", "Title":"TLS 1.3 Updates", "FullDescription":"One-tap bundle of the safe webOS Archive modernization patches. Pulls in: modern OpenSSL 1.1.1w + TLS 1.2/1.3 for the browser, command-line curl, in-app WebKit (Mojo/Enyo) and the mail client; updated Mozilla root certificates; the mojomail IMAP tag fix; the Help app redirect to help.webosarchive.org; and the Enyo App Catalog. webOS 3.0.x (TouchPad) only. A reboot is performed after install (required by the in-app TLS package).", "MinWebOSVersion":"3.0.0", "MaxWebOSVersion":"3.0.9", "DeviceCompatibility":["TouchPad","Touchpad Go"], "PostInstallFlags":"RestartDevice", "PostUpdateFlags":"RestartDevice" }
+Source: { "Type":"OS Application", "Feed":"WOSA Modernize", "Category":"Modernize", "LastUpdated":"1783041600", "Title":"TLS 1.3 Updates", "FullDescription":"One-tap bundle of the safe webOS Archive modernization patches. Pulls in: modern OpenSSL 1.1.1w + TLS 1.2/1.3 for the browser, command-line curl, in-app WebKit (Mojo/Enyo) and the mail client; updated Mozilla root certificates; NTP clock sync (so TLS certificate validity windows pass and apps work); the mojomail IMAP tag fix; the Help app redirect to help.webosarchive.org; and the Enyo App Catalog. webOS 3.0.x (TouchPad) only. A reboot is performed after install (required by the in-app TLS package).", "MinWebOSVersion":"3.0.0", "MaxWebOSVersion":"3.0.9", "DeviceCompatibility":["TouchPad","Touchpad Go"], "PostInstallFlags":"RestartDevice", "PostUpdateFlags":"RestartDevice" }
 
