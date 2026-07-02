@@ -7,11 +7,13 @@ Guidance + hard-won context for this repo. Read this first when resuming.
 The feed (23 pkgs) is built, committed, and live. A freshly-Doctored 3.0.x TouchPad can:
 enable Dev Mode → WOSQI-install **Preware 1.9.17** (in the feed; carries the modernize feed in
 its postinst) → Update Feeds → install **`org.webosarchive.tls-updates`** (the recommended one-tap
-"TLS 1.3 Updates" bundle: SSL/TLS stack + root certs + mail/mojomail fix + Help redirect + Enyo
-App Catalog; **no** QupZilla/LunaCE). Help app + content (help.webosarchive.org) work end-to-end.
+"TLS 1.3 Updates" bundle: SSL/TLS stack + root certs + NTP clock sync + mail/mojomail fix + Help
+redirect + Enyo App Catalog; **no** QupZilla/LunaCE). Help app + content (help.webosarchive.org)
+work end-to-end.
 
-Latest revs (committed `59b81f0` + deployed): `browser-tls13 1.1.2`, `luna-tls13 1.1.1`
-(1.1.0 was faulty — media wedged), `tls-updates 1.0.2` (now version-floors its browser/luna deps).
+Latest revs (committed `e6b6cae` + deployed): `browser-tls13 1.1.2`, `luna-tls13 1.1.1`
+(1.1.0 was faulty — media wedged), `tls-updates 1.0.3` (version-floors its browser/luna deps;
+now also pulls in `ntpdate-sync` — apps break when the clock is wrong, TLS cert validity checks fail).
 
 **Open / TODO:**
 - **`~/Projects/preware`** (Preware 1.9.17 source: version bump, http modernize feed, injected
@@ -153,9 +155,12 @@ floors) resolves.
 - **`org.webosarchive.help-redirect`** (built + verified this session): patches `com.palm.app.help`
   `UrlManager.js` `helpUrl` (drives all content) + `HelpApp.js` palm.com domain check + device.do
   → `http://help.webosarchive.org`. Backs up `*.webosce-orig`, restores on removal, RestartLuna.
-- **`org.webosarchive.tls-updates`** ("TLS 1.3 Updates", **1.0.2**) — payload-free **meta** package.
-  Depends: rootcerts, browser/curl/luna/mail-tls13, mojomail-imap-tagfix, help-redirect, enyo-findapps.
-  Now carries **version floors** on the two packages that get revved: `browser-tls13 (>= 1.1.2)`,
+- **`org.webosarchive.tls-updates`** ("TLS 1.3 Updates", **1.0.3**) — payload-free **meta** package.
+  Depends: rootcerts, browser-tls13, ntpdate-sync, curl/luna/mail-tls13, mojomail-imap-tagfix,
+  help-redirect, enyo-findapps. `ntpdate-sync` sits **after** browser-tls13 (it's browser's own dep,
+  so browser installs first regardless) and **before** luna — added because apps break when the
+  clock is wrong (TLS cert validity windows fail); left unversioned (new dep, nothing to drag up).
+  Carries **version floors** on the two packages that get revved: `browser-tls13 (>= 1.1.2)`,
   `luna-tls13 (>= 1.1.1)` (rest unversioned). Excludes QupZilla + LunaCE. `Type: OS Application`,
   no icon, **webOS 3.0.X only** (Min 3.0.0/Max 3.0.9, TouchPad/Touchpad Go), RestartDevice. This is
   the recommended one-tap install.
