@@ -11,9 +11,11 @@ its postinst) → Update Feeds → install **`org.webosarchive.tls-updates`** (t
 redirect + Enyo App Catalog; **no** QupZilla/LunaCE). Help app + content (help.webosarchive.org)
 work end-to-end.
 
-Latest revs (committed `e6b6cae` + deployed): `browser-tls13 1.1.2`, `luna-tls13 1.1.1`
-(1.1.0 was faulty — media wedged), `tls-updates 1.0.3` (version-floors its browser/luna deps;
-now also pulls in `ntpdate-sync` — apps break when the clock is wrong, TLS cert validity checks fail).
+Latest revs (deployed): `browser-tls13 1.1.2`, `luna-tls13 1.1.2` (1.1.0 was faulty — media wedged;
+1.1.1 added the media-pipeline wrapper; **1.1.2** adds a `/usr/sbin/setcpushares-pdk` wrapper so
+PDK apps — QupZilla, nizovn Qt5 — launch normally, incl. under LunaCE), `tls-updates 1.0.4`
+(version-floors browser `>= 1.1.2` / luna `>= 1.1.2`; also pulls in `ntpdate-sync` — apps break
+when the clock is wrong, TLS cert validity checks fail).
 
 **Open / TODO:**
 - **`~/Projects/preware`** (Preware 1.9.17 source: version bump, http modernize feed, injected
@@ -147,21 +149,25 @@ floors) resolves.
   ar parser (`ar_members`, handles `#1/N` + `//` + plain) we reuse for the index scripts.
   - **`luna-tls13` history:** 1.0.0 (launcher edit only) → 1.1.0 (**faulty:** HTML5 media wedged
     after one track) → **1.1.1** adds a `/usr/bin/media-pipeline` wrapper that keeps the ssl11 stack
-    out of the media worker so streaming/local media play. Its FullDescription is synced in BOTH the
-    index stanza and the ipk's own control.
+    out of the media worker so streaming/local media play → **1.1.2** adds a `/usr/sbin/setcpushares-pdk`
+    wrapper that keeps the ssl11 launcher env (LD_BIND_NOW, compat-shim preload) out of PDK app
+    launches, so PDK apps (QupZilla, nizovn Qt5) launch normally, incl. under LunaCE. Its
+    FullDescription is synced in BOTH the index stanza and the ipk's own control (incoming ipk ships
+    `Feed:"WebOS Internals"`/`Category:"System"`; we retag those in the index Source to `WOSA
+    Modernize`/`Modernize` + add icon/LastUpdated — ipk kept as-delivered, index curated).
 - **App Catalog:** `com.palm.app.findapps` (phones, Min 2.2.4/Max 2.9.9, icon hp-appcatalog),
   `com.palm.app.enyo-findapps` (TouchPad, Min 3.0.0). These were stock Palm-packaged ipks with no
   `Source` — we injected one.
 - **`org.webosarchive.help-redirect`** (built + verified this session): patches `com.palm.app.help`
   `UrlManager.js` `helpUrl` (drives all content) + `HelpApp.js` palm.com domain check + device.do
   → `http://help.webosarchive.org`. Backs up `*.webosce-orig`, restores on removal, RestartLuna.
-- **`org.webosarchive.tls-updates`** ("TLS 1.3 Updates", **1.0.3**) — payload-free **meta** package.
+- **`org.webosarchive.tls-updates`** ("TLS 1.3 Updates", **1.0.4**) — payload-free **meta** package.
   Depends: rootcerts, browser-tls13, ntpdate-sync, curl/luna/mail-tls13, mojomail-imap-tagfix,
   help-redirect, enyo-findapps. `ntpdate-sync` sits **after** browser-tls13 (it's browser's own dep,
   so browser installs first regardless) and **before** luna — added because apps break when the
   clock is wrong (TLS cert validity windows fail); left unversioned (new dep, nothing to drag up).
   Carries **version floors** on the two packages that get revved: `browser-tls13 (>= 1.1.2)`,
-  `luna-tls13 (>= 1.1.1)` (rest unversioned). Excludes QupZilla + LunaCE. `Type: OS Application`,
+  `luna-tls13 (>= 1.1.2)` (rest unversioned). Excludes QupZilla + LunaCE. `Type: OS Application`,
   no icon, **webOS 3.0.X only** (Min 3.0.0/Max 3.0.9, TouchPad/Touchpad Go), RestartDevice. This is
   the recommended one-tap install.
 

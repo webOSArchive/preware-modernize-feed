@@ -167,16 +167,16 @@ Maintainer: WebOS Internals <support@webos-internals.org>
 Source: { "LastUpdated":"1782744397", "Type":"Application", "Feed":"WOSA Modernize", "Category":"Modernize", "Title":"curl TLS 1.3", "FullDescription":"This enables Synergy (and other services) to access the modern Internet.<br>curl 7.88.1 (OpenSSL 1.1.1w + zlib) under /usr/lib/curl11, installed as /usr/bin/curl11 AND /usr/bin/curl<br>Stock curl 0.9.8 backed up to /usr/bin/curl.0.9.8-orig, restored on uninstall. Wrapper defaults the CA bundle to /etc/ssl/certs/ca-certificates.crt.", "License":"OpenSSL/curl", "Icon":"http://stacks.webosarchive.org/feeds/modernize/ipkgs/assets/icons/openssl_icon.png" }
 
 Package: org.webosinternals.luna-tls13
-Version: 1.1.1
+Version: 1.1.2
 Depends: org.webosinternals.browser-tls13
 Section: System
 Architecture: armv7
-MD5Sum: 5ffe7320f4da4c7490b11322c6c0efcb
-Size: 230244
-Filename: org.webosinternals.luna-tls13_1.1.1_armv7.ipk
+MD5Sum: 024d4431a28b4bc9ddfae933bb621c65
+Size: 453944
+Filename: org.webosinternals.luna-tls13_1.1.2_armv7.ipk
 Description: Modern TLS 1.2/1.3 for webOS apps (Mojo/Enyo WebKit)
 Maintainer: WebOS Internals <support@webos-internals.org>
-Source: { "LastUpdated":"1782953520", "Type":"Application", "Feed":"WOSA Modernize", "Category":"Modernize", "Title":"Luna TLS 1.3", "FullDescription":"Enables webOS apps to access the modern Internet, by routing the app WebKit host (LunaSysMgr/WebAppMgr) through the OpenSSL 1.1.1w stack under /usr/lib/ssl11 so in-app HTTPS (Mojo/Enyo XHR, enyo.WebService) negotiates TLS 1.2/1.3. Also installs a small /usr/bin/media-pipeline wrapper that keeps the ssl11 stack out of the HTML5 media worker (which never needed it), so streaming and local media (Pandora/Plex/drPodder, stock Music) play reliably instead of wedging after one track. REQUIRES org.webosinternals.browser-tls13 (provides /usr/lib/ssl11). Edits the LunaSysMgr upstart launcher; REBOOT after install. Recovery: novacomd survives a UI failure -- restore /var/luna/LunaSysMgr.tls13-orig to /etc/event.d/LunaSysMgr and reboot.", "License":"OpenSSL/curl", "Icon":"http://stacks.webosarchive.org/feeds/modernize/ipkgs/assets/icons/openssl_icon.png" }
+Source: { "LastUpdated":"1783041600", "Type":"Application", "Feed":"WOSA Modernize", "Category":"Modernize", "Title":"Luna TLS 1.3", "FullDescription":"Enables webOS apps to access the modern Internet, by routing the app WebKit host (LunaSysMgr/WebAppMgr) through the OpenSSL 1.1.1w stack under /usr/lib/ssl11 so in-app HTTPS (Mojo/Enyo XHR, enyo.WebService) negotiates TLS 1.2/1.3. Also installs a tiny wrapper at /usr/bin/media-pipeline that keeps the ssl11 stack out of the HTML5 media worker (which never needed it), so streaming and local media (Pandora/Plex/drPodder and stock Music) play reliably instead of wedging after one track. Also installs a tiny wrapper at /usr/sbin/setcpushares-pdk that keeps the ssl11 launcher env (LD_BIND_NOW, compat-shim preload) out of PDK app launches, so PDK apps -- incl. QupZilla and the nizovn Qt5 stack -- launch normally, including under LunaCE. REQUIRES org.webosinternals.browser-tls13 (provides /usr/lib/ssl11). Edits the LunaSysMgr upstart launcher; REBOOT after install. Recovery: novacomd survives a UI failure -- restore /var/luna/LunaSysMgr.tls13-orig to /etc/event.d/LunaSysMgr and reboot.", "License":"OpenSSL/curl", "Icon":"http://stacks.webosarchive.org/feeds/modernize/ipkgs/assets/icons/openssl_icon.png" }
 
 Package: org.webosinternals.mail-tls13
 Version: 1.3.1
@@ -263,13 +263,13 @@ Maintainer: webOS Archive
 Source: { "Type":"Application", "Feed":"WOSA Modernize", "Category":"Modernize", "LastUpdated":"1782744397", "Title":"Help Content Redirect", "FullDescription":"Repoints the built-in Help app (com.palm.app.help) from the decommissioned help.palm.com to the webOS Archive community help server at http://help.webosarchive.org. Patches the Enyo help source (UrlManager.js base URL, plus the palm.com domain check and device.do link in HelpApp.js); all tips/clips/featured/search content derives from the base URL. Originals backed up and restored on removal. Restart Luna (or relaunch Help) to apply.", "MinWebOSVersion":"3.0.0", "DeviceCompatibility":["TouchPad","Touchpad Go"], "PostInstallFlags":"RestartLuna", "PostUpdateFlags":"RestartLuna", "Icon":"http://stacks.webosarchive.org/feeds/modernize/ipkgs/assets/icons/help.png" }
 
 Package: org.webosarchive.tls-updates
-Version: 1.0.3
-Depends: com.palm.rootcertsupdate, org.webosinternals.browser-tls13 (>= 1.1.2), org.webosinternals.ntpdate-sync, org.webosinternals.curl-tls13, org.webosinternals.luna-tls13 (>= 1.1.1), org.webosinternals.mail-tls13, org.webosinternals.mojomail-imap-tagfix, org.webosarchive.help-redirect, com.palm.app.enyo-findapps
+Version: 1.0.4
+Depends: com.palm.rootcertsupdate, org.webosinternals.browser-tls13 (>= 1.1.2), org.webosinternals.ntpdate-sync, org.webosinternals.curl-tls13, org.webosinternals.luna-tls13 (>= 1.1.2), org.webosinternals.mail-tls13, org.webosinternals.mojomail-imap-tagfix, org.webosarchive.help-redirect, com.palm.app.enyo-findapps
 Section: System
 Architecture: all
-MD5Sum: 0266e4f07817761f2950383f60657cf9
+MD5Sum: a6a167f61314f660f808398c622f9bc9
 Size: 1486
-Filename: org.webosarchive.tls-updates_1.0.3_all.ipk
+Filename: org.webosarchive.tls-updates_1.0.4_all.ipk
 Description: TLS 1.3 Updates - SSL/TLS, root certs, App Catalog, and Help fixes
 Maintainer: webOS Archive
 Source: { "Type":"OS Application", "Feed":"WOSA Modernize", "Category":"Modernize", "LastUpdated":"1783041600", "Title":"TLS 1.3 Updates", "FullDescription":"One-tap bundle of the safe webOS Archive modernization patches. Pulls in: modern OpenSSL 1.1.1w + TLS 1.2/1.3 for the browser, command-line curl, in-app WebKit (Mojo/Enyo) and the mail client; updated Mozilla root certificates; NTP clock sync (so TLS certificate validity windows pass and apps work); the mojomail IMAP tag fix; the Help app redirect to help.webosarchive.org; and the Enyo App Catalog. webOS 3.0.x (TouchPad) only. A reboot is performed after install (required by the in-app TLS package).", "MinWebOSVersion":"3.0.0", "MaxWebOSVersion":"3.0.9", "DeviceCompatibility":["TouchPad","Touchpad Go"], "PostInstallFlags":"RestartDevice", "PostUpdateFlags":"RestartDevice" }
