@@ -138,8 +138,12 @@ floors) resolves.
 
 ## Package inventory (live feed = 23 packages)
 
-- **nizovn stack** (hand-curated stanzas): cacert, glibc, openssl, qt5*, qtwebbrowser, qupzilla,
-  squid (kept for old phones, min 1.3.5), + vlcplayer, dbus.
+- **nizovn stack** (hand-curated stanzas): cacert, glibc, openssl, qt5* (`qt5qpaplugins` **1.0.4**,
+  qt5 5.9.7-0, qt5sdk 1.0.2), qtwebbrowser, `qupzilla` (**2.3.1**), squid (kept for old phones,
+  min 1.3.5), + vlcplayer, dbus. Dep chain: qupzilla→qt5sdk→qt5→qt5qpaplugins (transitive,
+  **unversioned** — bumping qupzilla does NOT drag qt5qpaplugins up; per user, leave the depends
+  tree alone and just bump versions). qupzilla/qt5qpaplugins ipks are stock-packaged/GNU-ar; we
+  curate the index Source (retag Feed/Category, host Icon) and keep the ipk as-delivered.
 - **TLS 1.2/1.3 chain** (`org.webosinternals.*`, armv7): `browser-tls13` (**1.1.2**)→`com.palm.rootcertsupdate`;
   `curl-tls13` (1.0.1), `luna-tls13` (**1.1.1**), `mail-tls13` (1.3.1) → browser-tls13;
   `mojomail-imap-tagfix` → mail-tls13; `ntpdate-sync`. (These came with `Feed:"WebOS Internals"` in
