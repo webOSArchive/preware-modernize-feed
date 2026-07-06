@@ -11,11 +11,20 @@ its postinst) → Update Feeds → install **`org.webosarchive.tls-updates`** (t
 redirect + Enyo App Catalog; **no** QupZilla/LunaCE). Help app + content (help.webosarchive.org)
 work end-to-end.
 
-Latest revs (deployed): `browser-tls13 1.1.2`, `luna-tls13 1.1.2` (1.1.0 was faulty — media wedged;
-1.1.1 added the media-pipeline wrapper; **1.1.2** adds a `/usr/sbin/setcpushares-pdk` wrapper so
-PDK apps — QupZilla, nizovn Qt5 — launch normally, incl. under LunaCE), `tls-updates 1.0.4`
-(version-floors browser `>= 1.1.2` / luna `>= 1.1.2`; also pulls in `ntpdate-sync` — apps break
-when the clock is wrong, TLS cert validity checks fail).
+Latest revs (deployed): `browser-tls13 1.1.2`, `luna-tls13 1.1.3` (1.1.0 was faulty — media wedged;
+1.1.1 added the media-pipeline wrapper; 1.1.2 added a `/usr/sbin/setcpushares-pdk` wrapper so
+PDK apps — QupZilla, nizovn Qt5 — launch normally, incl. under LunaCE; **1.1.3** current),
+`mail-tls13 1.3.2` (**1.3.2** fixes Gmail/ECDSA-cert IMAP/POP sign-in that falsely failed with
+"certificate is not trusted"/error 4010 — the imap/pop/smtp launchers now pin TLS 1.2 + an RSA
+server cert), `tls-updates 1.0.5` (version-floors browser `>= 1.1.2` / luna `>= 1.1.3` /
+mail `>= 1.3.2`; also pulls in `ntpdate-sync` — apps break when the clock is wrong, TLS cert
+validity checks fail).
+
+QupZilla/Qt5 chain now carries version floors so installing QupZilla drags the Qt5 stack up:
+`qupzilla → qt5sdk (>= 1.0.2), qt5qpaplugins (>= 1.0.4)` (the qt5qpaplugins floor is a **direct**
+edge, added because Preware won't recurse into the already-installed qt5/qt5sdk nodes to notice
+qt5's own floor); `qt5sdk → qt5 (>= 5.9.7-0)`; `qt5 → qt5qpaplugins (>= 1.0.4)`. This reverses the
+earlier "leave the depends tree alone" stance for this chain (index-only edit; ipks kept as-delivered).
 
 **Open / TODO:**
 - **`~/Projects/preware`** (Preware 1.9.17 source: version bump, http modernize feed, injected
@@ -140,12 +149,17 @@ floors) resolves.
 
 - **nizovn stack** (hand-curated stanzas): cacert, glibc, openssl, qt5* (`qt5qpaplugins` **1.0.4**,
   qt5 5.9.7-0, qt5sdk 1.0.2), qtwebbrowser, `qupzilla` (**2.3.1**), squid (kept for old phones,
-  min 1.3.5), + vlcplayer, dbus. Dep chain: qupzilla→qt5sdk→qt5→qt5qpaplugins (transitive,
-  **unversioned** — bumping qupzilla does NOT drag qt5qpaplugins up; per user, leave the depends
-  tree alone and just bump versions). qupzilla/qt5qpaplugins ipks are stock-packaged/GNU-ar; we
-  curate the index Source (retag Feed/Category, host Icon) and keep the ipk as-delivered.
+  min 1.3.5), + vlcplayer, dbus. Dep chain: qupzilla→qt5sdk→qt5→qt5qpaplugins. Originally all
+  **unversioned**, which meant bumping qupzilla did NOT drag qt5qpaplugins up (Preware stops at the
+  first already-installed dep and won't recurse into satisfied qt5/qt5sdk to check qt5's own floor).
+  **Now version-floored** (user asked, reversing the earlier leave-the-tree-alone stance):
+  `qupzilla → qt5sdk (>= 1.0.2), qt5qpaplugins (>= 1.0.4)` — the qt5qpaplugins floor is a **direct**
+  edge on qupzilla (the reliable trick; the transitive `qt5 → qt5qpaplugins (>= 1.0.4)` floor alone
+  won't fire on existing installs); plus `qt5sdk → qt5 (>= 5.9.7-0)`. All **index-only** edits.
+  qupzilla/qt5qpaplugins ipks are stock-packaged/GNU-ar; we curate the index Source (retag
+  Feed/Category, host Icon) and keep the ipk as-delivered.
 - **TLS 1.2/1.3 chain** (`org.webosinternals.*`, armv7): `browser-tls13` (**1.1.2**)→`com.palm.rootcertsupdate`;
-  `curl-tls13` (1.0.1), `luna-tls13` (**1.1.1**), `mail-tls13` (1.3.1) → browser-tls13;
+  `curl-tls13` (1.0.1), `luna-tls13` (**1.1.3**), `mail-tls13` (**1.3.2**) → browser-tls13;
   `mojomail-imap-tagfix` → mail-tls13; `ntpdate-sync`. (These came with `Feed:"WebOS Internals"` in
   their control — we retagged the index `Source` to `WOSA Modernize`/`Modernize` so they show in the
   modernize group; icon `openssl_icon.png`.) **These incoming ipks are GNU-ar** (member names end
@@ -155,23 +169,31 @@ floors) resolves.
     after one track) → **1.1.1** adds a `/usr/bin/media-pipeline` wrapper that keeps the ssl11 stack
     out of the media worker so streaming/local media play → **1.1.2** adds a `/usr/sbin/setcpushares-pdk`
     wrapper that keeps the ssl11 launcher env (LD_BIND_NOW, compat-shim preload) out of PDK app
-    launches, so PDK apps (QupZilla, nizovn Qt5) launch normally, incl. under LunaCE. Its
-    FullDescription is synced in BOTH the index stanza and the ipk's own control (incoming ipk ships
-    `Feed:"WebOS Internals"`/`Category:"System"`; we retag those in the index Source to `WOSA
-    Modernize`/`Modernize` + add icon/LastUpdated — ipk kept as-delivered, index curated).
+    launches, so PDK apps (QupZilla, nizovn Qt5) launch normally, incl. under LunaCE → **1.1.3**
+    (current). Its FullDescription is synced in BOTH the index stanza and the ipk's own control
+    (incoming ipk ships `Feed:"WebOS Internals"`/`Category:"System"`; we retag those in the index
+    Source to `WOSA Modernize`/`Modernize` + add icon/LastUpdated — ipk kept as-delivered, index curated).
+  - **`mail-tls13` history:** 1.3.1 → **1.3.2** fixes Gmail (and any ECDSA-leaf-cert) IMAP/POP
+    sign-in that previously failed with a false "certificate is not trusted" (error 4010) — the stock
+    libpalmsocket mis-verifies ECDSA certs, so the imap/pop/smtp launchers now pin TLS 1.2 + an RSA
+    server cert (full validation preserved; Gmail needs a Google App Password for IMAP). Same retag
+    pattern; the v1.3.2 note is folded into the curated index FullDescription.
 - **App Catalog:** `com.palm.app.findapps` (phones, Min 2.2.4/Max 2.9.9, icon hp-appcatalog),
   `com.palm.app.enyo-findapps` (TouchPad, Min 3.0.0). These were stock Palm-packaged ipks with no
   `Source` — we injected one.
 - **`org.webosarchive.help-redirect`** (built + verified this session): patches `com.palm.app.help`
   `UrlManager.js` `helpUrl` (drives all content) + `HelpApp.js` palm.com domain check + device.do
   → `http://help.webosarchive.org`. Backs up `*.webosce-orig`, restores on removal, RestartLuna.
-- **`org.webosarchive.tls-updates`** ("TLS 1.3 Updates", **1.0.4**) — payload-free **meta** package.
+- **`org.webosarchive.tls-updates`** ("TLS 1.3 Updates", **1.0.5**) — payload-free **meta** package.
   Depends: rootcerts, browser-tls13, ntpdate-sync, curl/luna/mail-tls13, mojomail-imap-tagfix,
   help-redirect, enyo-findapps. `ntpdate-sync` sits **after** browser-tls13 (it's browser's own dep,
   so browser installs first regardless) and **before** luna — added because apps break when the
   clock is wrong (TLS cert validity windows fail); left unversioned (new dep, nothing to drag up).
-  Carries **version floors** on the two packages that get revved: `browser-tls13 (>= 1.1.2)`,
-  `luna-tls13 (>= 1.1.2)` (rest unversioned). Excludes QupZilla + LunaCE. `Type: OS Application`,
+  Carries **version floors** on the packages that get revved: `browser-tls13 (>= 1.1.2)`,
+  `luna-tls13 (>= 1.1.3)`, `mail-tls13 (>= 1.3.2)` (rest unversioned). Bumping a floor requires
+  bumping tls-updates' own version too (1.0.4→1.0.5 here) AND rebuilding the ipk so its control
+  Depends match the index — else on-device opkg won't pull the new deps. Excludes QupZilla + LunaCE.
+  `Type: OS Application`,
   no icon, **webOS 3.0.X only** (Min 3.0.0/Max 3.0.9, TouchPad/Touchpad Go), RestartDevice. This is
   the recommended one-tap install.
 
