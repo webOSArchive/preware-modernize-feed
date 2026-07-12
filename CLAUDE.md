@@ -4,7 +4,7 @@ Guidance + hard-won context for this repo. Read this first when resuming.
 
 ## Current state / next steps (resume here)
 
-The feed (23 pkgs) is built, committed, and live. A freshly-Doctored 3.0.x TouchPad can:
+The feed (24 pkgs) is built, committed, and live. A freshly-Doctored 3.0.x TouchPad can:
 enable Dev Mode → WOSQI-install **Preware 1.9.17** (in the feed; carries the modernize feed in
 its postinst) → Update Feeds → install **`org.webosarchive.tls-updates`** (the recommended one-tap
 "TLS 1.3 Updates" bundle: SSL/TLS stack + root certs + NTP clock sync + mail/mojomail fix + Help
@@ -16,9 +16,11 @@ Latest revs (deployed): `browser-tls13 1.1.2`, `luna-tls13 1.1.3` (1.1.0 was fau
 PDK apps — QupZilla, nizovn Qt5 — launch normally, incl. under LunaCE; **1.1.3** current),
 `mail-tls13 1.3.2` (**1.3.2** fixes Gmail/ECDSA-cert IMAP/POP sign-in that falsely failed with
 "certificate is not trusted"/error 4010 — the imap/pop/smtp launchers now pin TLS 1.2 + an RSA
-server cert), `tls-updates 1.0.5` (version-floors browser `>= 1.1.2` / luna `>= 1.1.3` /
-mail `>= 1.3.2`; also pulls in `ntpdate-sync` — apps break when the clock is wrong, TLS cert
-validity checks fail).
+server cert), `downloadmgr-tls13 1.0.0` (**new** — RPATHs the system Download Manager /
+`/usr/bin/LunaDownloadMgr` onto the ssl11 curl so background downloads AND uploads reach modern
+HTTPS; depends browser-tls13), `tls-updates 1.0.6` (version-floors browser `>= 1.1.2` / luna
+`>= 1.1.3` / mail `>= 1.3.2`; also pulls in `ntpdate-sync` and now `downloadmgr-tls13` — apps break
+when the clock is wrong, TLS cert validity checks fail).
 
 QupZilla/Qt5 chain now carries version floors so installing QupZilla drags the Qt5 stack up:
 `qupzilla → qt5sdk (>= 1.0.2), qt5qpaplugins (>= 1.0.4)` (the qt5qpaplugins floor is a **direct**
@@ -159,8 +161,9 @@ floors) resolves.
   qupzilla/qt5qpaplugins ipks are stock-packaged/GNU-ar; we curate the index Source (retag
   Feed/Category, host Icon) and keep the ipk as-delivered.
 - **TLS 1.2/1.3 chain** (`org.webosinternals.*`, armv7): `browser-tls13` (**1.1.2**)→`com.palm.rootcertsupdate`;
-  `curl-tls13` (1.0.1), `luna-tls13` (**1.1.3**), `mail-tls13` (**1.3.2**) → browser-tls13;
-  `mojomail-imap-tagfix` → mail-tls13; `ntpdate-sync`. (These came with `Feed:"WebOS Internals"` in
+  `curl-tls13` (1.0.1), `luna-tls13` (**1.1.3**), `mail-tls13` (**1.3.2**), `downloadmgr-tls13`
+  (**1.0.0**) → browser-tls13; `mojomail-imap-tagfix` → mail-tls13; `ntpdate-sync`. (These came
+  with `Feed:"WebOS Internals"` in
   their control — we retagged the index `Source` to `WOSA Modernize`/`Modernize` so they show in the
   modernize group; icon `openssl_icon.png`.) **These incoming ipks are GNU-ar** (member names end
   `/`, `//` longname table) — macOS BSD `ar x` chokes ("File exists"); extract them with the Python
@@ -178,21 +181,31 @@ floors) resolves.
     libpalmsocket mis-verifies ECDSA certs, so the imap/pop/smtp launchers now pin TLS 1.2 + an RSA
     server cert (full validation preserved; Gmail needs a Google App Password for IMAP). Same retag
     pattern; the v1.3.2 note is folded into the curated index FullDescription.
+  - **`downloadmgr-tls13` 1.0.0** (added this session): RPATHs `/usr/bin/LunaDownloadMgr`
+    (com.palm.downloadmanager) onto the ssl11 curl 7.61.1 (OpenSSL 1.1.1w) + a baked CA bundle, so
+    background downloads/uploads negotiate TLS 1.2/1.3. No binary code patch (daemon links no
+    OpenSSL directly). `Depends: browser-tls13` (provides `/usr/lib/ssl11`); **remove BEFORE
+    browser-tls13**. Incoming ipk ships `Feed:"WebOS Internals"`/`Category:"System"` — retagged in
+    the index Source to `WOSA Modernize`/`Modernize` + icon `openssl_icon.png`/LastUpdated (ipk
+    kept as-delivered). No reboot needed.
 - **App Catalog:** `com.palm.app.findapps` (phones, Min 2.2.4/Max 2.9.9, icon hp-appcatalog),
   `com.palm.app.enyo-findapps` (TouchPad, Min 3.0.0). These were stock Palm-packaged ipks with no
   `Source` — we injected one.
 - **`org.webosarchive.help-redirect`** (built + verified this session): patches `com.palm.app.help`
   `UrlManager.js` `helpUrl` (drives all content) + `HelpApp.js` palm.com domain check + device.do
   → `http://help.webosarchive.org`. Backs up `*.webosce-orig`, restores on removal, RestartLuna.
-- **`org.webosarchive.tls-updates`** ("TLS 1.3 Updates", **1.0.5**) — payload-free **meta** package.
-  Depends: rootcerts, browser-tls13, ntpdate-sync, curl/luna/mail-tls13, mojomail-imap-tagfix,
-  help-redirect, enyo-findapps. `ntpdate-sync` sits **after** browser-tls13 (it's browser's own dep,
-  so browser installs first regardless) and **before** luna — added because apps break when the
-  clock is wrong (TLS cert validity windows fail); left unversioned (new dep, nothing to drag up).
+- **`org.webosarchive.tls-updates`** ("TLS 1.3 Updates", **1.0.6**) — payload-free **meta** package.
+  Depends: rootcerts, browser-tls13, ntpdate-sync, curl/luna/downloadmgr/mail-tls13,
+  mojomail-imap-tagfix, help-redirect, enyo-findapps. `ntpdate-sync` sits **after** browser-tls13
+  (it's browser's own dep, so browser installs first regardless) and **before** luna — added because
+  apps break when the clock is wrong (TLS cert validity windows fail); left unversioned (new dep,
+  nothing to drag up). `downloadmgr-tls13` is ordered **after** luna-tls13 (per request; it also
+  hard-depends browser-tls13 so browser installs first regardless); unversioned (new dep).
   Carries **version floors** on the packages that get revved: `browser-tls13 (>= 1.1.2)`,
   `luna-tls13 (>= 1.1.3)`, `mail-tls13 (>= 1.3.2)` (rest unversioned). Bumping a floor requires
-  bumping tls-updates' own version too (1.0.4→1.0.5 here) AND rebuilding the ipk so its control
-  Depends match the index — else on-device opkg won't pull the new deps. Excludes QupZilla + LunaCE.
+  bumping tls-updates' own version too (1.0.5→1.0.6 here, for the new downloadmgr dep) AND rebuilding
+  the ipk so its control Depends match the index — else on-device opkg won't pull the new deps.
+  Excludes QupZilla + LunaCE.
   `Type: OS Application`,
   no icon, **webOS 3.0.X only** (Min 3.0.0/Max 3.0.9, TouchPad/Touchpad Go), RestartDevice. This is
   the recommended one-tap install.
