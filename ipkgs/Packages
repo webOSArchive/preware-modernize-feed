@@ -286,3 +286,26 @@ Description: TLS 1.3 Updates - SSL/TLS, root certs, App Catalog, and Help fixes
 Maintainer: webOS Archive
 Source: { "Type":"OS Application", "Feed":"WOSA Modernize", "Category":"Modernize", "LastUpdated":"1783814400", "Title":"TLS 1.3 Updates", "FullDescription":"One-tap bundle of the safe webOS Archive modernization patches. Pulls in: modern OpenSSL 1.1.1w + TLS 1.2/1.3 for the browser, command-line curl, in-app WebKit (Mojo/Enyo), the mail client and the system Download Manager; updated Mozilla root certificates; NTP clock sync (so TLS certificate validity windows pass and apps work); the mojomail IMAP tag fix; the Help app redirect to help.webosarchive.org; and the Enyo App Catalog. webOS 3.0.x (TouchPad) only. A reboot is performed after install (required by the in-app TLS package).", "MinWebOSVersion":"3.0.0", "MaxWebOSVersion":"3.0.9", "DeviceCompatibility":["TouchPad","Touchpad Go"], "PostInstallFlags":"RestartDevice", "PostUpdateFlags":"RestartDevice" }
 
+Package: org.webosports.app.atlas
+Version: 0.9.7
+Depends: org.webosarchive.tls-updates
+Section: misc
+Architecture: all
+MD5Sum: 728a8350de2badf63c9b5a38f69ba879
+Size: 103630294
+Filename: org.webosports.app.atlas_0.9.7_all.ipk
+Description: Atlas Web — WPE WebKit 2.52 browser for webOS (HP TouchPad).
+Maintainer: WebOS Ports <webos-ports@googlegroups.com>
+Source: { "Type":"Application", "Feed":"WOSA Modernize", "Category":"Browser", "LastUpdated":"1782744397", "Title":"Atlas", "FullDescription":"Atlas is a modern WebKit browser for the HP TouchPad -- WPE WebKit 2.52 with TLS 1.3, HTML5 media, and current web-platform support, far beyond the stock 2011 browser. Requires the TLS 1.3 Updates bundle (pulled in automatically) for the OpenSSL 1.1 stack it links for HTTPS. The device restarts once at the end of install to load the browser engine.", "MinWebOSVersion":"3.0.0", "DeviceCompatibility":["TouchPad","Touchpad Go"], "PostInstallFlags":"RestartLuna", "PostUpdateFlags":"RestartLuna", "PostRemoveFlags":"RestartLuna", "Icon":"http://stacks.webosarchive.org/feeds/modernize/ipkgs/assets/icons/atlas.png" }
+
+Package: org.webosarchive.atlas-default-browser
+Version: 1.0.0
+Depends: org.webosports.app.atlas
+Section: Browser
+Architecture: all
+MD5Sum: e3eeb34d58cfea364b5d6c62f07c43e8
+Size: 3602
+Filename: org.webosarchive.atlas-default-browser_1.0.0_all.ipk
+Description: Make Atlas the default browser
+Maintainer: webOS Archive
+Source: { "Type":"Patch", "Feed":"WOSA Modernize", "Category":"Browser", "LastUpdated":"1782744397", "Title":"Make Atlas the default browser", "FullDescription":"Redirects the stock web browser to Atlas (org.webosports.app.atlas), the modern WebKit browser for webOS, and hides the stock browser icon from the Launcher. Patches com.palm.app.browser so every launch -- tapping links, cross-app launches, and type-to-search -- opens in Atlas instead of the stock browser, and sets the stock browser to hidden so only Atlas shows in the Launcher. Self-contained (no AUSMT): the original index.html and appinfo.json are backed up and restored on removal. If Atlas is not installed the redirect page offers a Load Stock Browser fallback (works even with the icon hidden). Restart Luna (or relaunch the browser) to apply.", "MinWebOSVersion":"3.0.0", "DeviceCompatibility":["TouchPad","Touchpad Go"], "PostInstallFlags":"RestartLuna", "PostUpdateFlags":"RestartLuna", "PostRemoveFlags":"RestartLuna" }

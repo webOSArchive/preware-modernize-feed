@@ -4,12 +4,22 @@ Guidance + hard-won context for this repo. Read this first when resuming.
 
 ## Current state / next steps (resume here)
 
-The feed (24 pkgs) is built, committed, and live. A freshly-Doctored 3.0.x TouchPad can:
+The feed (26 pkgs) is built, committed, and live. A freshly-Doctored 3.0.x TouchPad can:
 enable Dev Mode → WOSQI-install **Preware 1.9.17** (in the feed; carries the modernize feed in
 its postinst) → Update Feeds → install **`org.webosarchive.tls-updates`** (the recommended one-tap
 "TLS 1.3 Updates" bundle: SSL/TLS stack + root certs + NTP clock sync + mail/mojomail fix + Help
 redirect + Enyo App Catalog; **no** QupZilla/LunaCE). Help app + content (help.webosarchive.org)
 work end-to-end.
+
+**New this session — Atlas (modern browser) + "make Atlas default" patch, both in the feed:**
+`org.webosports.app.atlas` (**0.9.7**, WPE WebKit 2.52 browser, 103MB) and
+`org.webosarchive.atlas-default-browser` (**1.0.0**, the redirect+hide patch). Dep chain:
+`atlas-default-browser → org.webosports.app.atlas → org.webosarchive.tls-updates` (Atlas links the
+ssl11 OpenSSL 1.1 stack for HTTPS). Installing the patch from the feed on a fresh device pulls Atlas
+→ tls-updates → the whole TLS stack, then Preware prompts one restart at the end (RestartDevice from
+tls-updates when it's in the batch; RestartLuna if tls-updates is already installed). **Verified on
+device**: Atlas engine (BrowserServer-atlas) runs, NPAPI adapter + ls2 roles + db8 kinds + upstart
+registered, redirect applied, no mid-install reboot. See the two subsections under Package inventory.
 
 Latest revs (deployed): `browser-tls13 1.1.2`, `luna-tls13 1.1.3` (1.1.0 was faulty — media wedged;
 1.1.1 added the media-pipeline wrapper; 1.1.2 added a `/usr/sbin/setcpushares-pdk` wrapper so
@@ -147,7 +157,7 @@ floors) resolves.
   `c931…` (the bricked one). No hostnames set, so they're hard to tell apart — check health first
   (`hostname`, version, `ps | grep LunaSysMgr`, installed pkgs) before patching.
 
-## Package inventory (live feed = 23 packages)
+## Package inventory (live feed = 26 packages)
 
 - **nizovn stack** (hand-curated stanzas): cacert, glibc, openssl, qt5* (`qt5qpaplugins` **1.0.4**,
   qt5 5.9.7-0, qt5sdk 1.0.2), qtwebbrowser, `qupzilla` (**2.3.1**), squid (kept for old phones,
@@ -209,6 +219,36 @@ floors) resolves.
   `Type: OS Application`,
   no icon, **webOS 3.0.X only** (Min 3.0.0/Max 3.0.9, TouchPad/Touchpad Go), RestartDevice. This is
   the recommended one-tap install.
+- **`org.webosports.app.atlas`** ("Atlas", **0.9.7**, WPE WebKit 2.52 browser, **103MB**, arch `all`)
+  — the modern browser. **We repackaged the upstream WebOS Ports ipk** (index+control curated;
+  `data.tar.gz` kept byte-identical — only control.tar.gz rebuilt): (1) added `Depends:
+  org.webosarchive.tls-updates` to its **control** (Atlas links `/usr/lib/ssl11` OpenSSL 1.1 for
+  HTTPS; the dep pulls the whole TLS stack), (2) added a Preware `Source` block (Feed "WOSA
+  Modernize", Category Browser, icon `atlas.png` extracted from the app), (3) **removed the
+  `killall LunaSysMgr` from BOTH postinst and prerm** (see the reboot-fix lesson below) — the reload
+  is now deferred to Preware's `PostInstallFlags`/`PostRemoveFlags` (RestartLuna). Its postinst lays
+  the WPE engine (runs in place on cryptofs deviceroot), copies the device Adreno driver to the
+  versioned GPU sonames, symlinks `/var/atlas252 → deviceroot/wpe-252`, installs the NPAPI adapter
+  (`/usr/lib/BrowserPlugins/BrowserAdapterAtlas.so`), upstart jobs (`/etc/event.d/atlas` +
+  `atlas-sensord`), db8 kinds (`org.webosports.logins`/`autofill`), and ls2 roles
+  (`/usr/share/ls2/roles/{prv,pub}/org.webosports.browserserver.json`). **Verified on device.**
+- **`org.webosarchive.atlas-default-browser`** ("Make Atlas the default browser", **1.0.0**) — the
+  new-style redirect+hide patch. `Depends: org.webosports.app.atlas`. **Self-contained (no AUSMT)**,
+  same backup/restore pattern as help-redirect (the legacy Advanced-Browser/Isis patches this
+  replaces were AUSMT — needing ausmt/patch/lsdiff, which this feed doesn't carry). postinst backs up
+  `com.palm.app.browser/{index.html,appinfo.json}` to `*.webosce-orig`; prerm restores. **(1) Redirect:**
+  an `awk` swaps ONLY the stock launch statement (`enyo.create({kind:"BrowserApp"})…`) for a redirect
+  stub — the JS is **embedded in the postinst via a single-quoted heredoc** (NOT a payload file: a
+  packaged payload would land under `/media/cryptofs/apps/…`, not `/usr/palm/…`, so referencing it by
+  `/usr/palm` path is the bug that broke the first build). Guarded on the marker so it no-ops instead
+  of clobbering. Fallback = "Load Stock Browser" only (renders `BrowserApp` in-place in the already
+  running card — works even with the icon hidden). **(2) Hide:** sets `visible:false` **and**
+  `removable:true` in appinfo.json. Caveat: `visible:false` governs a *fresh* app scan (never-placed
+  apps stay hidden), but an **already-placed** grid icon persists in the saved launcher layout
+  (`/var/luna/preferences/launcher3/page_ReorderablePage_APPS_{guid}` + the `quicklaunch_fixed.qlsave`
+  dock) — a Luna restart re-saves it; even a rescan doesn't purge it. Same limitation the legacy
+  stock-browser patches had; deemed acceptable (redirect still fires from the leftover icon). `Type:
+  Patch`, Category Browser, RestartLuna.
 
 ## Held in `staging/` (NOT in the live feed)
 
@@ -231,6 +271,29 @@ LunaCE swap its own opt-in package, tested standalone; keep the harmless version
 separate from launcher/binary changes. Recovery if it happens again (novacomd survives a UI
 crash): restore `/usr/bin/LunaSysMgr.webosce-orig` and `/var/luna/LunaSysMgr.tls13-orig`→
 `/etc/event.d/LunaSysMgr`, reboot.
+
+## ⚠️ The mid-batch restart lesson (Atlas repackage)
+
+**Never `killall LunaSysMgr` / reboot inside a postinst (or prerm) of a package that installs as part
+of a Preware dependency batch.** Preware itself runs *under* LunaSysMgr, so restarting it mid-batch
+kills Preware and **aborts every remaining package in the chain**. Atlas's upstream postinst ended
+with `killall LunaSysMgr` (to load its NPAPI plugin) — since `atlas-default-browser → atlas →
+tls-updates`, that fired an "immediate reboot" the moment Atlas installed, before the patch (and
+anything after) could install. **Fix:** remove the restart from the script and declare it as the
+package's Preware `PostInstallFlags`/`PostUpdateFlags`/`PostRemoveFlags` instead — Preware collects
+the flags across the whole batch and applies the **strongest one ONCE at the end** (RestartDevice >
+RestartLuna). So the engine/plugin reload still happens, just cleanly after the chain completes.
+- **WOSQI does NOT honor Preware `Source` flags** (it's not a feed client) and does **not** resolve
+  `Depends:`. So a WOSQI install of these gives no auto-deps and **no** end restart — you must install
+  each ipk yourself and reboot manually (and WOSQI's postinst behavior has been inconsistent on our
+  device; safest is to run postinsts via novacom). The dep-chain + single-end-restart design is a
+  **Preware-from-the-feed** thing; test it that way.
+- **Same-version won't reinstall:** Preware compares the Version STRING, so a device already carrying
+  `atlas-default-browser 1.0.0` (e.g. from a manual novacom test) will NOT pick up a rebuilt-but-still-
+  1.0.0 feed copy — its stale control (empty Depends) lingers. Bump the version to force it. Likewise,
+  installing the patch when Atlas is **already installed** won't re-pull tls-updates (Preware doesn't
+  recurse into an already-satisfied dep node) — remove Atlas first (or test on a fresh Doctor) to see
+  the full chain.
 
 ## OTA / "System Updates" — see `staging/swupdate-redirect-FINDINGS.md`
 
