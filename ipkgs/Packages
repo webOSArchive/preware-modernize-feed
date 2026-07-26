@@ -309,3 +309,15 @@ Filename: org.webosarchive.atlas-default-browser_1.0.0_all.ipk
 Description: Make Atlas the default browser
 Maintainer: webOS Archive
 Source: { "Type":"Patch", "Feed":"WOSA Modernize", "Category":"Browser", "LastUpdated":"1782744397", "Title":"Make Atlas the default browser", "FullDescription":"Redirects the stock web browser to Atlas (org.webosports.app.atlas), the modern WebKit browser for webOS, and hides the stock browser icon from the Launcher. Patches com.palm.app.browser so every launch -- tapping links, cross-app launches, and type-to-search -- opens in Atlas instead of the stock browser, and sets the stock browser to hidden so only Atlas shows in the Launcher. Self-contained (no AUSMT): the original index.html and appinfo.json are backed up and restored on removal. If Atlas is not installed the redirect page offers a Load Stock Browser fallback (works even with the icon hidden). Restart Luna (or relaunch the browser) to apply.", "MinWebOSVersion":"3.0.0", "DeviceCompatibility":["TouchPad","Touchpad Go"], "PostInstallFlags":"RestartLuna", "PostUpdateFlags":"RestartLuna", "PostRemoveFlags":"RestartLuna" }
+
+Package: org.webosarchive.open-in-atlas
+Version: 1.0.0
+Depends: org.webosports.app.atlas
+Section: Browser
+Architecture: all
+MD5Sum: 5ff27aea2e8ead86280a5ceb8b6de0e0
+Size: 4626
+Filename: org.webosarchive.open-in-atlas_1.0.0_all.ipk
+Description: Add an Open in Atlas item to the stock browser App Menu
+Maintainer: webOS Archive
+Source: { "Type":"Patch", "Feed":"WOSA Modernize", "Category":"Browser", "LastUpdated":"1785067200", "Title":"Open in Atlas (stock browser menu)", "FullDescription":"Keeps the stock web browser exactly as it is and adds an <b>Open in Atlas</b> item to its App Menu (tap the top-left corner of the screen). Choosing it hands the page you are on to Atlas (org.webosports.app.atlas), the modern WebKit browser, using the Palm application manager -- so you can start in the old browser and jump to Atlas only when a site needs it. The item is greyed out on the Start Page and in Preferences, where there is no page to hand over.<br><br>This is the gentle alternative to <i>Make Atlas the default browser</i>, which redirects every browser launch to Atlas and hides the stock browser icon. Install one or the other, not both -- if that patch is already installed this one detects it and leaves the browser alone.<br><br>Self-contained (no AUSMT): the stock com.palm.app.browser index.html is backed up and restored on removal. Restart Luna (or relaunch the browser) to apply.", "MinWebOSVersion":"3.0.0", "DeviceCompatibility":["TouchPad","Touchpad Go"], "PostInstallFlags":"RestartLuna", "PostUpdateFlags":"RestartLuna", "PostRemoveFlags":"RestartLuna", "Icon":"http://stacks.webosarchive.org/feeds/modernize/ipkgs/assets/icons/atlas.png" }

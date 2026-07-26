@@ -4,14 +4,14 @@ Guidance + hard-won context for this repo. Read this first when resuming.
 
 ## Current state / next steps (resume here)
 
-The feed (26 pkgs) is built, committed, and live. A freshly-Doctored 3.0.x TouchPad can:
+The feed (27 pkgs) is built and live. A freshly-Doctored 3.0.x TouchPad can:
 enable Dev Mode → WOSQI-install **Preware 1.9.17** (in the feed; carries the modernize feed in
 its postinst) → Update Feeds → install **`org.webosarchive.tls-updates`** (the recommended one-tap
 "TLS 1.3 Updates" bundle: SSL/TLS stack + root certs + NTP clock sync + mail/mojomail fix + Help
 redirect + Enyo App Catalog; **no** QupZilla/LunaCE). Help app + content (help.webosarchive.org)
 work end-to-end.
 
-**New this session — Atlas (modern browser) + "make Atlas default" patch, both in the feed:**
+**Atlas (modern browser) + "make Atlas default" patch, both in the feed:**
 `org.webosports.app.atlas` (**0.9.7**, WPE WebKit 2.52 browser, 103MB) and
 `org.webosarchive.atlas-default-browser` (**1.0.0**, the redirect+hide patch). Dep chain:
 `atlas-default-browser → org.webosports.app.atlas → org.webosarchive.tls-updates` (Atlas links the
@@ -20,6 +20,17 @@ ssl11 OpenSSL 1.1 stack for HTTPS). Installing the patch from the feed on a fres
 tls-updates when it's in the batch; RestartLuna if tls-updates is already installed). **Verified on
 device**: Atlas engine (BrowserServer-atlas) runs, NPAPI adapter + ls2 roles + db8 kinds + upstart
 registered, redirect applied, no mid-install reboot. See the two subsections under Package inventory.
+
+**`org.webosarchive.open-in-atlas` (1.0.0), the gentler alternative:** some users
+found the all-or-nothing redirect too much, so this patch leaves the stock browser fully working and
+just adds an **"Open in Atlas"** App Menu item that hands the current page to Atlas via
+`palm://com.palm.applicationManager/open {id, params:{target}}`. Same `Depends:
+org.webosports.app.atlas`, same index.html backup/restore pattern, **mutually exclusive** with
+atlas-default-browser (it detects that patch and bails). **Verified on device** — menu item appears,
+hands the current page to Atlas, stock browser otherwise unaffected. (Pre-device checks that paid off
+and are worth repeating for any Enyo-app patch: run the injected JS in node against the app's real
+kind file with an Enyo-1-faithful `enyo.kind` stub, and dry-run postinst/prerm against a copy of the
+target file with `BROWSER_DIR` re-pointed.)
 
 Latest revs (deployed): `browser-tls13 1.1.2`, `luna-tls13 1.1.3` (1.1.0 was faulty — media wedged;
 1.1.1 added the media-pipeline wrapper; 1.1.2 added a `/usr/sbin/setcpushares-pdk` wrapper so
@@ -157,7 +168,7 @@ floors) resolves.
   `c931…` (the bricked one). No hostnames set, so they're hard to tell apart — check health first
   (`hostname`, version, `ps | grep LunaSysMgr`, installed pkgs) before patching.
 
-## Package inventory (live feed = 26 packages)
+## Package inventory (live feed = 27 packages)
 
 - **nizovn stack** (hand-curated stanzas): cacert, glibc, openssl, qt5* (`qt5qpaplugins` **1.0.4**,
   qt5 5.9.7-0, qt5sdk 1.0.2), qtwebbrowser, `qupzilla` (**2.3.1**), squid (kept for old phones,
@@ -249,6 +260,32 @@ floors) resolves.
   dock) — a Luna restart re-saves it; even a rescan doesn't purge it. Same limitation the legacy
   stock-browser patches had; deemed acceptable (redirect still fires from the leftover icon). `Type:
   Patch`, Category Browser, RestartLuna.
+- **`org.webosarchive.open-in-atlas`** ("Open in Atlas (stock browser menu)", **1.0.0**) — the
+  **alternative** to atlas-default-browser for people who want to keep the stock browser. Same
+  `Depends: org.webosports.app.atlas`, same self-contained embedded-heredoc + awk swap of the single
+  `enyo.create({kind:"BrowserApp"})…` line, but it *prepends* an extension block and then **re-prints
+  the original launch statement**, so the stock browser still runs — it only gains an App Menu item.
+  Backup is `index.html.openinatlas-orig` (deliberately a different suffix from the redirect patch's
+  `.webosce-orig`). The injected JS runs **before** instantiation and:
+  - unshifts `{caption:"Open in Atlas", onclick:"openInAtlasClick"}` onto the AppMenu entry of
+    **`enyo.BrowserApp.prototype.kindComponents`** — NOT `.components`: Enyo 1.0's
+    `enyo.Component.subclass` renames a kind's `components` block to `kindComponents` and *deletes*
+    `prototype.components` (framework/source/kernel/Component.js:440). Getting this wrong is a silent
+    no-op. Because it happens pre-instantiation, Enyo builds/renders the item normally — no
+    `createComponent`+`render()` on an unrendered popup.
+  - appends its own `PalmService` component (`palm://com.palm.applicationManager/`, method `open`) so a
+    missing Atlas produces a banner instead of the browser's generic "Cannot open MIME type" popup;
+    `openInAtlasClick` calls `{id:"org.webosports.app.atlas", params:{target:url}}` — the same call
+    stock uses in `openResourceWithApp`/`helpClick`. Atlas reads `p.target || p.url` in `rendered()`
+    and, when a card already exists, navigates it from `applicationRelaunchHandler`.
+  - **un-escapes the URL**: `Browser.pageTitleChanged()` stores the live URL through
+    `enyo.string.escapeHtml` (`& < >` only), so `&amp;` would corrupt every query string handed over.
+  - wraps `toggleAppMenuItems` to grey the item out unless the browser view is showing and a real
+    (scheme-prefixed) URL is loaded — mirrors the stock Print item.
+  Mutual exclusion is enforced at runtime, not by `Conflicts:` (Preware ignores it): postinst exits
+  early if index.html contains `Redirecting to Atlas` or `index.html.webosce-orig` exists, and prerm
+  refuses to restore over an index.html that no longer carries the `OPEN-IN-ATLAS` marker. `Type:
+  Patch`, Category Browser, icon atlas.png, RestartLuna.
 
 ## Held in `staging/` (NOT in the live feed)
 
