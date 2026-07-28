@@ -69,6 +69,9 @@ earlier "leave the depends tree alone" stance for this chain (index-only edit; i
   rather than inferred (only `roadrunner` has independent corroboration, from Preware's own source).
 - **`~/Projects/preware`** (Preware 1.9.17 source: version bump, http modernize feed, injected
   control.tar.gz postinst) is still **uncommitted** by the user's instruction — commit/push when ready.
+- **`~/Projects/webos-docs`** (the user-facing MkDocs site, `github.com/webosarchive/webos-docs`) —
+  11 files **uncommitted**: the two-path tablet-vs-phone layout was collapsed into one path now that
+  phones have native TLS (see "User-facing docs" below). Commit/push when ready.
 - **OTA / `swupdate-redirect`** held in `staging/` — needs the UpdateDaemon carrier/domain binary
   patch (see `staging/swupdate-redirect-FINDINGS.md`) before the OTA-in-a-feed goal is real.
 - **`webOS CE 3.1.0` / `luna-update`** held in `staging/` — the LunaCE LunaSysMgr swap must become
@@ -201,8 +204,10 @@ use it on anything device-specific.
   Veers and Pre2s. For the phone line, keep the version fence loose (2.x) and separate by hardware.
 
 **TouchPad-only vs device-common in the TLS chain** (per upstream
-`github.com/codepoet80/OpenSSL-legacyWebOS/tree/main/ipks`, which splits ipks into `topaz/` TouchPad,
-`mantaray/` Pre3, `roadrunner/` Pre2, `broadway/` Veer):
+`github.com/webOSArchive/OpenSSL-legacyWebOS/tree/main/ipks` — **moved from `codepoet80/` to the
+`webOSArchive` org**, same content, `~/Projects/OpenSSL-legacyWebOS` already points at the new
+remote — which splits ipks into `topaz/` TouchPad, `mantaray/` Pre3, `roadrunner/` Pre2,
+`broadway/` Veer, plus `phone/` for the merged multi-board builds):
 - **Device-specific, built per device → gated 3.0.0–3.0.9 + DeviceCompatibility + `(TouchPad)` title
   suffix + a bold do-not-install-on-a-phone lead in FullDescription:** `browser-tls13`,
   `luna-tls13`, `downloadmgr-tls13`, `mojomail-imap-tagfix` (+ the `tls-updates` meta, already gated;
@@ -557,20 +562,36 @@ Veer 2.2.0         3 visible  one-tap: (none)             deps OK
 Pre2 2.1.0         3 visible  one-tap: (none)             deps OK
 ```
 
-### Two pre-existing drifts in `OpenSSL-legacyWebOS` (NOT caused by these changes)
+### Feed vs `webOSArchive/OpenSSL-legacyWebOS` — verified in sync (2026-07-28)
 
-Found by rebuilding topaz and diffing against the committed ipks; both confirmed via `git diff` to be
-untouched by this work. Worth fixing upstream sometime:
-- `ipks/topaz/downloadmgr-tls13`'s committed control lacks the `on $PRODUCT` / `($dev)` strings the
-  current script emits — that ipk was built from an older script.
-- `ipks/topaz/luna-tls13` ships a **457,924B** `setcpushares-pdk.wrap`, but the repo's committed
-  prebuilt `setcpushares-pdk-wrap.bin` is **382,496B**. The shipped one was cross-compiled with
-  PalmPDK; any build without `/opt/PalmPDK` silently substitutes the smaller prebuilt. Rebuilding
-  luna for topaz on a host without the toolchain therefore changes that payload.
-- Build host needs GNU `ar` (`brew install binutils`) and `patchelf`; the stock Palm binaries under
-  `devices/<board>/` are gitignored. `prebuilt_rpath()` was added so `phone` can be rebuilt without
-  them by reusing the already-RPATH'd binary from the committed per-board ipk — verified bit-identical
-  to all six shipped binaries.
+Both repos clean and fully pushed (`origin/main...main` = 0/0). Full unpack-and-compare of every
+file inside every shared ipk. **All four `phone/` packages are byte-identical to the feed**, as are
+`mail-tls13` 1.3.2 and `ntpdate-sync` 2.0.1. `tls-updates-phone` is correctly absent from that repo
+(hand-built here, like `tls-updates`). Three files differ, none of them a problem:
+- **`topaz/browser-tls13`** — payload identical; only the control's `Description`/`Source` text
+  (repo carries the newer `(topaz)`-suffixed titles).
+- **`topaz/luna-tls13`** — payload identical; postinst differs by one **comment reword**, prerm by
+  one **blank line**. Repo's control declares `Depends: browser-tls13` where the feed ipk's is empty
+  — harmless, Preware resolves from the index, which has the dep.
+- **`curl-tls13`** — bundled `libcrypto.so.1.1` / `libssl.so.1.1` differ. **Deliberate, leave it**
+  (see the ⚠️ note in the package inventory: upstream shipped different binaries at the same version
+  `1.0.1`, and this package replaces the `/usr/bin/curl` Synergy depends on).
+
+If the two topaz controls ever get re-synced, do it **without a version bump** — payloads are
+identical so it's cosmetic, and same-version means existing installs are untouched while new ones
+get the tidier control (the mojomail/ntpdate precedent). Never sync `curl-tls13`.
+
+**Two previously-noted upstream drifts are now RESOLVED** (both were "worth fixing upstream sometime";
+the 2026-07-28 comparison shows they're gone): `topaz/downloadmgr-tls13` now matches byte-for-byte,
+and `topaz/luna-tls13` now ships the PalmPDK-built `setcpushares-pdk.wrap` (the 457,924B vs 382,496B
+mismatch against the committed `setcpushares-pdk-wrap.bin` no longer appears in the payload).
+
+**Build host** needs GNU `ar` (`brew install binutils`) and `patchelf`. The stock Palm binaries under
+`devices/<board>/` are **not committed** (and no `devices/` dir exists in a fresh clone), so
+`prebuilt_rpath()` (`build-ipks.sh:197`) is what makes the repo self-sufficient: it reuses the
+already-RPATH'd binary from the committed per-board ipk — verified bit-identical to all six shipped
+binaries. ⚠️ **Do not prune `ipks/{topaz,mantaray,roadrunner,broadway}/`** — rebuilding `phone`
+depends on them.
 
 ## Held in `staging/` (NOT in the live feed)
 
@@ -638,6 +659,29 @@ On a fresh Doctor: enable Dev Mode → WOSQI-install Preware 1.9.17 → its post
 `modernize.conf` → Update Feeds → patches appear. **Verify** `/media/cryptofs/apps/etc/ipkg/
 modernize.conf` exists after install (the one spot that depends on the install hook running).
 The `~/Projects/preware` source edits are still uncommitted per the user's instruction.
+
+## User-facing docs — separate repo `~/Projects/webos-docs` (MkDocs, `readthedocs` theme)
+
+The public guide (activate → install apps → get online → use the device). Build/validate with
+`mkdocs build --strict` from the repo root; `site/` is untracked, and one INFO about
+`macos-install.md` not being in the nav is pre-existing and expected.
+
+**2026-07-28: the two-path layout was collapsed.** The docs used to fork into "Setup · TouchPad
+(webOS 3.x)" vs "Setup · Other Devices" (certs + proxy), which stopped being true the moment the
+phone packages shipped. The real line is **webOS 2.2.4**, not tablet-vs-phone: at 2.2.4+ you run the
+TLS Updates; below it you're limited to HTTP (and *can't* run a proxy either — that API arrived in
+2.2.4, 2.2.0 on Pre3), so it isn't a second path, just a smaller set of options.
+- `setup-path.md` **kept but retitled "Getting Ready"** — deliberately not deleted, because five
+  pages link to `setup-path.md#set-the-date-time-first`. The fork became a capability table.
+- `modern-tls.md` now covers both bundles and notes only one is ever visible per device.
+- `online.md` / `proxysetup.md` moved to an "Older Devices (before webOS 2.2.4)" nav group and were
+  reframed as the legacy/optional route.
+- Super Doctor advice points at **`doctor.md`** (archived, prebuilt Doctors) rather than telling
+  people to build one with meta-doctor — meta-doctor survives only as a carrier-mismatch fallback.
+- Also refreshed: `timesync.md` (both bundles ship `ntpdate-sync`, so the manual XTerm fix-ntp script
+  is now the pre-TLS-Updates fallback and the "no permanent fix on phones" claim is gone),
+  `email.md` Gmail (App Password + the error-4010 / ECDSA fix from `mail-tls13` 1.3.2), and
+  `browsers.md` (new Atlas section — TouchPad-only, the two mutually-exclusive patches).
 
 ## Help content server (`help.webosarchive.org`) — separate repo `~/Projects/help.palm.com`
 
