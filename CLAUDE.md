@@ -52,7 +52,7 @@ PDK apps — QupZilla, nizovn Qt5 — launch normally, incl. under LunaCE; **1.1
 "certificate is not trusted"/error 4010 — the imap/pop/smtp launchers now pin TLS 1.2 + an RSA
 server cert), `downloadmgr-tls13 1.0.0` (**new** — RPATHs the system Download Manager /
 `/usr/bin/LunaDownloadMgr` onto the ssl11 curl so background downloads AND uploads reach modern
-HTTPS; depends browser-tls13), `tls-updates 1.0.8` (version-floors browser `>= 1.1.2` / usbsettings `>= 1.0.7` / btgamepad `>= 1.1.0` / luna
+HTTPS; depends browser-tls13), `tls-updates 1.0.9` (version-floors browser `>= 1.1.2` / usbsettings `>= 1.0.8` / btgamepad `>= 1.1.0` / luna
 `>= 1.1.3` / mail `>= 1.3.2`; also pulls in `ntpdate-sync` and now `downloadmgr-tls13` — apps break
 when the clock is wrong, TLS cert validity checks fail).
 
@@ -337,9 +337,9 @@ floors) resolves.
 - **`org.webosarchive.help-redirect`** (built + verified this session): patches `com.palm.app.help`
   `UrlManager.js` `helpUrl` (drives all content) + `HelpApp.js` palm.com domain check + device.do
   → `http://help.webosarchive.org`. Backs up `*.webosce-orig`, restores on removal, RestartLuna.
-- **`org.webosarchive.tls-updates`** ("TLS 1.3 Updates (TouchPad)", **1.0.8**) — payload-free **meta**
+- **`org.webosarchive.tls-updates`** ("TLS 1.3 Updates (TouchPad)", **1.0.9**) — payload-free **meta**
   package. Depends: rootcerts, browser-tls13, ntpdate-sync, curl/luna/downloadmgr/mail-tls13,
-  mojomail-imap-tagfix, help-redirect, enyo-findapps, **usbsettings (>= 1.0.7)**,
+  mojomail-imap-tagfix, help-redirect, enyo-findapps, **usbsettings (>= 1.0.8)**,
   **btgamepad (>= 1.1.0)**. `ntpdate-sync` sits **after** browser-tls13
   and **before** luna — added because apps break when the clock is wrong (TLS cert validity windows
   fail); left unversioned (new dep, nothing to drag up). ⚠️ The old rationale "it's browser's own dep,
@@ -349,8 +349,13 @@ floors) resolves.
   hard-depends browser-tls13 so browser installs first regardless); unversioned (new dep).
   Carries **version floors** on the packages that get revved: `browser-tls13 (>= 1.1.2)`,
   `luna-tls13 (>= 1.1.3)`, `mail-tls13 (>= 1.3.2)` (rest unversioned). Bumping a floor requires
-  bumping tls-updates' own version too (1.0.6→1.0.7 for usbsettings, 1.0.7→1.0.8 for btgamepad) AND rebuilding
+  bumping tls-updates' own version too (1.0.6→1.0.7 for usbsettings, 1.0.7→1.0.8 for btgamepad,
+  1.0.8→1.0.9 to drag usbsettings to 1.0.8) AND rebuilding
   the ipk so its control Depends match the index — else on-device opkg won't pull the new deps.
+  **Rebuild recipe that works:** reuse the old ipk's `debian-binary` and `data.tar.gz` members
+  **verbatim** (the payload is just a README and must not churn), rewrite only `./control`, repack
+  `control.tar.gz`, then `ar rc` in member order. Verify afterwards by unpack-diffing old vs new —
+  the ONLY difference should be `C:control`.
   Excludes QupZilla, Atlas and LunaCE. **Two members are deliberately not TLS fixes** —
   `com.webosarchive.usbsettings` and `org.webosarchive.btgamepad`, both added by community request as
   "part of making the device more modern". They are the wired and wireless halves of the same
@@ -431,7 +436,7 @@ floors) resolves.
   `"Icon": .../assets/icons/bt-gamepad.png` (the ipk's own control Source has no Icon — index is the
   curated copy, per the pattern above).
 
-- **`com.webosarchive.usbsettings`** ("USB Settings", **1.0.7**, arch `all`, TouchPad only) — Enyo app
+- **`com.webosarchive.usbsettings`** ("USB Settings", **1.0.8**, arch `all`, TouchPad only) — Enyo app
   + JS bridge service + a root upstart daemon (`usbctl-watchd`) controlling the USB port: **USB host
   mode (OTG)** for keyboards / game controllers / flash drives, **high-power devices** (e.g. a
   DualShock 4 over USB — enable before plugging in), and **USB storage** mount/unmount with live
@@ -456,9 +461,16 @@ floors) resolves.
     Preware/WOSQI. Everything else in the diff is version strings (verified: 22 files, 3 changed,
     all three just version bumps apart from that one line). Note `removable:false` governs the
     *launcher* UI only; Preware/ipkg removal still runs prerm normally — worth confirming on device.
+  - **1.0.7 → 1.0.8 is a one-line `usbctl-watchd.sh` fix** (verified by unpack-diff: 4 files differ,
+    3 of them version strings in appinfo/packageinfo/control; postinst and prerm **unchanged**).
+    `power_apply()` used to force config 1 only on devices whose `bConfigurationValue` reads `"0"`
+    (a DS4, which asks for 500mA against the root hub's ~390mA budget). Some pads — a DragonRise was
+    the report — get rejected outright and read **EMPTY** instead, so they were skipped. Now it
+    matches `"0"` OR empty, and still skips anything already configured (`"1"`+). Shipping it needed
+    the meta bumped **1.0.8 → 1.0.9** with the floor moved to `usbsettings (>= 1.0.8)`.
   - **It is a member of the TouchPad `tls-updates` meta** (community request) even though it is not
     TLS-related — "part of making the device more modern". Added as
-    `com.webosarchive.usbsettings (>= 1.0.7)` at the END of the Depends list; it is self-contained and
+    `com.webosarchive.usbsettings (>= 1.0.8)` at the END of the Depends list; it is self-contained and
     order-independent, so position is cosmetic. Adding it required bumping the meta **1.0.6 → 1.0.7**
     AND rebuilding the meta ipk so its control `Depends` match the index — verified by an automated
     check that now compares every meta's control `Version`/`Depends` against its index stanza.
@@ -550,11 +562,13 @@ title suffix, bold not-for-TouchPad lead. `Min 2.2.4` deliberately excludes an u
 bugs): (1) **no two stanzas share name+version+arch** — the ipkg dedupe trap; (2) **simulate
 `loadPackage` per device** (TouchPad 3.0.5 / CE 3.1.0 / Pre3 2.2.4 / Veer 2.2.4+2.2.0 / Pre2
 2.2.4+2.1.0) and assert every visible package's deps are also visible. That second check is what
-found `curl-tls13`'s and `mail-tls13`'s stale deps. Current result — 33 stanzas, all valid:
+found `curl-tls13`'s and `mail-tls13`'s stale deps. The visibility check also verifies **version
+floors** resolve against what the feed actually ships, not just that the dep is visible. Current
+result — 34 stanzas, all valid:
 
 ```
-TouchPad 3.0.5    27 visible  one-tap: tls-updates        deps OK
-TouchPad CE 3.1.0 27 visible  one-tap: tls-updates        deps OK
+TouchPad 3.0.5    28 visible  one-tap: tls-updates        deps OK
+TouchPad CE 3.1.0 28 visible  one-tap: tls-updates        deps OK
 Pre3 2.2.4        20 visible  one-tap: tls-updates-phone  deps OK
 Veer 2.2.4        11 visible  one-tap: tls-updates-phone  deps OK
 Pre2 2.2.4        11 visible  one-tap: tls-updates-phone  deps OK
