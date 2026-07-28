@@ -4,7 +4,7 @@ Guidance + hard-won context for this repo. Read this first when resuming.
 
 ## Current state / next steps (resume here)
 
-The feed (27 pkgs) is built and live. A freshly-Doctored 3.0.x TouchPad can:
+The feed (28 pkgs) is built and live. A freshly-Doctored 3.0.x TouchPad can:
 enable Dev Mode → WOSQI-install **Preware 1.9.17** (in the feed; carries the modernize feed in
 its postinst) → Update Feeds → install **`org.webosarchive.tls-updates`** (the recommended one-tap
 "TLS 1.3 Updates" bundle: SSL/TLS stack + root certs + NTP clock sync + mail/mojomail fix + Help
@@ -168,7 +168,7 @@ floors) resolves.
   `c931…` (the bricked one). No hostnames set, so they're hard to tell apart — check health first
   (`hostname`, version, `ps | grep LunaSysMgr`, installed pkgs) before patching.
 
-## Package inventory (live feed = 27 packages)
+## Package inventory (live feed = 28 packages)
 
 - **nizovn stack** (hand-curated stanzas): cacert, glibc, openssl, qt5* (`qt5qpaplugins` **1.0.4**,
   qt5 5.9.7-0, qt5sdk 1.0.2), qtwebbrowser, `qupzilla` (**2.3.1**), squid (kept for old phones,
@@ -286,6 +286,16 @@ floors) resolves.
   early if index.html contains `Redirecting to Atlas` or `index.html.webosce-orig` exists, and prerm
   refuses to restore over an index.html that no longer carries the `OPEN-IN-ATLAS` marker. `Type:
   Patch`, Category Browser, icon atlas.png, RestartLuna.
+
+- **`org.webosarchive.btgamepad`** ("Bluetooth Gamepad Support", **1.1.0**, armv7) — delivered
+  pre-built by the user in `add-to-feed/` together with a hand-written `Packages-stanza.txt`; added
+  index-only (ipk kept as-delivered, md5/size in the stanza already matched). Interposes the stock
+  unfinished Bluetooth HID path via `libpmbtgamepad.so` + a udev rule under
+  `/usr/palm/applications/org.webosarchive.btgamepad/files/` (no binary patch); DS4 / classic BR/EDR
+  pads pair under **Other** in Bluetooth settings. No `Depends`. `Type: Application`, Category
+  Modernize, Min 3.0.0 / Max 3.0.9, RestartDevice. The only thing we added to the delivered stanza was
+  `"Icon": .../assets/icons/bt-gamepad.png` (the ipk's own control Source has no Icon — index is the
+  curated copy, per the pattern above).
 
 ## Held in `staging/` (NOT in the live feed)
 
