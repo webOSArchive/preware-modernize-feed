@@ -4,12 +4,25 @@ Guidance + hard-won context for this repo. Read this first when resuming.
 
 ## Current state / next steps (resume here)
 
-The feed (28 pkgs) is built and live. A freshly-Doctored 3.0.x TouchPad can:
-enable Dev Mode → WOSQI-install **Preware 1.9.17** (in the feed; carries the modernize feed in
-its postinst) → Update Feeds → install **`org.webosarchive.tls-updates`** (the recommended one-tap
-"TLS 1.3 Updates" bundle: SSL/TLS stack + root certs + NTP clock sync + mail/mojomail fix + Help
-redirect + Enyo App Catalog; **no** QupZilla/LunaCE). Help app + content (help.webosarchive.org)
-work end-to-end.
+The feed (34 pkgs) is built, live and **hardware-verified on both device families from ONE feed URL**
+— TouchPad and webOS 2.2.4 phones use the same
+`http://stacks.webosarchive.org/feeds/modernize/ipkgs`.
+
+- **TouchPad (topaz):** verified with `tls-updates` **1.0.8**. Flow on a freshly-Doctored 3.0.x:
+  enable Dev Mode → WOSQI-install **Preware 1.9.17** (in the feed; carries the modernize feed in its
+  postinst) → Update Feeds → install **`org.webosarchive.tls-updates`** (the one-tap bundle: SSL/TLS
+  stack + root certs + NTP clock sync + mail/mojomail fix + Help redirect + Enyo App Catalog + USB
+  Settings + Bluetooth Gamepad Support; **no** QupZilla/Atlas/LunaCE). Help app + content
+  (help.webosarchive.org) work end-to-end.
+- **HP Pre 3 (mantaray): VERIFIED ON HARDWARE.** `org.webosarchive.tls-updates-phone` **1.0.0** →
+  the `*-phone` package family. This confirms the two values that were previously unverified guesses:
+  `DeviceCompatibility: "Pre3"` matches the real `modelNameAscii` (wrong string ⇒ the packages would
+  have been invisible in Preware), and the postinst board detection resolves a Pre 3 correctly
+  (wrong ⇒ it would have refused to patch). See "Phone support" below.
+- **HP Veer (broadway) and Palm Pre 2 (roadrunner): in the feed, NOT yet tested on hardware.** Same
+  merged packages, same detection path, different `case` arm — the plausible failure is a wrong
+  `modelNameAscii` (`"Veer"` / `"Pre2"`) making them invisible in Preware, which the
+  Preferences → *Ignore Device Compat.* toggle diagnoses in one step.
 
 **Atlas (modern browser) + "make Atlas default" patch, both in the feed:**
 `org.webosports.app.atlas` (**0.9.7**, WPE WebKit 2.52 browser, 103MB) and
@@ -39,7 +52,7 @@ PDK apps — QupZilla, nizovn Qt5 — launch normally, incl. under LunaCE; **1.1
 "certificate is not trusted"/error 4010 — the imap/pop/smtp launchers now pin TLS 1.2 + an RSA
 server cert), `downloadmgr-tls13 1.0.0` (**new** — RPATHs the system Download Manager /
 `/usr/bin/LunaDownloadMgr` onto the ssl11 curl so background downloads AND uploads reach modern
-HTTPS; depends browser-tls13), `tls-updates 1.0.6` (version-floors browser `>= 1.1.2` / luna
+HTTPS; depends browser-tls13), `tls-updates 1.0.8` (version-floors browser `>= 1.1.2` / usbsettings `>= 1.0.7` / btgamepad `>= 1.1.0` / luna
 `>= 1.1.3` / mail `>= 1.3.2`; also pulls in `ntpdate-sync` and now `downloadmgr-tls13` — apps break
 when the clock is wrong, TLS cert validity checks fail).
 
@@ -50,6 +63,10 @@ qt5's own floor); `qt5sdk → qt5 (>= 5.9.7-0)`; `qt5 → qt5qpaplugins (>= 1.0.
 earlier "leave the depends tree alone" stance for this chain (index-only edit; ipks kept as-delivered).
 
 **Open / TODO:**
+- **Veer (broadway) + Pre 2 (roadrunner)** — shipped and gated but never run on hardware. Test as for
+  the Pre 3. Worth capturing while a phone is attached:
+  `cat /etc/prefs/properties/machineName` per device, so the board-detection values are recorded
+  rather than inferred (only `roadrunner` has independent corroboration, from Preware's own source).
 - **`~/Projects/preware`** (Preware 1.9.17 source: version bump, http modernize feed, injected
   control.tar.gz postinst) is still **uncommitted** by the user's instruction — commit/push when ready.
 - **OTA / `swupdate-redirect`** held in `staging/` — needs the UpdateDaemon carrier/domain binary
@@ -118,6 +135,89 @@ for display). Keys that matter: `Type` (`Application`/`OS Application`/`Linux Ap
 (`RestartLuna`/`RestartDevice`). Preware parses `Source` with `.replace(/\\'/g,"'")` then
 `JSON.parse`, so `\'` is allowed; validate JSON in Python with the same replace.
 
+**⚠️ Wrong-device protection — how Preware actually gates (verified in `~/Projects/preware` source):**
+A user bricked a **webOS 2.2.4 phone** by installing the TouchPad TLS patches, because the
+`tls-updates` meta was gated but **every member package was wide open**. The gate is real and free —
+use it on anything device-specific.
+- `MinWebOSVersion`/`MaxWebOSVersion` → **hard filter, no user override.** `models/packages.js:450-461`
+  drops the package inside `loadPackage`, so it never enters the model: no group, no list, no search,
+  no install. Both bounds **inclusive** (`versionNewer`, `packages.js:879`, returns false on equal).
+  Only applies if `platformVersion` matches `/^[0-9:.-]+$/` (true on real devices).
+- `DeviceCompatibility` → **soft filter.** Same drop (`packages.js:465`) but gated on
+  `!prefs.get().ignoreDevices` — Preware Preferences has an "ignore devices" toggle. With it on the
+  package returns and install only shows a click-through "Incompatible Device" warning
+  (`pkg-view-assistant.js:416`). So Min/Max is the lock; DeviceCompatibility is the deterrent. Set both.
+- **Absent fields = wide open** (defaults `minWebOSVersion '1.0.0'`, `maxWebOSVersion '99.9.9'`,
+  `package.js:52-53`). This is the trap — silence is not a safe default.
+- The filter also applies to the **installed** list (`getStatusFile` → `parsePackages` → `loadPackage`),
+  so gating retroactively **hides an already-installed wrong-device package from Preware** — victims
+  need WOSQI/novacom to remove it. (Moot for a real brick: no UI, so no Preware anyway.)
+- **Gating is index-only and needs NO version bump** — `Source` is re-read on Update Feeds; only ipk
+  contents/deps need a bump. Cheapest fix in the repo.
+- **WOSQI and direct `ipkg install` ignore all of this** (no feed metadata). The only cover there is a
+  version guard at the TOP of `postinst`, before any launcher edit — the payload alone is inert, the
+  wiring is what breaks things. Not yet implemented; `mojomail-imap-tagfix`'s md5-guard is the
+  in-repo precedent for the idea.
+- Precedent for the two-sided fence: `com.palm.app.findapps` (Min 2.2.4 / **Max 2.9.9**) vs
+  `com.palm.app.enyo-findapps` (Min 3.0.0). Give the 2.x line `Max 2.9.9` so the mistake can't run
+  the other direction.
+- **Use `Max 3.9.9`, NOT `3.0.9`.** Community convention (from 122 curated stanzas in the old
+  `ipkg.preware.net/webos-internals` feed) is to fence the top of the major line: `1.9.9` / `2.9.9` /
+  `3.9.9`. A `3.0.9` max would **hide the package from any device reporting 3.1.0** — exactly what
+  `staging/org.webosce.luna-update` ("webOS CE 3.1.0") sets the version string to. All TouchPad-gated
+  stanzas here were moved 3.0.9 → 3.9.9 for this reason.
+
+**Hardware (not OS-version) detection — two layers, both verified:**
+- **Feed level = `DeviceCompatibility`**, matched as an **exact string** against
+  `Mojo.Environment.DeviceInfo.modelNameAscii` (`packages.js:466`, `devices.include(...)`). The only
+  values used in the wild (mined from the old webos-internals feed) are:
+  **`Pre`, `Pre2`, `Pre3`, `Pixi`, `Veer`, `TouchPad`** — note `Pre2`/`Pre3` have **no space**.
+  Preware's own code corroborates (`'Veer'`, `'Pixi'`, `'Pre2'`, and `indexOf('TouchPad') == 0`), and
+  **`Pre3` + `TouchPad` are now confirmed on hardware** — packages appeared and installed on a real
+  Pre 3 and TouchPad, and a wrong string here makes a package silently invisible in Preware.
+  `Veer` / `Pre2` are still unconfirmed on hardware.
+  - Preware **rewrites** `modelNameAscii` to `"Pre2"` when the machine name is `roadrunner`
+    (`pkg-load-assistant.js:138`) — a Pre2 does not report `"Pre2"` natively. The fixup happens
+    inside Preware, which is where the filter runs, so `"Pre2"` is the right stanza value; just don't
+    assume it's an OS-level truth.
+  - ⚠️ **`"Touchpad Go"` (lowercase p), used in ~12 stanzas here, matches nothing** — the compare is
+    exact, Preware tests `indexOf('TouchPad') == 0`, and the string appears nowhere in the old feed.
+    It's inert rather than harmful (real TouchPads still match on `"TouchPad"`). Unverified guess for
+    a real Go/opal is `"TouchPad Go"`; needs one to test before "fixing" it.
+- **postinst level = `/etc/prefs/properties/machineName`** — a plain file, `cat`-able as root. This is
+  exactly what Preware's own ipkgservice does for `getMachineName`
+  (`~/Projects/preware/source/src/luna_methods.c:561`: `/bin/cat /etc/prefs/properties/machineName`).
+  This is the **hard** gate and the only one that covers WOSQI / direct `ipkg install`.
+  Board names: TouchPad = `tenderloin`/`topaz`, TouchPad Go = `shortloin`/`opal`, Pre3 = `mantaray`,
+  Veer = `broadway`, Pre2 = `roadrunner`. `roadrunner` is confirmed from Preware's source, and
+  **`mantaray` is confirmed by a working install on a real Pre 3** (though that does not distinguish
+  which source fired — machineName or the palm-build-info fallback). Still worth running
+  `cat /etc/prefs/properties/machineName` on a Veer and a Pre 2 to record their values.
+- **CPU/`Architecture` cannot separate these devices** — all four families are `armv7` (Pre2
+  OMAP3630/Cortex-A8; Pre3 + Veer MSM8x55, same CPU as each other; all TouchPads APQ8060), which is
+  why every upstream ipk is `_armv7`. The old feed's `all/armv6/armv7/i686` split separates the
+  original Pre/Pixi era, not this one. Stock OS versions: Pre3 2.2.4, Veer 2.2.0 (upgradable to
+  2.2.4), Pre2 2.1.0 (community 2.2.4) — so a `Min 2.2.4` gate would wrongly exclude un-upgraded
+  Veers and Pre2s. For the phone line, keep the version fence loose (2.x) and separate by hardware.
+
+**TouchPad-only vs device-common in the TLS chain** (per upstream
+`github.com/codepoet80/OpenSSL-legacyWebOS/tree/main/ipks`, which splits ipks into `topaz/` TouchPad,
+`mantaray/` Pre3, `roadrunner/` Pre2, `broadway/` Veer):
+- **Device-specific, built per device → gated 3.0.0–3.0.9 + DeviceCompatibility + `(TouchPad)` title
+  suffix + a bold do-not-install-on-a-phone lead in FullDescription:** `browser-tls13`,
+  `luna-tls13`, `downloadmgr-tls13`, `mojomail-imap-tagfix` (+ the `tls-updates` meta, already gated;
+  title retitled for when the phone bundle lands).
+- **Common to all devices → deliberately left ungated** so the 2.2.4 line reuses them as-is:
+  `curl-tls13`, `mail-tls13`, `ntpdate-sync`, `com.palm.rootcertsupdate`.
+- Those three commons all `Depends: org.webosinternals.browser-tls13`, which is now 3.0.x-gated —
+  so until the phone builds land in the feed a phone user picking `mail-tls13` hits an unresolvable
+  dep (a safe failure). It resolves itself once the phone `browser-tls13` builds are added.
+- **When adding the phone builds:** upstream reuses the **same package names** per device. Same-name
+  stanzas separated only by `DeviceCompatibility` do work on the happy path (each device's
+  `loadPackage` drops the others), BUT — Min/Max can't tell Pre3 from Veer (all 2.2.4), so the split
+  would rest entirely on the *bypassable* soft filter, and `package.js:452-465` **merges** the device
+  lists of same-name stanzas that both survive. Prefer **distinct package names per device**.
+
 **Editing descriptions / metadata:** safe to hand-edit `ipkgs/Packages` directly, then regenerate
 `Packages.gz` only (don't re-derive). If you also want the ipk's own control to match (so it's
 self-consistent), pull the edited `Source`/`Description` back into the build control and rebuild
@@ -168,7 +268,7 @@ floors) resolves.
   `c931…` (the bricked one). No hostnames set, so they're hard to tell apart — check health first
   (`hostname`, version, `ps | grep LunaSysMgr`, installed pkgs) before patching.
 
-## Package inventory (live feed = 28 packages)
+## Package inventory (single feed = 34 packages; phone packages detailed below)
 
 - **nizovn stack** (hand-curated stanzas): cacert, glibc, openssl, qt5* (`qt5qpaplugins` **1.0.4**,
   qt5 5.9.7-0, qt5sdk 1.0.2), qtwebbrowser, `qupzilla` (**2.3.1**), squid (kept for old phones,
@@ -202,6 +302,23 @@ floors) resolves.
     libpalmsocket mis-verifies ECDSA certs, so the imap/pop/smtp launchers now pin TLS 1.2 + an RSA
     server cert (full validation preserved; Gmail needs a Google App Password for IMAP). Same retag
     pattern; the v1.3.2 note is folded into the curated index FullDescription.
+  - **Upstream re-sync (`mojomail-imap-tagfix`, `ntpdate-sync`):** both were re-pulled from upstream
+    at the **same version** (1.0.0 / 2.0.1). Byte-diffing proved there is **no functional change for
+    the TouchPad** — every data file is identical, ntpdate's postinst/prerm are identical, and
+    mojomail's postinst only hoists the hardcoded `seek=991784` into an `IMAP_OFF=` variable (a
+    refactor so each board can carry its own patch offset). The real change is in the **controls**:
+    upstream dropped two bogus `Depends` — `mojomail-imap-tagfix → mail-tls13` and
+    `ntpdate-sync → browser-tls13` — neither of which was ever needed (both are standalone). Those
+    drops are now reflected in our index too. **Deliberately NOT version-bumped:** a bump would push
+    a no-op re-download to every existing user; at the same version, new installs get the new file and
+    existing installs are left alone (their installed control keeps the harmless old dep). This is the
+    one case where CLAUDE.md's "same version never shows as an update" gotcha is the *desired* behavior.
+  - ⚠️ **`curl-tls13` is NOT re-synced and upstream's differs.** Upstream shipped a genuinely different
+    build at the same version `1.0.1`: the bundled OpenSSL binaries differ (`libcrypto.so.1.1` ours
+    2720826B vs upstream 2739092B; `libssl.so.1.1` 576868B vs 566844B), plus the same `Depends:` drop.
+    Left alone on purpose — this package replaces `/usr/bin/curl`, which Synergy depends on, so
+    swapping it is a tested change, not a metadata one. `mail-tls13` by contrast is **byte-identical**
+    to upstream.
   - **`downloadmgr-tls13` 1.0.0** (added this session): RPATHs `/usr/bin/LunaDownloadMgr`
     (com.palm.downloadmanager) onto the ssl11 curl 7.61.1 (OpenSSL 1.1.1w) + a baked CA bundle, so
     background downloads/uploads negotiate TLS 1.2/1.3. No binary code patch (daemon links no
@@ -215,18 +332,29 @@ floors) resolves.
 - **`org.webosarchive.help-redirect`** (built + verified this session): patches `com.palm.app.help`
   `UrlManager.js` `helpUrl` (drives all content) + `HelpApp.js` palm.com domain check + device.do
   → `http://help.webosarchive.org`. Backs up `*.webosce-orig`, restores on removal, RestartLuna.
-- **`org.webosarchive.tls-updates`** ("TLS 1.3 Updates", **1.0.6**) — payload-free **meta** package.
-  Depends: rootcerts, browser-tls13, ntpdate-sync, curl/luna/downloadmgr/mail-tls13,
-  mojomail-imap-tagfix, help-redirect, enyo-findapps. `ntpdate-sync` sits **after** browser-tls13
-  (it's browser's own dep, so browser installs first regardless) and **before** luna — added because
-  apps break when the clock is wrong (TLS cert validity windows fail); left unversioned (new dep,
-  nothing to drag up). `downloadmgr-tls13` is ordered **after** luna-tls13 (per request; it also
+- **`org.webosarchive.tls-updates`** ("TLS 1.3 Updates (TouchPad)", **1.0.8**) — payload-free **meta**
+  package. Depends: rootcerts, browser-tls13, ntpdate-sync, curl/luna/downloadmgr/mail-tls13,
+  mojomail-imap-tagfix, help-redirect, enyo-findapps, **usbsettings (>= 1.0.7)**,
+  **btgamepad (>= 1.1.0)**. `ntpdate-sync` sits **after** browser-tls13
+  and **before** luna — added because apps break when the clock is wrong (TLS cert validity windows
+  fail); left unversioned (new dep, nothing to drag up). ⚠️ The old rationale "it's browser's own dep,
+  so browser installs first regardless" is **no longer true** — upstream dropped ntpdate-sync's
+  `Depends: browser-tls13` (it never needed it), so its position in this list is now the *only* thing
+  ordering it. Harmless either way: it just drops in an upstart job and needs no ssl11. `downloadmgr-tls13` is ordered **after** luna-tls13 (per request; it also
   hard-depends browser-tls13 so browser installs first regardless); unversioned (new dep).
   Carries **version floors** on the packages that get revved: `browser-tls13 (>= 1.1.2)`,
   `luna-tls13 (>= 1.1.3)`, `mail-tls13 (>= 1.3.2)` (rest unversioned). Bumping a floor requires
-  bumping tls-updates' own version too (1.0.5→1.0.6 here, for the new downloadmgr dep) AND rebuilding
+  bumping tls-updates' own version too (1.0.6→1.0.7 for usbsettings, 1.0.7→1.0.8 for btgamepad) AND rebuilding
   the ipk so its control Depends match the index — else on-device opkg won't pull the new deps.
-  Excludes QupZilla + LunaCE.
+  Excludes QupZilla, Atlas and LunaCE. **Two members are deliberately not TLS fixes** —
+  `com.webosarchive.usbsettings` and `org.webosarchive.btgamepad`, both added by community request as
+  "part of making the device more modern". They are the wired and wireless halves of the same
+  capability (USB Settings covers a DualShock 4 over USB via its high-power toggle; btgamepad pairs
+  classic Bluetooth HID pads), so shipping only one was the odd outcome. Both are TouchPad-only,
+  dependency-free and order-independent, so they sit at the END of the Depends list and their position
+  is cosmetic. Still deliberately OUTSIDE the roll-up: `atlas-default-browser` / `open-in-atlas` (they
+  are mutually exclusive with each other and Atlas is 103MB) and `vlcplayer` — the meta is not
+  "everything in the feed".
   `Type: OS Application`,
   no icon, **webOS 3.0.X only** (Min 3.0.0/Max 3.0.9, TouchPad/Touchpad Go), RestartDevice. This is
   the recommended one-tap install.
@@ -293,9 +421,156 @@ floors) resolves.
   unfinished Bluetooth HID path via `libpmbtgamepad.so` + a udev rule under
   `/usr/palm/applications/org.webosarchive.btgamepad/files/` (no binary patch); DS4 / classic BR/EDR
   pads pair under **Other** in Bluetooth settings. No `Depends`. `Type: Application`, Category
-  Modernize, Min 3.0.0 / Max 3.0.9, RestartDevice. The only thing we added to the delivered stanza was
+  Modernize, Min 3.0.0 / **Max 3.9.9**, RestartDevice. **Member of the TouchPad `tls-updates`
+  roll-up** as `btgamepad (>= 1.1.0)`. The only thing we added to the delivered stanza was
   `"Icon": .../assets/icons/bt-gamepad.png` (the ipk's own control Source has no Icon — index is the
   curated copy, per the pattern above).
+
+- **`com.webosarchive.usbsettings`** ("USB Settings", **1.0.7**, arch `all`, TouchPad only) — Enyo app
+  + JS bridge service + a root upstart daemon (`usbctl-watchd`) controlling the USB port: **USB host
+  mode (OTG)** for keyboards / game controllers / flash drives, **high-power devices** (e.g. a
+  DualShock 4 over USB — enable before plugging in), and **USB storage** mount/unmount with live
+  status and banner notifications on detect/mount/remove. Delivered as a palm-packaged ipk with a bare
+  control (no `Source`, generic "This is a webOS application.") — we inject a curated `Source`, same
+  as the findapps packages; the ipk is kept as-delivered. `Type: Application`, Category Modernize,
+  Min 3.0.0 / **Max 3.9.9**, `["TouchPad","Touchpad Go"]`, icon `usbsettings-icon.png` + screenshot
+  `usbsettings_screenshot.png`, License GPL. **`PostInstallFlags: RestartDevice`** — the postinst
+  registers the JS service under `/var/palm/ls2/{roles,services}/{pub,prv}` and the LS2 hub only reads
+  that map at startup, so the app cannot reach its service until a reboot (its UI has a "Helper not
+  running… reboot" row for exactly that state). prerm removes the daemon, upstart job and registration
+  and leaves mounted media alone.
+  - **1.0.3 → 1.0.6 made it genuinely self-contained.** 1.0.3 required
+    `/var/usr/bin/run-homebrew-js-service` from an external feed package; 1.0.6 ships its own
+    `usbctl-jsservice` shim (a thin wrapper over the *stock* `/bin/node` +
+    `/usr/palm/services/jsservicelauncher/bootstrap-node.js`), so every path it touches exists on a
+    bare 3.0.5 device. Hence **no `Depends` at all** — and none is possible anyway, since the thing it
+    used to need was never a package in this feed.
+  - **1.0.6 → 1.0.7 fixes exactly one thing:** `"removable": false` in appinfo.json, which hides the
+    launcher's Delete button. A launcher Delete skips `prerm`, which would leave the `usbctl-watchd`
+    daemon running and the LS2 registration in place — so it must be uninstalled through
+    Preware/WOSQI. Everything else in the diff is version strings (verified: 22 files, 3 changed,
+    all three just version bumps apart from that one line). Note `removable:false` governs the
+    *launcher* UI only; Preware/ipkg removal still runs prerm normally — worth confirming on device.
+  - **It is a member of the TouchPad `tls-updates` meta** (community request) even though it is not
+    TLS-related — "part of making the device more modern". Added as
+    `com.webosarchive.usbsettings (>= 1.0.7)` at the END of the Depends list; it is self-contained and
+    order-independent, so position is cosmetic. Adding it required bumping the meta **1.0.6 → 1.0.7**
+    AND rebuilding the meta ipk so its control `Depends` match the index — verified by an automated
+    check that now compares every meta's control `Version`/`Depends` against its index stanza.
+    ⚠️ **Re-cutting a meta in place at the same version bit us.** `tls-updates 1.0.7` was re-cut twice
+    at the same version number (moving the usbsettings floor 1.0.6→1.0.7, then adding btgamepad) on the
+    assumption it was still unpublished — but it had already been pushed to the server, because pushing
+    is the only way to test on a device. Preware compares the Version STRING only, so every device that
+    took an earlier 1.0.7 would have been stuck with it forever: same version, no update offered, new
+    members silently missing. Fixed by bumping to **1.0.8**, which supersedes every 1.0.7 variant and
+    whose floors (`usbsettings >= 1.0.7`, `btgamepad >= 1.1.0`) drag the members up too.
+    **Rule: once anything might be on the server, never re-cut at the same version — always bump.**
+    "It is not published yet" is an assumption to verify, not assume.)
+  - Note the id is `com.webosarchive.*`, not the preferred `org.webosarchive.*` — it is baked into
+    appinfo.json/serviceId, so renaming is not a feed-side edit.
+
+## Phone support (webOS 2.2.4: Pre3 / Veer / Pre2) — LIVE + **Pre 3 hardware-verified**
+
+**One feed URL for every device.** Phones and TouchPad both use
+`http://stacks.webosarchive.org/feeds/modernize/ipkgs`. No per-device feeds, no second URL.
+
+### Why the packaging had to change first (the thing that blocks every feed-layout fix)
+
+Upstream `OpenSSL-legacyWebOS` builds the four device-specific packages once per board but gives
+every build the **same `Package` + `Version` + `Architecture`** (`browser-tls13` / `1.1.2` / `armv7`,
+four times, different contents). ipkg 0.99.163's dedupe key is exactly that triple
+(`pkg_vec.c`, `pkg_vec_insert_merge`) and for feed parsing it takes the
+`/* just overwrite the old one */` branch — across **all** configured feeds, because they share one
+hash table. Preware then installs **by name** and lets ipkg choose the file. So per-board ipks that
+share a name can never coexist in any layout: a Pre 3 could be handed the topaz build, and
+`luna-tls13` (the package that edits `/etc/event.d/LunaSysMgr`) had no md5 guard to catch it.
+Dead ends also checked and ruled out: a **subdir in `Filename`** (`ipkg_download.c:118` builds the
+URL right, `:124` builds the local cache path wrong — ipkg's own source flags the bug), a **per-board
+`Architecture:`** (unknown arch is rejected unless every device's `ipkg.conf` declares it first — a
+bootstrapping problem), and **`Provides:`** (ipkg supports it; Preware's JS has zero references, so
+Preware reports an unmet dep).
+
+### The fix: one package per name, board chosen at install time
+
+`./build-ipks.sh phone` (a `phone` pseudo-device added to the upstream build script) emits
+**one ipk per package covering all three phones**, into `ipks/phone/`, named `*-phone`:
+
+| package | per-board content bundled |
+|---|---|
+| `org.webosinternals.browser-tls13-phone` **1.1.2** | 3 × `BrowserServer.rpath.<board>` (~250KB each); the 3.9MB ssl11 OpenSSL/curl payload is shared |
+| `org.webosinternals.downloadmgr-tls13-phone` **1.0.0** | 3 × `LunaDownloadMgr.rpath.<board>`; shared mail libcurl |
+| `org.webosinternals.luna-tls13-phone` **1.1.3** | none — the webOS 2.x build is payload-free and byte-identical across all three boards |
+| `org.webosinternals.mojomail-imap-tagfix-phone` **1.0.0** | none — postinst only (per-board byte offset + 2 md5s) |
+| `org.webosarchive.tls-updates-phone` **1.0.0** | payload-free one-tap meta (hand-built in THIS repo, like `tls-updates`) |
+
+Total **2.73MB** for all three phones (vs 6.7MB for the three separate per-board feeds this replaced).
+The postinst resolves the board from **`/etc/prefs/properties/machineName`** (what Preware's own
+ipkgservice reads — `luna_methods.c:561`), falling back to matching known board names in
+`/etc/palm-build-info`, then `case`s to that board's binary/offset/md5s.
+
+**This gives these packages the hard wrong-device guard they never had:** an unrecognised board —
+including a TouchPad — exits non-zero *before touching anything*. Feed metadata can't do that, since
+`DeviceCompatibility` is bypassable by a Preware pref. Verified 8/8 in a harness: each board selects
+its own correct values; topaz / bogus / missing all refuse; trailing-newline and the build-info
+fallback work. **Then verified end-to-end on a real HP Pre 3** — installing `tls-updates-phone`
+resolved, dispatched and patched correctly, which retires the two previously-unverified assumptions
+(`modelNameAscii == "Pre3"`, and a Pre 3 resolving to `mantaray`). Not yet exercised on
+broadway/roadrunner.
+
+**Single-board targets are untouched.** `tgt_suffix`/`tgt_boards` return `""`/`"$dev"` for a real
+board, so `ipks/topaz/` keeps the historical flat payload filenames. A rebuild-and-compare of all
+four topaz ipks showed only the intended `BS_FILE=`/`DL_FILE=` indirection line — the deployed
+TouchPad packages are unchanged.
+
+### The `Depends` consequence — commons can't name a device-specific provider
+
+`/usr/lib/ssl11` now comes from a differently *named* package per family (`browser-tls13` vs
+`browser-tls13-phone`), so the device-INDEPENDENT packages cannot declare it: one `Depends` line
+can't name both, and declaring either makes the package uninstallable on the other family. So
+`mail-tls13` **and** `curl-tls13` now have empty `Depends` (upstream had already done this for
+`ntpdate-sync`; `mojomail-imap-tagfix`'s bogus `mail-tls13` dep is gone too). Both postinsts already
+refuse (`exit 1`) unless `/usr/lib/ssl11` is present, and the two `tls-updates*` metas supply the
+install ORDER. `mail-tls13` was rebuilt upstream for this (payload identical, one control line);
+`curl-tls13` had **only its control.tar.gz repacked** in this repo — deliberately NOT rebuilt from
+upstream, because upstream's same-version `1.0.1` carries different bundled OpenSSL binaries and this
+package replaces `/usr/bin/curl` that Synergy depends on.
+
+### Gating + the check to re-run
+
+Phone stanzas: `Min 2.2.4` / `Max 2.9.9` + `DeviceCompatibility ["Pre3","Veer","Pre2"]`, `(Phones)`
+title suffix, bold not-for-TouchPad lead. `Min 2.2.4` deliberately excludes an un-upgraded Veer
+(2.2.0) or Pre 2 (2.1.0) — their stock binaries differ from what the patches were built against.
+
+**After ANY change to gates, names or versions, re-run both checks** (they have each caught real
+bugs): (1) **no two stanzas share name+version+arch** — the ipkg dedupe trap; (2) **simulate
+`loadPackage` per device** (TouchPad 3.0.5 / CE 3.1.0 / Pre3 2.2.4 / Veer 2.2.4+2.2.0 / Pre2
+2.2.4+2.1.0) and assert every visible package's deps are also visible. That second check is what
+found `curl-tls13`'s and `mail-tls13`'s stale deps. Current result — 33 stanzas, all valid:
+
+```
+TouchPad 3.0.5    27 visible  one-tap: tls-updates        deps OK
+TouchPad CE 3.1.0 27 visible  one-tap: tls-updates        deps OK
+Pre3 2.2.4        20 visible  one-tap: tls-updates-phone  deps OK
+Veer 2.2.4        11 visible  one-tap: tls-updates-phone  deps OK
+Pre2 2.2.4        11 visible  one-tap: tls-updates-phone  deps OK
+Veer 2.2.0         3 visible  one-tap: (none)             deps OK
+Pre2 2.1.0         3 visible  one-tap: (none)             deps OK
+```
+
+### Two pre-existing drifts in `OpenSSL-legacyWebOS` (NOT caused by these changes)
+
+Found by rebuilding topaz and diffing against the committed ipks; both confirmed via `git diff` to be
+untouched by this work. Worth fixing upstream sometime:
+- `ipks/topaz/downloadmgr-tls13`'s committed control lacks the `on $PRODUCT` / `($dev)` strings the
+  current script emits — that ipk was built from an older script.
+- `ipks/topaz/luna-tls13` ships a **457,924B** `setcpushares-pdk.wrap`, but the repo's committed
+  prebuilt `setcpushares-pdk-wrap.bin` is **382,496B**. The shipped one was cross-compiled with
+  PalmPDK; any build without `/opt/PalmPDK` silently substitutes the smaller prebuilt. Rebuilding
+  luna for topaz on a host without the toolchain therefore changes that payload.
+- Build host needs GNU `ar` (`brew install binutils`) and `patchelf`; the stock Palm binaries under
+  `devices/<board>/` are gitignored. `prebuilt_rpath()` was added so `phone` can be rebuilt without
+  them by reusing the already-RPATH'd binary from the committed per-board ipk — verified bit-identical
+  to all six shipped binaries.
 
 ## Held in `staging/` (NOT in the live feed)
 
