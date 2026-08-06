@@ -4,7 +4,7 @@ Guidance + hard-won context for this repo. Read this first when resuming.
 
 ## Current state / next steps (resume here)
 
-The feed (34 pkgs) is built, live and **hardware-verified on both device families from ONE feed URL**
+The feed (35 pkgs) is built, live and **hardware-verified on both device families from ONE feed URL**
 — TouchPad and webOS 2.2.4 phones use the same
 `http://stacks.webosarchive.org/feeds/modernize/ipkgs`.
 
@@ -277,7 +277,7 @@ floors) resolves.
   `c931…` (the bricked one). No hostnames set, so they're hard to tell apart — check health first
   (`hostname`, version, `ps | grep LunaSysMgr`, installed pkgs) before patching.
 
-## Package inventory (single feed = 34 packages; phone packages detailed below)
+## Package inventory (single feed = 35 packages; phone packages detailed below)
 
 - **nizovn stack** (hand-curated stanzas): cacert, glibc, openssl, qt5* (`qt5qpaplugins` **1.0.4**,
   qt5 5.9.7-0, qt5sdk 1.0.2), qtwebbrowser, `qupzilla` (**2.3.1**), squid (kept for old phones,
@@ -341,10 +341,10 @@ floors) resolves.
 - **`org.webosarchive.help-redirect`** (built + verified this session): patches `com.palm.app.help`
   `UrlManager.js` `helpUrl` (drives all content) + `HelpApp.js` palm.com domain check + device.do
   → `http://help.webosarchive.org`. Backs up `*.webosce-orig`, restores on removal, RestartLuna.
-- **`org.webosarchive.tls-updates`** ("TLS 1.3 Updates (TouchPad)", **1.0.10**) — payload-free **meta**
+- **`org.webosarchive.tls-updates`** ("TLS 1.3 Updates (TouchPad)", **1.0.13**) — payload-free **meta**
   package. Depends: rootcerts, browser-tls13, ntpdate-sync, curl/luna/downloadmgr/mail-tls13,
-  mojomail-imap-tagfix, help-redirect, enyo-findapps, **usbsettings (>= 1.1.0)**,
-  **btgamepad (>= 1.1.0)**. `ntpdate-sync` sits **after** browser-tls13
+  mojomail-imap-tagfix, help-redirect, enyo-findapps, **usbsettings (>= 1.1.8)**,
+  **btgamepad (>= 1.1.0)**, **accountsapp** (unversioned — new in 1.0.13). `ntpdate-sync` sits **after** browser-tls13
   and **before** luna — added because apps break when the clock is wrong (TLS cert validity windows
   fail); left unversioned (new dep, nothing to drag up). ⚠️ The old rationale "it's browser's own dep,
   so browser installs first regardless" is **no longer true** — upstream dropped ntpdate-sync's
@@ -357,6 +357,9 @@ floors) resolves.
   1.0.7→1.0.8 for btgamepad, 1.0.8→1.0.9 to drag usbsettings to 1.0.8, 1.0.9→1.0.10 to drag
   usbsettings to 1.1.0) AND rebuilding
   the ipk so its control Depends match the index — else on-device opkg won't pull the new deps.
+  Adding a plain (unversioned) new member is the same story minus the floor: **1.0.12→1.0.13**
+  added `org.webosarchive.accountsapp` to Depends and still required the version bump + control
+  rebuild, since Preware only offers an update when the Version string itself changes.
   **Rebuild recipe that works:** reuse the old ipk's `debian-binary` and `data.tar.gz` members
   **verbatim** (the payload is just a README and must not churn), rewrite only `./control`, repack
   `control.tar.gz`, then `ar rc` in member order. Verify afterwards by unpack-diffing old vs new —
@@ -508,6 +511,41 @@ floors) resolves.
   - Note the id is `com.webosarchive.*`, not the preferred `org.webosarchive.*` — it is baked into
     appinfo.json/serviceId, so renaming is not a feed-side edit.
 
+- **`org.webosarchive.accountsapp`** ("Accounts (Community Build)", **3.1.0**, arch `all`,
+  delivered pre-built by the user as `org.webosarchive.accountsapp_3.1.0_all.ipk`) — replaces the
+  stock Accounts app (`com.palm.app.accounts`) with the webOS-ports/LG open-source Enyo 1.0 build,
+  re-enabling System account management (sign in, name/email/password, public username, devices on
+  the account, sign out from Settings > Accounts) against the **community account endpoint**. Needs
+  the companion webOS Account app to actually host the account — without it the Accounts row simply
+  stays greyed out, same as stock. Added index-only; ipk kept as-delivered (its own control has no
+  `Source` block, generic `Description: Accounts (webOS Archive build)` — same pattern as
+  `com.palm.app.findapps`/`usbsettings`: index carries the curated `Source`, ipk untouched).
+  - **`Depends: org.webosinternals.browser-tls13, org.webosinternals.luna-tls13`** (both
+    unversioned) — per the user's instruction. The app runs as an Enyo app under the LunaSysMgr
+    WebKit host and talks to the community endpoint over HTTPS, which only works once luna-tls13
+    (and its own dependency browser-tls13) are installed.
+  - **postinst is TouchPad-only by its own hard guard**, independent of feed gating: it reads
+    `/etc/palm-build-info` and refuses (`exit 1`) unless the version starts with `3.0` — so a webOS
+    2.x phone *or* webOS CE 3.1.0 gets a clean refusal rather than a broken Accounts app, even under
+    WOSQI/`ipkg install` where feed metadata is not consulted. Backs the stock app up to
+    `/media/cryptofs/webosarchive-accounts/stock-app.tar` (skipped if a stock backup already exists
+    or the app already in place is our own build — detected via a marker file,
+    `source/palmID/UsernameDialog.js`, unique to this build) and restores it on `prerm`, reading the
+    install path from a state marker rather than the (by-then-deleted) staged payload — the bug this
+    avoids: a prerm that reads `dest.txt` from the staged payload finds nothing once postinst has
+    cleaned it up, so it silently skips the restore. Guards against a second uninstall call
+    (confirmed to happen under WOSQI) turning a completed restore into a missing app directory.
+  - **Feed-level gate:** `Min 3.0.0` / `Max 3.9.9`, matching the same convention as
+    `com.palm.app.enyo-findapps`/`btgamepad`/`usbsettings` (no `DeviceCompatibility` needed — the
+    Min/Max hard filter alone is TouchPad-exclusive since no phone reports 3.x). This is
+    deliberately looser than the postinst's own `3.0.x`-only check, which is fine: feed visibility
+    just needs to keep phones out, the postinst is the second, stricter layer that also catches CE.
+  - `PostInstallFlags`/`PostUpdateFlags`/`PostRemoveFlags` all `RestartLuna` (postinst/prerm both log
+    "restart the UI to pick up the new app JS" rather than reloading it themselves — same
+    single-end-restart pattern as every other patch in this feed, see the mid-batch restart lesson).
+  - **Added as a new (unversioned) member of `org.webosarchive.tls-updates`**, bumping the meta
+    **1.0.12 → 1.0.13** — see the TLS 1.2/1.3 chain bullet above.
+
 ## Phone support (webOS 2.2.4: Pre3 / Veer / Pre2) — LIVE + **Pre 3 hardware-verified**
 
 **One feed URL for every device.** Phones and TouchPad both use
@@ -586,11 +624,11 @@ bugs): (1) **no two stanzas share name+version+arch** — the ipkg dedupe trap; 
 2.2.4+2.1.0) and assert every visible package's deps are also visible. That second check is what
 found `curl-tls13`'s and `mail-tls13`'s stale deps. The visibility check also verifies **version
 floors** resolve against what the feed actually ships, not just that the dep is visible. Current
-result — 34 stanzas, all valid:
+result — 35 stanzas, all valid:
 
 ```
-TouchPad 3.0.5    28 visible  one-tap: tls-updates        deps OK
-TouchPad CE 3.1.0 28 visible  one-tap: tls-updates        deps OK
+TouchPad 3.0.5    29 visible  one-tap: tls-updates        deps OK
+TouchPad CE 3.1.0 29 visible  one-tap: tls-updates        deps OK
 Pre3 2.2.4        20 visible  one-tap: tls-updates-phone  deps OK
 Veer 2.2.4        11 visible  one-tap: tls-updates-phone  deps OK
 Pre2 2.2.4        11 visible  one-tap: tls-updates-phone  deps OK
