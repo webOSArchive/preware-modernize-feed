@@ -259,7 +259,7 @@ MD5Sum: 154036178ac730ecbc25eac2271243d0
 Size: 384602
 Filename: org.webosinternals.preware_1.9.18_arm.ipk
 Description: Preware homebrew package manager
-Maintainer: N/A <nobody@example.com>
+Maintainer: webOS Archive
 Source: { "LastUpdated":"1786909743", "Type":"Application", "Feed":"WOSA Modernize", "Category":"Modernize", "Title":"Preware", "FullDescription":"Preware, the webOS homebrew package manager (1.9.18). This build adds and enables the webOS Archive Modernize feed (TLS 1.2/1.3, root certificates, QupZilla, webOS CE) in the default feed set.", "PostInstallFlags":"RestartLuna", "PostUpdateFlags":"RestartLuna", "Icon":"http://stacks.webosarchive.org/feeds/modernize/ipkgs/assets/icons/preware-icon.png" }
 
 Package: org.webosarchive.help-redirect
