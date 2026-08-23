@@ -25,7 +25,7 @@ The feed (35 pkgs) is built, live and **hardware-verified on both device familie
   Preferences → *Ignore Device Compat.* toggle diagnoses in one step.
 
 **Atlas (modern browser) + "make Atlas default" patch, both in the feed:**
-`org.webosports.app.atlas` (**0.9.10**, WPE WebKit 2.52 browser, 103MB) and
+`org.webosports.app.atlas` (**0.9.11**, WPE WebKit 2.52 browser, 103MB) and
 `org.webosarchive.atlas-default-browser` (**1.0.0**, the redirect+hide patch). Dep chain:
 `atlas-default-browser → org.webosports.app.atlas → org.webosarchive.tls-updates` (Atlas links the
 ssl11 OpenSSL 1.1 stack for HTTPS). Installing the patch from the feed on a fresh device pulls Atlas
@@ -432,7 +432,7 @@ floors) resolves.
   `Type: OS Application`,
   no icon, **webOS 3.0.X only** (Min 3.0.0/Max 3.0.9, TouchPad/Touchpad Go), RestartDevice. This is
   the recommended one-tap install.
-- **`org.webosports.app.atlas`** ("Atlas", **0.9.10**, WPE WebKit 2.52 browser, **103MB**, arch `all`)
+- **`org.webosports.app.atlas`** ("Atlas", **0.9.11**, WPE WebKit 2.52 browser, **103MB**, arch `all`)
   — the modern browser, shipped as **TWO index stanzas over ONE ipk** (see below). **We repackage the
   upstream WebOS Ports ipk on every bump**, rebuilding **only `control.tar.gz`** and keeping every
   other ar member byte-identical. What we change in the control: add the Preware `Source` block (Feed
@@ -463,11 +463,24 @@ floors) resolves.
     the flag on removal).
   - **Version history in the feed:** 0.9.7 → 0.9.8 → (0.9.9 shipped and was **reverted** to 0.9.8 —
     a WPE engine regression upstream, packaging verified sound, see the `atlas-0-9-9-known-engine-bug`
-    memory) → **0.9.10** (current). 0.9.10 drops the self-triggering engine watchdog 0.9.8 added (it
-    could not tell a hung engine from an idle one and was reloading cards mid-session), replaces it
-    with a user-triggered **Restart Browser Engine** menu item, and folds in 0.9.9's fresh-install GPU
-    fix (`libEGL.so` is now bundled as a fallback — the one new file in the payload). **The WPE engine
-    binary is byte-identical to 0.9.8/0.9.9**; this release is app + installer only.
+    memory) → 0.9.10 → **0.9.11** (current). 0.9.10 dropped the self-triggering engine watchdog 0.9.8
+    added (it could not tell a hung engine from an idle one and was reloading cards mid-session),
+    replaced it with a user-triggered **Restart Browser Engine** menu item, and folded in 0.9.9's
+    fresh-install GPU fix (`libEGL.so` bundled as a fallback); its WPE engine binary was
+    byte-identical to 0.9.8/0.9.9, i.e. app + installer only.
+  - **0.9.11 is the mirror image of 0.9.10: engine-only, app untouched.** It fixes the freeze
+    upstream had been calling the "GPU wedge" at its source — not the GPU at all, but three defects in
+    the engine's own plumbing (the frame channel closing a socket WebKit already owned; frame
+    acknowledgements accumulating in a buffer nothing drained, blocking mid-frame after a few hundred
+    frames; and a leftover debug hook sitting on the signal JavaScriptCore uses to coordinate GC,
+    deadlocking the JS heap). Upstream's before/after on one device: froze after 8 page loads vs 64
+    heavy page loads + a 12-minute animation soak clean. Restart Browser Engine stays as a backstop.
+    **Verified by hashing every payload file in both ipks: exactly 3 of 1678 differ** —
+    `appinfo.json` (version + changelog), `deviceroot/wpe-252/BrowserServer-atlas`, and
+    `deviceroot/wpe-252/lib/libWPEBackend-atlas.so`. postinst/prerm and the two `pm*.script` members
+    are byte-identical to 0.9.10, and the upstream build is again `PKG_TARGET=feed` (checked, not
+    assumed). So the repackage was the standard one — control.tar.gz only — with no new surprises.
+    **Not yet run on hardware.**
   - Its postinst lays the WPE engine (runs in place on cryptofs deviceroot), stages the device Adreno
     driver to the versioned GPU sonames (falling back to the bundled copy), symlinks
     `/var/atlas252 → deviceroot/wpe-252`, installs the NPAPI adapter
