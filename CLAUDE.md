@@ -25,7 +25,7 @@ The feed (35 pkgs) is built, live and **hardware-verified on both device familie
   Preferences → *Ignore Device Compat.* toggle diagnoses in one step.
 
 **Atlas (modern browser) + "make Atlas default" patch, both in the feed:**
-`org.webosports.app.atlas` (**0.9.7**, WPE WebKit 2.52 browser, 103MB) and
+`org.webosports.app.atlas` (**0.9.10**, WPE WebKit 2.52 browser, 103MB) and
 `org.webosarchive.atlas-default-browser` (**1.0.0**, the redirect+hide patch). Dep chain:
 `atlas-default-browser → org.webosports.app.atlas → org.webosarchive.tls-updates` (Atlas links the
 ssl11 OpenSSL 1.1 stack for HTTPS). Installing the patch from the feed on a fresh device pulls Atlas
@@ -420,19 +420,42 @@ floors) resolves.
   `Type: OS Application`,
   no icon, **webOS 3.0.X only** (Min 3.0.0/Max 3.0.9, TouchPad/Touchpad Go), RestartDevice. This is
   the recommended one-tap install.
-- **`org.webosports.app.atlas`** ("Atlas", **0.9.7**, WPE WebKit 2.52 browser, **103MB**, arch `all`)
-  — the modern browser. **We repackaged the upstream WebOS Ports ipk** (index+control curated;
-  `data.tar.gz` kept byte-identical — only control.tar.gz rebuilt): (1) added `Depends:
-  org.webosarchive.tls-updates` to its **control** (Atlas links `/usr/lib/ssl11` OpenSSL 1.1 for
-  HTTPS; the dep pulls the whole TLS stack), (2) added a Preware `Source` block (Feed "WOSA
-  Modernize", Category Browser, icon `atlas.png` extracted from the app), (3) **removed the
-  `killall LunaSysMgr` from BOTH postinst and prerm** (see the reboot-fix lesson below) — the reload
-  is now deferred to Preware's `PostInstallFlags`/`PostRemoveFlags` (RestartLuna). Its postinst lays
+- **`org.webosports.app.atlas`** ("Atlas", **0.9.10**, WPE WebKit 2.52 browser, **103MB**, arch `all`)
+  — the modern browser. **We repackage the upstream WebOS Ports ipk on every bump** (index+control
+  curated; every other ar member kept byte-identical — only control.tar.gz rebuilt): (1) add
+  `Depends: org.webosarchive.tls-updates` to its **control** (Atlas links `/usr/lib/ssl11` OpenSSL
+  1.1 for HTTPS; the dep pulls the whole TLS stack — **upstream's control carries NO `Depends` at
+  all**, so this is ours to add every time), (2) add a Preware `Source` block (Feed "WOSA
+  Modernize", Category Browser, icon `atlas.png` extracted from the app). Step (3) of the original
+  repack — **removing the `killall LunaSysMgr` from postinst and prerm** (see the mid-batch restart
+  lesson below) — **is now done upstream**: the build script rewrites a `PKG_TARGET=` line, and the
+  ipks the user delivers for this feed are built `PKG_TARGET=feed`, which skips the restart in
+  postinst and never restarts from prerm at all. Still worth a `grep -n killall` on any new build.
+  ⚠️ Newer upstream ipks also carry two extra ar members (`pmPostInstall.script`, `pmPreRemove.script`,
+  for the Palm installer); keep them — repack with all five members, `ar rc out.ipk debian-binary
+  control.tar.gz data.tar.gz pmPostInstall.script pmPreRemove.script`, then verify by unpack-diffing
+  against the delivered ipk: the ONLY member that may differ is `control.tar.gz`. Its postinst lays
   the WPE engine (runs in place on cryptofs deviceroot), copies the device Adreno driver to the
   versioned GPU sonames, symlinks `/var/atlas252 → deviceroot/wpe-252`, installs the NPAPI adapter
   (`/usr/lib/BrowserPlugins/BrowserAdapterAtlas.so`), upstart jobs (`/etc/event.d/atlas` +
   `atlas-sensord`), db8 kinds (`org.webosports.logins`/`autofill`), and ls2 roles
   (`/usr/share/ls2/roles/{prv,pub}/org.webosports.browserserver.json`). **Verified on device.**
+  - **Restart flags: `RestartDevice`** for `PostInstallFlags`/`PostUpdateFlags` (per the user,
+    2026-08-23 — a Luna restart alone is not enough to bring the new engine up); `PostRemoveFlags`
+    stays `RestartLuna`. This supersedes the earlier all-`RestartLuna` setting.
+  - **Version history in the feed:** 0.9.7 → 0.9.8 → (0.9.9 shipped and was **reverted** to 0.9.8:
+    a WPE engine regression upstream, packaging verified sound — see the `atlas-0-9-9-known-engine-bug`
+    memory) → **0.9.10** (current). 0.9.10 drops the self-triggering engine watchdog that 0.9.8 added
+    (it could not tell a hung engine from an idle one and was restarting cards mid-session), replaces
+    it with a user-triggered **Restart Browser Engine** menu item, and folds in 0.9.9's fresh-install
+    GPU-driver fix (`libEGL.so` is now bundled in the payload as a fallback). **The WPE engine binary
+    is byte-identical to 0.9.8/0.9.9** — this release is app + installer only.
+  - ⚠️ **0.9.10 claims "installs on webOS 3.1.0" and the feed does NOT deliver that**, because the
+    fix is upstream dropping the hard `Depends` (Atlas now accepts the OpenSSL 1.1 package *or* the
+    `tls-updates` bundle above it) and we add `Depends: org.webosarchive.tls-updates` back — which is
+    invisible at 3.1.0 (`Max 3.0.9`). So the per-device check's one CE 3.1.0 dep gap is now also the
+    thing blocking 0.9.10's headline fix. Kept as-is on the user's instruction ("no change to
+    depends"); folding it in means resolving the CE 3.1.0 gate drift in Open/TODO, not editing Atlas.
 - **`org.webosarchive.atlas-default-browser`** ("Make Atlas the default browser", **1.0.0**) — the
   new-style redirect+hide patch. `Depends: org.webosports.app.atlas`. **Self-contained (no AUSMT)**,
   same backup/restore pattern as help-redirect (the legacy Advanced-Browser/Isis patches this
