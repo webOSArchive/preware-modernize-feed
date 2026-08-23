@@ -50,14 +50,18 @@ Latest revs (deployed): `browser-tls13 1.1.2`, `luna-tls13 1.1.3` (1.1.0 was fau
 PDK apps — QupZilla, nizovn Qt5 — launch normally, incl. under LunaCE; **1.1.3** current),
 `mail-tls13 1.3.2` (**1.3.2** fixes Gmail/ECDSA-cert IMAP/POP sign-in that falsely failed with
 "certificate is not trusted"/error 4010 — the imap/pop/smtp launchers now pin TLS 1.2 + an RSA
-server cert), `downloadmgr-tls13 1.0.0` (**new** — RPATHs the system Download Manager /
+server cert), `downloadmgr-tls13 1.1.0` (RPATHs the system Download Manager /
 `/usr/bin/LunaDownloadMgr` onto the ssl11 curl so background downloads AND uploads reach modern
-HTTPS; depends browser-tls13), `usbsettings 1.1.0` (**new** — auto-arms the OTG controller the first
+HTTPS; depends browser-tls13. **1.1.0** adds the one-byte code patch that stops the SIGSEGV in
+`curl_multi_remove_handle`, and repairs a poisoned uninstall restore point — see the package
+bullet), `usbsettings 1.1.0` (**new** — auto-arms the OTG controller the first
 time the port goes idle, fixing a hard hang some devices hit on their first-ever OTG cable insert;
 adds a live connected-device list with device-type icons via a new `usbdevmon` helper binary, and a
-USB Reset button to recover a wedged connection without a full reboot), `tls-updates 1.0.10`
-(version-floors browser `>= 1.1.2` / usbsettings `>= 1.1.0` / btgamepad `>= 1.1.0` / luna
-`>= 1.1.3` / mail `>= 1.3.2`; also pulls in `ntpdate-sync` and now `downloadmgr-tls13` — apps break
+USB Reset button to recover a wedged connection without a full reboot),
+`com.palm.app.backup 3.1.0` (**new** — see below), `tls-updates 1.0.15`
+(version-floors browser `>= 1.1.2` / usbsettings `>= 1.1.8` / btgamepad `>= 1.1.0` / luna
+`>= 1.1.3` / mail `>= 1.3.2` / **downloadmgr `>= 1.1.0`**; also pulls in `ntpdate-sync`,
+`downloadmgr-tls13`, `accountsapp` and — **new in 1.0.15** — `com.palm.app.backup` — apps break
 when the clock is wrong, TLS cert validity checks fail).
 
 QupZilla/Qt5 chain now carries version floors so installing QupZilla drags the Qt5 stack up:
@@ -67,6 +71,16 @@ qt5's own floor); `qt5sdk → qt5 (>= 5.9.7-0)`; `qt5 → qt5qpaplugins (>= 1.0.
 earlier "leave the depends tree alone" stance for this chain (index-only edit; ipks kept as-delivered).
 
 **Open / TODO:**
+- **CE 3.1.0 gate drift** — TouchPad stanzas sit at `Max 3.0.9` while the three Atlas ones sit at
+  `3.9.9`, so on a `3.1.0` device Atlas is visible and its `tls-updates` dep is not. See the
+  ⚠️ paragraph under the per-device visibility table.
+- **`accountsapp` floor drift (pre-existing, found 2026-08-23, NOT introduced by the backup work)** —
+  `org.webosarchive.accountsapp` is `Min 3.0.0` but its two deps (`browser-tls13`, `luna-tls13`) are
+  `Min 3.0.5`, so on a TouchPad reporting 3.0.0 / 3.0.2 / 3.0.4 the app is visible and neither dep is
+  → unresolvable, two dep gaps. Verified identical in `git show HEAD:ipkgs/Packages`, so it predates
+  this session. Fix is one index edit — raise accountsapp to `Min 3.0.5`, matching the rest of the TLS
+  chain — but it's a gating-policy call, so left alone. Only shows up if you sweep the whole 3.0.x
+  range; the standard check only simulates 3.0.5.
 - **Veer (broadway) + Pre 2 (roadrunner)** — shipped and gated but never run on hardware. Test as for
   the Pre 3. Worth capturing while a phone is attached:
   `cat /etc/prefs/properties/machineName` per device, so the board-detection values are recorded
@@ -172,7 +186,9 @@ use it on anything device-specific.
   `ipkg.preware.net/webos-internals` feed) is to fence the top of the major line: `1.9.9` / `2.9.9` /
   `3.9.9`. A `3.0.9` max would **hide the package from any device reporting 3.1.0** — exactly what
   `staging/org.webosce.luna-update` ("webOS CE 3.1.0") sets the version string to. All TouchPad-gated
-  stanzas here were moved 3.0.9 → 3.9.9 for this reason.
+  stanzas here were moved 3.0.9 → 3.9.9 for this reason. **One deliberate exception:**
+  `com.palm.app.backup` is pinned `Min 3.0.5` / `Max 3.0.5` because it swaps a ROM app and is only
+  safe on the build it was tested against — see its package bullet.
 
 **Hardware (not OS-version) detection — two layers, both verified:**
 - **Feed level = `DeviceCompatibility`**, matched as an **exact string** against
@@ -277,7 +293,7 @@ floors) resolves.
   `c931…` (the bricked one). No hostnames set, so they're hard to tell apart — check health first
   (`hostname`, version, `ps | grep LunaSysMgr`, installed pkgs) before patching.
 
-## Package inventory (single feed = 35 packages; phone packages detailed below)
+## Package inventory (single feed = 36 packages; phone packages detailed below)
 
 - **nizovn stack** (hand-curated stanzas): cacert, glibc, openssl, qt5* (`qt5qpaplugins` **1.0.4**,
   qt5 5.9.7-0, qt5sdk 1.0.2), qtwebbrowser, `qupzilla` (**2.3.1**), squid (kept for old phones,
@@ -328,23 +344,43 @@ floors) resolves.
     Left alone on purpose — this package replaces `/usr/bin/curl`, which Synergy depends on, so
     swapping it is a tested change, not a metadata one. `mail-tls13` by contrast is **byte-identical**
     to upstream.
-  - **`downloadmgr-tls13` 1.0.0** (added this session): RPATHs `/usr/bin/LunaDownloadMgr`
+  - **`downloadmgr-tls13` 1.0.0 → 1.1.0:** RPATHs `/usr/bin/LunaDownloadMgr`
     (com.palm.downloadmanager) onto the ssl11 curl 7.61.1 (OpenSSL 1.1.1w) + a baked CA bundle, so
-    background downloads/uploads negotiate TLS 1.2/1.3. No binary code patch (daemon links no
-    OpenSSL directly). `Depends: browser-tls13` (provides `/usr/lib/ssl11`); **remove BEFORE
-    browser-tls13**. Incoming ipk ships `Feed:"WebOS Internals"`/`Category:"System"` — retagged in
-    the index Source to `WOSA Modernize`/`Modernize` + icon `openssl_icon.png`/LastUpdated (ipk
-    kept as-delivered). No reboot needed.
+    background downloads/uploads negotiate TLS 1.2/1.3. `Depends: browser-tls13` (provides
+    `/usr/lib/ssl11`); **remove BEFORE browser-tls13**. Incoming ipk ships
+    `Feed:"WebOS Internals"`/`Category:"System"` — retagged in the index Source to
+    `WOSA Modernize`/`Modernize` + icon `openssl_icon.png`/LastUpdated (ipk kept as-delivered).
+    No reboot needed.
+    - **1.1.0 is a real bug-fix and 1.0.0 should be considered broken.** 1.0.0's claim of "no binary
+      code patch" turned out to be the bug: the daemon tears down and recreates its curl multi handle
+      every time the transfer list empties, which the stock libcurl 7.21.7 survives but which SIGSEGVs
+      in `curl_multi_remove_handle` on any modern libcurl. 1.1.0 adds a **one-byte** code patch
+      disabling that path — 28 crashes per 60 download cycles before, 0 after, with no change in
+      throughput, memory or fds. Payload is otherwise identical (same 541,910B binary, 1 byte apart).
+    - **It also repairs a poisoned uninstall restore point**, and the reasoning generalises to every
+      binary-swap package here: 1.0.0 guarded the "is this already ours?" test with an **md5 of the
+      current build**, so a *previous* version's RPATH'd binary was mistaken for stock and saved as
+      `/var/luna/LunaDownloadMgr.tls13-orig`. prerm would then restore that RPATH'd binary AND delete
+      `/usr/lib/ssl11dl` — leaving the daemon unable to load its libcurl at all, i.e. downloads dead.
+      1.1.0 identifies our builds by **content, not md5** (`grep -q ssl11dl` — every one of our builds
+      carries `DT_RPATH /usr/lib/ssl11dl:/usr/lib/ssl11`, no stock one mentions it), which covers every
+      earlier version and every board with no build-time bookkeeping. postinst discards a poisoned
+      restore point on sight; prerm refuses to restore one. Note **no backup is safer than a wrong
+      one**: with no backup, prerm correctly keeps ssl11dl in place.
+    - **`downloadmgr-tls13-phone` stays at 1.0.0 and that is correct** — per the user, the
+      `curl_multi_remove_handle` crash **does not occur on the phones**, so there is nothing for a
+      `phone` rebuild to fix and `tls-updates-phone` needs no floor. 1.1.0 is a topaz-only release.
 - **App Catalog:** `com.palm.app.findapps` (phones, Min 2.2.4/Max 2.9.9, icon hp-appcatalog),
   `com.palm.app.enyo-findapps` (TouchPad, Min 3.0.0). These were stock Palm-packaged ipks with no
   `Source` — we injected one.
 - **`org.webosarchive.help-redirect`** (built + verified this session): patches `com.palm.app.help`
   `UrlManager.js` `helpUrl` (drives all content) + `HelpApp.js` palm.com domain check + device.do
   → `http://help.webosarchive.org`. Backs up `*.webosce-orig`, restores on removal, RestartLuna.
-- **`org.webosarchive.tls-updates`** ("TLS 1.3 Updates (TouchPad)", **1.0.13**) — payload-free **meta**
-  package. Depends: rootcerts, browser-tls13, ntpdate-sync, curl/luna/downloadmgr/mail-tls13,
-  mojomail-imap-tagfix, help-redirect, enyo-findapps, **usbsettings (>= 1.1.8)**,
-  **btgamepad (>= 1.1.0)**, **accountsapp** (unversioned — new in 1.0.13). `ntpdate-sync` sits **after** browser-tls13
+- **`org.webosarchive.tls-updates`** ("TLS 1.3 Updates (TouchPad)", **1.0.15**) — payload-free **meta**
+  package. Depends: rootcerts, browser-tls13, ntpdate-sync, curl/luna/mail-tls13,
+  **downloadmgr-tls13 (>= 1.1.0)**, mojomail-imap-tagfix, help-redirect, enyo-findapps,
+  **usbsettings (>= 1.1.8)**, **btgamepad (>= 1.1.0)**, **accountsapp** (unversioned — new in 1.0.13),
+  **`com.palm.app.backup`** (unversioned — new in 1.0.15). `ntpdate-sync` sits **after** browser-tls13
   and **before** luna — added because apps break when the clock is wrong (TLS cert validity windows
   fail); left unversioned (new dep, nothing to drag up). ⚠️ The old rationale "it's browser's own dep,
   so browser installs first regardless" is **no longer true** — upstream dropped ntpdate-sync's
@@ -352,20 +388,28 @@ floors) resolves.
   ordering it. Harmless either way: it just drops in an upstart job and needs no ssl11. `downloadmgr-tls13` is ordered **after** luna-tls13 (per request; it also
   hard-depends browser-tls13 so browser installs first regardless); unversioned (new dep).
   Carries **version floors** on the packages that get revved: `browser-tls13 (>= 1.1.2)`,
-  `luna-tls13 (>= 1.1.3)`, `mail-tls13 (>= 1.3.2)`, `usbsettings (>= 1.1.0)` (rest unversioned).
+  `luna-tls13 (>= 1.1.3)`, `mail-tls13 (>= 1.3.2)`, `usbsettings (>= 1.1.8)`,
+  `btgamepad (>= 1.1.0)`, `downloadmgr-tls13 (>= 1.1.0)` (rest unversioned).
   Bumping a floor requires bumping tls-updates' own version too (1.0.6→1.0.7 for usbsettings,
   1.0.7→1.0.8 for btgamepad, 1.0.8→1.0.9 to drag usbsettings to 1.0.8, 1.0.9→1.0.10 to drag
-  usbsettings to 1.1.0) AND rebuilding
+  usbsettings to 1.1.0, **1.0.13→1.0.14 to drag downloadmgr to 1.1.0**) AND rebuilding
   the ipk so its control Depends match the index — else on-device opkg won't pull the new deps.
   Adding a plain (unversioned) new member is the same story minus the floor: **1.0.12→1.0.13**
   added `org.webosarchive.accountsapp` to Depends and still required the version bump + control
-  rebuild, since Preware only offers an update when the Version string itself changes.
+  rebuild, since Preware only offers an update when the Version string itself changes; **1.0.14→1.0.15**
+  added `com.palm.app.backup` the same way — and 1.0.14 was *already on the server* (verified by
+  `curl`-ing the live `Packages.gz` before touching anything, rather than assuming), so re-cutting it
+  in place was never an option.
+  (The 1.0.14 rebuild also brought the ipk control's
+  `MaxWebOSVersion` back in line with the index at `3.0.9` — the control had drifted to `3.9.9`.
+  Cosmetic only: Preware reads the index, not the ipk's control.)
   **Rebuild recipe that works:** reuse the old ipk's `debian-binary` and `data.tar.gz` members
   **verbatim** (the payload is just a README and must not churn), rewrite only `./control`, repack
   `control.tar.gz`, then `ar rc` in member order. Verify afterwards by unpack-diffing old vs new —
   the ONLY difference should be `C:control`.
-  Excludes QupZilla, Atlas and LunaCE. **Two members are deliberately not TLS fixes** —
-  `com.webosarchive.usbsettings` and `org.webosarchive.btgamepad`, both added by community request as
+  Excludes QupZilla, Atlas and LunaCE. **Several members are deliberately not TLS fixes** —
+  `com.webosarchive.usbsettings`, `org.webosarchive.btgamepad`, `org.webosarchive.accountsapp` and
+  `com.palm.app.backup`, all added by community request as
   "part of making the device more modern". They are the wired and wireless halves of the same
   capability (USB Settings covers a DualShock 4 over USB via its high-power toggle; btgamepad pairs
   classic Bluetooth HID pads), so shipping only one was the odd outcome. Both are TouchPad-only,
@@ -511,6 +555,64 @@ floors) resolves.
   - Note the id is `com.webosarchive.*`, not the preferred `org.webosarchive.*` — it is baked into
     appinfo.json/serviceId, so renaming is not a feed-side edit.
 
+- **`com.palm.app.backup`** ("Backup and Restore", **3.1.0**, arch `all`, TouchPad only) — a working
+  local Backup/Restore, bringing back what died when Palm's cloud went dark in 2013. Backups live on
+  the device in `/media/internal/webos-backups` as plain, content-addressed files you can copy off
+  over USB; deliberately **not encrypted** (stock encrypted with a device key that survives neither a
+  Doctor nor a move to another device — i.e. useless in exactly the two cases you'd want a backup).
+  Covers accounts/contacts/calendar, settings, browser data, app data, third-party registered data,
+  and the apps themselves (reinstalled on restore); media is opt-in per category.
+  - **This is the corrected rebuild of the package that was held back.** The earlier attempt was
+    `com.woce.backup` 1.0.0, staged and then pulled before release because the app id was wrong. The
+    id is now `com.palm.app.backup` and the version is **3.1.0 on purpose**: it must out-rank the
+    built-in `com.palm.app.backup` 2.0.0. The `fresh-ipks/` copy of the old build is gone.
+  - ⚠️ **Version alone does NOT beat a ROM app**, which is the interesting finding here and cost the
+    author a build. Installing to `/media/cryptofs` with a higher declared version, after a reboot,
+    still left the launcher tile, `getAppInfo` and the running card resolving to
+    `/usr/palm/applications/com.palm.app.backup` — the ROM copy simply wins. So the postinst
+    **moves the ROM app aside** (remount rw → `cp -a` to `/var/luna/com.palm.app.backup.woce-orig` →
+    `rm -rf`), same shape as the TLS packages' binary swaps, and prerm puts it back. Guards: only
+    moves a copy that is **not ours** (checked by content — `grep "webOS Community Edition"` in
+    appinfo.json, not by version, so it holds on a webOS CE image where the ROM copy *is* this app),
+    only when `/etc/palm-build-info` reports the targeted `3.0.5`, and never overwrites an existing
+    restore point.
+  - **`PostInstallFlags`/`PostUpdateFlags` = `RestartDevice`** (per the user; the ROM-app swap needs
+    it — this reverses the "RestartLuna is enough" note from the first pass, which predated the swap).
+    `PostRemoveFlags` = `RestartLuna`. Its postinst contains **no `killall LunaSysMgr` and no reboot**,
+    which is what makes it safe inside the meta's dependency batch (see the mid-batch restart lesson).
+  - **Gated to exactly one OS version: `Min 3.0.5` / `Max 3.0.5`** (per the user). This is the only
+    stanza in the feed pinned to a single version, and it deliberately departs from the `Max 3.9.9` /
+    `Max 3.0.9` convention — the justification is the ROM-app swap: the postinst is only willing to
+    move the built-in app aside on the build it was tested against, so there is no point offering the
+    package anywhere else. It lines the feed gate up with the postinst's own `EXPECT_OSVER=3.0.5`.
+    An exact pin is safe to express because **both bounds are inclusive**: `versionNewer` returns
+    false on equal (`packages.js:920`), and the two call sites are `versionNewer(platform, min)` for
+    the floor and `versionNewer(max, platform)` for the ceiling, so `min == max == "3.0.5"` admits
+    exactly 3.0.5 and nothing else. No `DeviceCompatibility` needed — 3.0.5 is TouchPad-exclusive, and
+    Min/Max is the *hard* filter with no user override, unlike the bypassable device list.
+    ⚠️ The flip side of a hard exact gate: if a device reported anything but a bare `3.0.5`, the
+    package would be invisible with **no way for the user to opt in**. Real TouchPads report `3.0.5`
+    (corroborated by `tls-updates` itself being `Min 3.0.5` and verified on hardware), so this is
+    sound — but it is the assumption the gate rests on.
+  - ⚠️ **The exact pin opens a theoretical hole in the roll-up:** the meta is `Min 3.0.5` / `Max 3.0.9`,
+    so on a device reporting 3.0.6–3.0.9 the meta would be visible while this member is not, and the
+    one-tap install would fail on an unresolvable dep. **No such webOS build exists** (the 3.x line is
+    3.0.0 / 3.0.2 / 3.0.4 / 3.0.5, then CE 3.1.0), so it is inert — but if the meta's `Max` is ever
+    relaxed, or a device turns up reporting 3.0.6+, either pin the meta to `Max 3.0.5` too or widen
+    this one. The per-device check below catches it if it ever becomes real.
+  - Unlike the earlier build, this ipk's control **already carries a curated `Source`** (the palm-packager
+    bare-control problem is gone). We still curate the index copy — the ipk's `Feed` is `"webOS Archive"`,
+    which is **not** the string Preware groups by, so the index sets `Feed:"WOSA Modernize"` /
+    `Category:"Modernize"` and overrides Section→`System`, Maintainer→`webOS Archive`. ipk kept
+    as-delivered. Icon `backup-icon.png` extracted from `usr/palm/applications/com.palm.app.backup/`.
+  - Root helper unchanged in shape from the first review: `/usr/bin/woce-backupd.js` +
+    `/etc/event.d/woce-backupd` outside the app bundle (`/media/cryptofs` is `nosuid`), `stop` →
+    `pkill` → `start` on upgrade (a bare `start` on a running job is a no-op). A non-root
+    `palm-install` skips postinst entirely and the app says so in a "limited mode" banner — so
+    Preware/WOSQI is the supported route. prerm restores `/etc/palm/mojodb.conf` from saved bytes and
+    keeps `/media/internal/webos-backups`.
+  - **Member of the TouchPad `tls-updates` roll-up** (unversioned, at the END of Depends —
+    self-contained and order-independent), which is what took the meta to **1.0.15**.
 - **`org.webosarchive.accountsapp`** ("Accounts (Community Build)", **3.1.0**, arch `all`,
   delivered pre-built by the user as `org.webosarchive.accountsapp_3.1.0_all.ipk`) — replaces the
   stock Accounts app (`com.palm.app.accounts`) with the webOS-ports/LG open-source Enyo 1.0 build,
@@ -624,17 +726,29 @@ bugs): (1) **no two stanzas share name+version+arch** — the ipkg dedupe trap; 
 2.2.4+2.1.0) and assert every visible package's deps are also visible. That second check is what
 found `curl-tls13`'s and `mail-tls13`'s stale deps. The visibility check also verifies **version
 floors** resolve against what the feed actually ships, not just that the dep is visible. Current
-result — 35 stanzas, all valid:
+result — 36 stanzas, all valid:
 
 ```
-TouchPad 3.0.5    29 visible  one-tap: tls-updates        deps OK
-TouchPad CE 3.1.0 29 visible  one-tap: tls-updates        deps OK
+TouchPad 3.0.5    30 visible  one-tap: tls-updates        deps OK
+TouchPad CE 3.1.0 15 visible  one-tap: (none)             1 pre-existing dep gap (below)
 Pre3 2.2.4        20 visible  one-tap: tls-updates-phone  deps OK
 Veer 2.2.4        11 visible  one-tap: tls-updates-phone  deps OK
 Pre2 2.2.4        11 visible  one-tap: tls-updates-phone  deps OK
 Veer 2.2.0         3 visible  one-tap: (none)             deps OK
 Pre2 2.1.0         3 visible  one-tap: (none)             deps OK
 ```
+
+⚠️ **The CE 3.1.0 row has regressed since this table was first written, and the cause is a gate
+drift CLAUDE.md still describes the other way round.** The "use `Max 3.9.9`, not `3.0.9`" convention
+recorded above is **no longer what the feed does**: every TouchPad stanza except the three Atlas ones
+now carries `Max 3.0.9`, so a device reporting `3.1.0` (i.e. `staging/org.webosce.luna-update`,
+"webOS CE 3.1.0") sees 15 packages instead of 29 and gets **no one-tap meta at all**. The concrete
+breakage the check catches: **Atlas (Max 3.9.9) stays visible but its `Depends:
+org.webosarchive.tls-updates` (Max 3.0.9) does not**, so Atlas is uninstallable there. This predates
+the downloadmgr/backup work (verified against `git show HEAD:ipkgs/Packages`) and is left alone
+because it's a gating-policy decision, not a packaging one: either move the TouchPad stanzas back to
+`3.9.9`, or accept that CE 3.1.0 is out of scope and drop Atlas to `3.0.9` for consistency. Pick one
+and fix the convention paragraph above to match.
 
 ### Feed vs `webOSArchive/OpenSSL-legacyWebOS` — verified in sync (2026-07-28)
 
