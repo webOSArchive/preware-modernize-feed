@@ -71,9 +71,13 @@ qt5's own floor); `qt5sdk → qt5 (>= 5.9.7-0)`; `qt5 → qt5qpaplugins (>= 1.0.
 earlier "leave the depends tree alone" stance for this chain (index-only edit; ipks kept as-delivered).
 
 **Open / TODO:**
-- **CE 3.1.0 gate drift** — TouchPad stanzas sit at `Max 3.0.9` while the three Atlas ones sit at
-  `3.9.9`, so on a `3.1.0` device Atlas is visible and its `tls-updates` dep is not. See the
-  ⚠️ paragraph under the per-device visibility table.
+- **CE 3.1.0 gate drift — the Atlas half is FIXED (2026-08-23), the rest stands.** Atlas no longer
+  has an unresolvable dep at 3.1.0: it now ships two stanzas and the 3.1.0 one carries no `Depends`
+  at all (see "Atlas's two stanzas"). What remains is a *coverage* question, not a broken dep — a
+  device reporting `3.1.0` sees 15 of 31 TouchPad packages and gets **no one-tap meta**, because every
+  TouchPad stanza except Atlas's sits at `Max 3.0.9`. Still a gating-policy call: either move them back
+  to `3.9.9`, or accept CE 3.1.0 as out of scope. The two `atlas-*` patch packages are `Max 3.9.9` and
+  depend only on Atlas, so they are fine either way.
 - **`accountsapp` floor drift (pre-existing, found 2026-08-23, NOT introduced by the backup work)** —
   `org.webosarchive.accountsapp` is `Min 3.0.0` but its two deps (`browser-tls13`, `luna-tls13`) are
   `Min 3.0.5`, so on a TouchPad reporting 3.0.0 / 3.0.2 / 3.0.4 the app is visible and neither dep is
@@ -160,14 +164,22 @@ for display). Keys that matter: `Type` (`Application`/`OS Application`/`Linux Ap
 A user bricked a **webOS 2.2.4 phone** by installing the TouchPad TLS patches, because the
 `tls-updates` meta was gated but **every member package was wide open**. The gate is real and free —
 use it on anything device-specific.
-- `MinWebOSVersion`/`MaxWebOSVersion` → **hard filter, no user override.** `models/packages.js:450-461`
-  drops the package inside `loadPackage`, so it never enters the model: no group, no list, no search,
-  no install. Both bounds **inclusive** (`versionNewer`, `packages.js:879`, returns false on equal).
-  Only applies if `platformVersion` matches `/^[0-9:.-]+$/` (true on real devices).
-- `DeviceCompatibility` → **soft filter.** Same drop (`packages.js:465`) but gated on
-  `!prefs.get().ignoreDevices` — Preware Preferences has an "ignore devices" toggle. With it on the
-  package returns and install only shows a click-through "Incompatible Device" warning
-  (`pkg-view-assistant.js:416`). So Min/Max is the lock; DeviceCompatibility is the deterrent. Set both.
+- ⚠️ **`Min` is hard; `Max` and `DeviceCompatibility` are SOFT.** An earlier version of this file said
+  "Min/Max → hard filter, no user override" — **that is wrong for `Max`** in the Preware 1.9.17 source
+  we ship, and the difference decides feed-layout questions (see the Atlas two-stanza trick below), so
+  re-read `loadPackage` rather than trusting a summary:
+  - **`MinWebOSVersion` → hard, no override.** `models/packages.js:464-469`, `if (versionNewer(platformVersion, minWebOSVersion)) return;` — NOT gated on any pref. Only applies
+    if `platformVersion` matches `/^[0-9:.-]+$/` (true on real devices).
+  - **`MaxWebOSVersion` → soft.** `packages.js:473` calls `newPkg.versionIncompatible()` but the whole
+    test is behind `if (!prefs.get().ignoreDevices ...)`. Same toggle as the device list.
+  - **`DeviceCompatibility` → soft.** `packages.js:479`, also behind `!prefs.get().ignoreDevices`.
+  - With the toggle on, the package returns and install shows only a click-through "Incompatible
+    Device" warning (`pkg-view-assistant.js:416`). So **`Min` is the only real lock**; `Max` and the
+    device list are deterrents. Set all three, but never rely on `Max` alone to keep a package off a
+    device that must never see it.
+  - Both bounds **inclusive**: `versionNewer(one, two)` returns true iff `one < two` (false on equal),
+    and the call sites are `versionNewer(platform, min)` / `versionNewer(max, platform)`, so
+    `Min == Max == "3.0.5"` admits exactly 3.0.5.
 - **Absent fields = wide open** (defaults `minWebOSVersion '1.0.0'`, `maxWebOSVersion '99.9.9'`,
   `package.js:52-53`). This is the trap — silence is not a safe default.
 - The filter also applies to the **installed** list (`getStatusFile` → `parsePackages` → `loadPackage`),
@@ -293,7 +305,7 @@ floors) resolves.
   `c931…` (the bricked one). No hostnames set, so they're hard to tell apart — check health first
   (`hostname`, version, `ps | grep LunaSysMgr`, installed pkgs) before patching.
 
-## Package inventory (single feed = 36 packages; phone packages detailed below)
+## Package inventory (single feed = 36 packages / 37 stanzas — Atlas has two; phones detailed below)
 
 - **nizovn stack** (hand-curated stanzas): cacert, glibc, openssl, qt5* (`qt5qpaplugins` **1.0.4**,
   qt5 5.9.7-0, qt5sdk 1.0.2), qtwebbrowser, `qupzilla` (**2.3.1**), squid (kept for old phones,
@@ -421,41 +433,89 @@ floors) resolves.
   no icon, **webOS 3.0.X only** (Min 3.0.0/Max 3.0.9, TouchPad/Touchpad Go), RestartDevice. This is
   the recommended one-tap install.
 - **`org.webosports.app.atlas`** ("Atlas", **0.9.10**, WPE WebKit 2.52 browser, **103MB**, arch `all`)
-  — the modern browser. **We repackage the upstream WebOS Ports ipk on every bump** (index+control
-  curated; every other ar member kept byte-identical — only control.tar.gz rebuilt): (1) add
-  `Depends: org.webosarchive.tls-updates` to its **control** (Atlas links `/usr/lib/ssl11` OpenSSL
-  1.1 for HTTPS; the dep pulls the whole TLS stack — **upstream's control carries NO `Depends` at
-  all**, so this is ours to add every time), (2) add a Preware `Source` block (Feed "WOSA
-  Modernize", Category Browser, icon `atlas.png` extracted from the app). Step (3) of the original
-  repack — **removing the `killall LunaSysMgr` from postinst and prerm** (see the mid-batch restart
-  lesson below) — **is now done upstream**: the build script rewrites a `PKG_TARGET=` line, and the
-  ipks the user delivers for this feed are built `PKG_TARGET=feed`, which skips the restart in
-  postinst and never restarts from prerm at all. Still worth a `grep -n killall` on any new build.
-  ⚠️ Newer upstream ipks also carry two extra ar members (`pmPostInstall.script`, `pmPreRemove.script`,
-  for the Palm installer); keep them — repack with all five members, `ar rc out.ipk debian-binary
-  control.tar.gz data.tar.gz pmPostInstall.script pmPreRemove.script`, then verify by unpack-diffing
-  against the delivered ipk: the ONLY member that may differ is `control.tar.gz`. Its postinst lays
-  the WPE engine (runs in place on cryptofs deviceroot), copies the device Adreno driver to the
-  versioned GPU sonames, symlinks `/var/atlas252 → deviceroot/wpe-252`, installs the NPAPI adapter
-  (`/usr/lib/BrowserPlugins/BrowserAdapterAtlas.so`), upstart jobs (`/etc/event.d/atlas` +
-  `atlas-sensord`), db8 kinds (`org.webosports.logins`/`autofill`), and ls2 roles
-  (`/usr/share/ls2/roles/{prv,pub}/org.webosports.browserserver.json`). **Verified on device.**
+  — the modern browser, shipped as **TWO index stanzas over ONE ipk** (see below). **We repackage the
+  upstream WebOS Ports ipk on every bump**, rebuilding **only `control.tar.gz`** and keeping every
+  other ar member byte-identical. What we change in the control: add the Preware `Source` block (Feed
+  "WOSA Modernize", Category Browser, icon `atlas.png`). That is *all* we change.
+  - ⚠️⚠️ **NEVER add `Depends:` to Atlas's control.** Upstream deliberately ships **no `Depends` at
+    all**, and that is load-bearing, not an oversight — see the two-stanza section. A previous pass
+    "helpfully" re-added `Depends: org.webosarchive.tls-updates` to the control and broke the design.
+    Preware installs by **local file** (`IPKGService.install(cb, filename, location)` →
+    `luna_methods.c:1692`, `ipkg -o /media/cryptofs/apps -force-overwrite install <path>`), so ipkg
+    reads **the ipk's own control** and would resolve *its* Depends from the feed — dragging the whole
+    TLS stack onto a 3.1.0 device that already has it. The dependency belongs in the **index only**,
+    where it can be gated per OS version.
+  - ⚠️ Do not put `MinWebOSVersion`/`MaxWebOSVersion` in the control either. The same filters run over
+    the **installed** list (`getStatusFile` → `parsePackages` → `loadPackage`), so a Min/Max in the
+    control can hide the already-installed app from Preware. Gating is the index's job.
+  - The old step "remove the `killall LunaSysMgr` from postinst and prerm" (mid-batch restart lesson
+    below) **is now handled upstream**: the build script rewrites a `PKG_TARGET=` line and the ipks
+    delivered for this feed are built `PKG_TARGET=feed`, which skips the restart in postinst and never
+    restarts from prerm. Still `grep -n killall` any new build to confirm.
+  - ⚠️ Newer upstream ipks carry **five** ar members — the usual three plus `pmPostInstall.script` and
+    `pmPreRemove.script` for the Palm installer. Keep them: repack as `ar rc out.ipk debian-binary
+    control.tar.gz data.tar.gz pmPostInstall.script pmPreRemove.script`, then verify by unpack-diffing
+    against the delivered ipk — **the only member that may differ is `control.tar.gz`**.
   - **Restart flags: `RestartDevice`** for `PostInstallFlags`/`PostUpdateFlags` (per the user,
-    2026-08-23 — a Luna restart alone is not enough to bring the new engine up); `PostRemoveFlags`
-    stays `RestartLuna`. This supersedes the earlier all-`RestartLuna` setting.
-  - **Version history in the feed:** 0.9.7 → 0.9.8 → (0.9.9 shipped and was **reverted** to 0.9.8:
-    a WPE engine regression upstream, packaging verified sound — see the `atlas-0-9-9-known-engine-bug`
-    memory) → **0.9.10** (current). 0.9.10 drops the self-triggering engine watchdog that 0.9.8 added
-    (it could not tell a hung engine from an idle one and was restarting cards mid-session), replaces
-    it with a user-triggered **Restart Browser Engine** menu item, and folds in 0.9.9's fresh-install
-    GPU-driver fix (`libEGL.so` is now bundled in the payload as a fallback). **The WPE engine binary
-    is byte-identical to 0.9.8/0.9.9** — this release is app + installer only.
-  - ⚠️ **0.9.10 claims "installs on webOS 3.1.0" and the feed does NOT deliver that**, because the
-    fix is upstream dropping the hard `Depends` (Atlas now accepts the OpenSSL 1.1 package *or* the
-    `tls-updates` bundle above it) and we add `Depends: org.webosarchive.tls-updates` back — which is
-    invisible at 3.1.0 (`Max 3.0.9`). So the per-device check's one CE 3.1.0 dep gap is now also the
-    thing blocking 0.9.10's headline fix. Kept as-is on the user's instruction ("no change to
-    depends"); folding it in means resolving the CE 3.1.0 gate drift in Open/TODO, not editing Atlas.
+    2026-08-23 — a Luna restart alone does not bring the new engine up); `PostRemoveFlags` stays
+    `RestartLuna`. Supersedes the earlier all-`RestartLuna` setting. Set them in **both** stanzas and
+    in the control (the control's copy is what the *installed* entry carries, so it is what governs
+    the flag on removal).
+  - **Version history in the feed:** 0.9.7 → 0.9.8 → (0.9.9 shipped and was **reverted** to 0.9.8 —
+    a WPE engine regression upstream, packaging verified sound, see the `atlas-0-9-9-known-engine-bug`
+    memory) → **0.9.10** (current). 0.9.10 drops the self-triggering engine watchdog 0.9.8 added (it
+    could not tell a hung engine from an idle one and was reloading cards mid-session), replaces it
+    with a user-triggered **Restart Browser Engine** menu item, and folds in 0.9.9's fresh-install GPU
+    fix (`libEGL.so` is now bundled as a fallback — the one new file in the payload). **The WPE engine
+    binary is byte-identical to 0.9.8/0.9.9**; this release is app + installer only.
+  - Its postinst lays the WPE engine (runs in place on cryptofs deviceroot), stages the device Adreno
+    driver to the versioned GPU sonames (falling back to the bundled copy), symlinks
+    `/var/atlas252 → deviceroot/wpe-252`, installs the NPAPI adapter
+    (`/usr/lib/BrowserPlugins/BrowserAdapterAtlas.so`), upstart jobs (`/etc/event.d/atlas` +
+    `atlas-sensord`), db8 kinds (`org.webosports.logins`/`autofill`), and ls2 roles
+    (`/usr/share/ls2/roles/{prv,pub}/org.webosports.browserserver.json`). **Verified on device.**
+
+### Atlas's two stanzas — a per-OS-version `Depends`, and why the ORDER matters
+
+**The requirement:** on webOS 3.0.5 Atlas needs `org.webosarchive.tls-updates` (it links
+`/usr/lib/ssl11` OpenSSL 1.1 for HTTPS). On **webOS CE 3.1.0 it must have NO depends** — that build
+already carries the stack, and pulling `tls-updates` there is what made the install fail outright
+(empty app folder, no launcher icon). One `Depends:` line cannot say both.
+
+**The fix:** two stanzas, same `Package`/`Version`/`Architecture`, **same `Filename` and `MD5Sum`**,
+differing only in gate + `Depends` + description:
+
+| order | gate | `Depends` |
+|---|---|---|
+| **FIRST** | `Min 3.1.0` / `Max 3.9.9` | *(none)* |
+| **SECOND** | `Min 3.0.5` / `Max 3.0.9` | `org.webosarchive.tls-updates` |
+
+**The 3.1.0 stanza MUST come first.** Preware keeps the **first** stanza of a given name and discards
+the rest: `loadPackage` (`packages.js:507`) finds the existing entry, calls `infoUpdate`, which for
+"neither installed, same version" hits *Replace Type 6* and `return false` — and the
+`this.infoLoadFromPkg(newPackage)` merge on that path is **commented out**, as is the depends-union
+branch in `infoLoadFromPkg` (`package.js:523-541`). The loser is inert; `loadPackage`'s return value
+is discarded by both call sites. So order alone decides. Combined with hard-`Min` / soft-`Max`:
+
+| device | pref | what happens |
+|---|---|---|
+| 3.0.5 | either | 3.1.0 stanza killed by the **hard Min** filter → 3.0.x stanza wins → **dep present** ✓ |
+| 3.1.0 | default | 3.0.x stanza killed by the Max filter → 3.1.0 stanza wins → **no dep** ✓ |
+| 3.1.0 | *ignore devices* ON | both survive → **first wins** → 3.1.0 stanza → **no dep** ✓ |
+
+Put the 3.0.x stanza first and that last row inverts, force-installing the TLS stack onto CE — the
+exact breakage 0.9.10 fixed. **Only `Min` is un-bypassable, so the stanza that must win on the device
+whose bound is a `Max` has to be first.**
+
+**Why this is safe against the ipkg dedupe trap** (name+version+arch is ipkg's dedupe key and it takes
+the "just overwrite the old one" branch): the trap is only dangerous when the colliding stanzas resolve
+to **different files** — the per-board `browser-tls13` problem that forced the `*-phone` rename. Here
+both stanzas name the **same `Filename` with the same `MD5Sum`**, so whichever ipkg keeps, it fetches
+the identical ipk. And because that ipk's control carries **no `Depends`**, ipkg never consults the
+feed entry for Atlas at all. Preware pre-resolves deps from its own model and installs the file
+directly. **So the duplicate-stanza check must test "same name+version+arch AND different file",
+not the name triple alone** — the check in this repo was updated accordingly.
+
 - **`org.webosarchive.atlas-default-browser`** ("Make Atlas the default browser", **1.0.0**) — the
   new-style redirect+hide patch. `Depends: org.webosports.app.atlas`. **Self-contained (no AUSMT)**,
   same backup/restore pattern as help-redirect (the legacy Advanced-Browser/Isis patches this
@@ -744,34 +804,47 @@ title suffix, bold not-for-TouchPad lead. `Min 2.2.4` deliberately excludes an u
 (2.2.0) or Pre 2 (2.1.0) — their stock binaries differ from what the patches were built against.
 
 **After ANY change to gates, names or versions, re-run both checks** (they have each caught real
-bugs): (1) **no two stanzas share name+version+arch** — the ipkg dedupe trap; (2) **simulate
+bugs): (1) **no two stanzas share name+version+arch *while pointing at different files*** — the ipkg
+dedupe trap. Note the qualifier: Atlas deliberately has two stanzas on one file, which is safe (see
+"Atlas's two stanzas"); a bare name-triple check would false-positive on it; (2) **simulate
 `loadPackage` per device** (TouchPad 3.0.5 / CE 3.1.0 / Pre3 2.2.4 / Veer 2.2.4+2.2.0 / Pre2
 2.2.4+2.1.0) and assert every visible package's deps are also visible. That second check is what
 found `curl-tls13`'s and `mail-tls13`'s stale deps. The visibility check also verifies **version
 floors** resolve against what the feed actually ships, not just that the dep is visible. Current
 result — 36 stanzas, all valid:
 
+Current result — **37 stanzas** (36 packages; Atlas has two), all valid, with the sweep now run at
+**both settings of the `ignoreDevices` pref** (added 2026-08-23, since `Max`/`DeviceCompatibility` are
+soft and only `Min` survives that toggle):
+
 ```
-TouchPad 3.0.5    30 visible  one-tap: tls-updates        deps OK
-TouchPad CE 3.1.0 15 visible  one-tap: (none)             1 pre-existing dep gap (below)
-Pre3 2.2.4        20 visible  one-tap: tls-updates-phone  deps OK
-Veer 2.2.4        11 visible  one-tap: tls-updates-phone  deps OK
-Pre2 2.2.4        11 visible  one-tap: tls-updates-phone  deps OK
-Veer 2.2.0         3 visible  one-tap: (none)             deps OK
-Pre2 2.1.0         3 visible  one-tap: (none)             deps OK
+ignoreDevices = OFF (default)
+TouchPad 3.0.5    30 visible  atlas deps: tls-updates  one-tap: tls-updates        deps OK
+TouchPad CE 3.1.0 15 visible  atlas deps: (none)       one-tap: (none)             deps OK
+Pre3 2.2.4        20 visible  atlas: not visible       one-tap: tls-updates-phone  deps OK
+Veer 2.2.4        11 visible  atlas: not visible       one-tap: tls-updates-phone  deps OK
+Pre2 2.2.4        11 visible  atlas: not visible       one-tap: tls-updates-phone  deps OK
+Veer 2.2.0         3 visible  atlas: not visible       one-tap: (none)             deps OK
+Pre2 2.1.0         3 visible  atlas: not visible       one-tap: (none)             deps OK
+
+ignoreDevices = ON
+TouchPad 3.0.5    36 visible  atlas deps: tls-updates                              deps OK
+TouchPad CE 3.1.0 36 visible  atlas deps: (none)                                   deps OK   <- order works
+Pre2 2.1.0         5 visible  squid -> glibc/openssl not visible (PRE-EXISTING, Min-gated)
 ```
 
-⚠️ **The CE 3.1.0 row has regressed since this table was first written, and the cause is a gate
-drift CLAUDE.md still describes the other way round.** The "use `Max 3.9.9`, not `3.0.9`" convention
-recorded above is **no longer what the feed does**: every TouchPad stanza except the three Atlas ones
-now carries `Max 3.0.9`, so a device reporting `3.1.0` (i.e. `staging/org.webosce.luna-update`,
-"webOS CE 3.1.0") sees 15 packages instead of 29 and gets **no one-tap meta at all**. The concrete
-breakage the check catches: **Atlas (Max 3.9.9) stays visible but its `Depends:
-org.webosarchive.tls-updates` (Max 3.0.9) does not**, so Atlas is uninstallable there. This predates
-the downloadmgr/backup work (verified against `git show HEAD:ipkgs/Packages`) and is left alone
-because it's a gating-policy decision, not a packaging one: either move the TouchPad stanzas back to
-`3.9.9`, or accept that CE 3.1.0 is out of scope and drop Atlas to `3.0.9` for consistency. Pick one
-and fix the convention paragraph above to match.
+The Atlas `deps:` column is the assertion that matters: **`tls-updates` at 3.0.5, nothing at 3.1.0, in
+both pref states.** The lone `squid` gap is pre-existing (verified against `git show HEAD~1:` at the
+time), appears only under `ignoreDevices` on a 2.1.0 Pre2, and is a `Min`-gate artifact of the nizovn
+stack, unrelated to anything here.
+
+⚠️ **CE 3.1.0 coverage.** The convention paragraph above says "use `Max 3.9.9`, not `3.0.9`", but
+every TouchPad stanza except Atlas's now carries `Max 3.0.9`, so a `3.1.0` device (i.e.
+`staging/org.webosce.luna-update`) sees 15 packages instead of 31 and gets **no one-tap meta**. The
+one thing this used to *break* — Atlas visible at 3.1.0 with its `tls-updates` dep invisible — was
+fixed on 2026-08-23 by giving Atlas a separate, dep-free 3.1.0 stanza. What is left is a policy
+choice, not a bug: move the TouchPad stanzas back to `3.9.9`, or declare CE 3.1.0 out of scope. Pick
+one and fix the convention paragraph to match.
 
 ### Feed vs `webOSArchive/OpenSSL-legacyWebOS` — verified in sync (2026-07-28)
 
