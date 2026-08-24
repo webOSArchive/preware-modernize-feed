@@ -277,6 +277,17 @@ remote — which splits ipks into `topaz/` TouchPad, `mantaray/` Pre3, `roadrunn
 self-consistent), pull the edited `Source`/`Description` back into the build control and rebuild
 the ipk (changes md5 → re-stanza). Editing only the index keeps ipk md5s unchanged → smaller deploy.
 
+**Sorting a package to the TOP of a Preware list — a leading space in `Source.Title`.** Verified in
+source and then **on device** (2026-08-24): Preware's default list sort is a raw
+`a.title.toLowerCase()` string compare with **no trim** (`models/packages.js:789`), and `title` is
+assigned straight from `Source.Title` untrimmed (`models/package.js:233`). A leading space (0x20)
+therefore sorts ahead of every letter and digit, which is how
+`" Synergy Revival Roll-up (Touchpad)"` sits above its 33 connectors when you search "Synergy".
+Search is unaffected — it is a substring `include()` on the lowercased title
+(`pkg-list-assistant.js:510`) — and the space does not render in the list row. ⚠️ **Do not "tidy" that
+leading space away**; it is load-bearing, and it is the only lever we have over list order, since
+Preware exposes no weight/priority field. Index-only, so it needs no version bump.
+
 **Offering updates (Preware update mechanics — cost us a session):**
 - **Preware compares the `Version` STRING only.** To ship an update you MUST bump the version number.
   Rebuilding an ipk *in place at the same version* (new md5, new content) will **never** show as an
@@ -922,6 +933,19 @@ group, new category). `Type`: `OS Application` for Part 1 + meta, `Application` 
 `PostInstallFlags`/`PostUpdateFlags`: **`RestartDevice`** for the meta, `generic` and every connector (new
 ls2 roles / dbus services, which the hub only reads at startup), `RestartLuna` for the Part 1 app and
 framework replacements; `PostRemoveFlags: RestartLuna` throughout.
+
+**Titles and icons (user's calls, 2026-08-24, index-only — no ipk was rebuilt for any of this).** The
+12 Part 1 app/framework/service packages are titled `<Name> (For Synergy Revival)`; the connectors are
+`<Service> (Synergy)`; the runtime is `Synergy Shared Runtime` and deliberately carries **no `Icon`**,
+so Preware shows its default box (same as `tls-updates`). The meta is
+**`" Synergy Revival Roll-up (Touchpad)"`** — note the deliberate leading space (see the sorting note
+above) and the user's spelling of "Touchpad" here, which differs from the `(TouchPad)` used elsewhere
+in the feed. Its description opens with "This roll-up installation prepares your 3.0.5 Touchpad for
+Synergy Revival." and it uses `assets/icons/synergy/synergy-rollup.png` (supplied by the user).
+`com.palm.app.accounts`'s index `Maintainer` is **`webOS Archive`**, not Herrie: that app started life
+as our `accountsapp` build and was given to him. The remaining Part 1 packages correctly credit him.
+`synergy-generic.png` (the cloud-auth icon) is now used only by `Flickr` — whose own icons are
+97–176-byte placeholders — and `Luna System UI`.
 
 **Not yet run on any hardware.** First test should be a 3.0.5 TouchPad: install `synergy-revival` from the
 feed (expect ~130MB before connectors, one reboot at the end), then one OAuth connector (Dropbox is the
