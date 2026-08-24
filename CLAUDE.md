@@ -424,7 +424,8 @@ connectors have two; phones detailed below)
 - **`org.webosarchive.help-redirect`** (built + verified this session): patches `com.palm.app.help`
   `UrlManager.js` `helpUrl` (drives all content) + `HelpApp.js` palm.com domain check + device.do
   → `http://help.webosarchive.org`. Backs up `*.webosce-orig`, restores on removal, RestartLuna.
-- **`org.webosarchive.tls-updates`** ("TLS 1.3 Updates (TouchPad)", **1.0.18**) — **meta** package
+- **`org.webosarchive.tls-updates`** (`" TLS 1.3 Updates (TouchPad)"` — ⚠️ deliberate leading
+  space, see the sorting note above; **1.0.18**) — **meta** package
   (README-only payload; it gained a `postinst` in 1.0.18, see below)
   package. Depends: rootcerts, browser-tls13, ntpdate-sync, curl/luna/mail-tls13,
   **downloadmgr-tls13 (>= 1.1.0)**, mojomail-imap-tagfix, help-redirect, enyo-findapps,
@@ -1052,6 +1053,9 @@ package replaces `/usr/bin/curl` that Synergy depends on.
 Phone stanzas: `Min 2.2.4` / `Max 2.9.9` + `DeviceCompatibility ["Pre3","Veer","Pre2"]`, `(Phones)`
 title suffix, bold not-for-TouchPad lead. `Min 2.2.4` deliberately excludes an un-upgraded Veer
 (2.2.0) or Pre 2 (2.1.0) — their stock binaries differ from what the patches were built against.
+
+**`tls-updates-phone`** is titled `" TLS 1.3 Updates (Phones)"` — ⚠️ deliberate leading space, same
+as the TouchPad meta, see the sorting note above.
 
 **`tls-updates-phone` 1.0.1 carries the phone meta's first version floor**
 (`luna-tls13-phone (>= 1.1.4)`); every other dep of that meta is still unversioned. It shipped at
