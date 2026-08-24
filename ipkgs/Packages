@@ -275,16 +275,16 @@ Maintainer: webOS Archive
 Source: { "Type":"Application", "Feed":"WOSA Modernize", "Category":"Modernize", "LastUpdated":"1782744397", "Title":"Help Content Redirect", "FullDescription":"Repoints the built-in Help app (com.palm.app.help) from the decommissioned help.palm.com to the webOS Archive community help server at http://help.webosarchive.org. Patches the Enyo help source (UrlManager.js base URL, plus the palm.com domain check and device.do link in HelpApp.js); all tips/clips/featured/search content derives from the base URL. Originals backed up and restored on removal. Restart Luna (or relaunch Help) to apply.", "MinWebOSVersion":"3.0.0", "MaxWebOSVersion":"3.0.9", "PostInstallFlags":"RestartLuna", "PostUpdateFlags":"RestartLuna", "Icon":"http://stacks.webosarchive.org/feeds/modernize/ipkgs/assets/icons/help.png" }
 
 Package: org.webosarchive.tls-updates
-Version: 1.0.17
-Depends: com.palm.rootcertsupdate, org.webosinternals.browser-tls13 (>= 1.1.2), org.webosinternals.ntpdate-sync, org.webosinternals.curl-tls13, org.webosinternals.luna-tls13 (>= 1.1.4), org.webosinternals.downloadmgr-tls13 (>= 1.1.0), org.webosinternals.mail-tls13 (>= 1.3.2), org.webosinternals.mojomail-imap-tagfix, org.webosarchive.help-redirect, com.palm.app.enyo-findapps, com.webosarchive.usbsettings (>= 1.1.9), org.webosarchive.btgamepad (>= 1.1.0), org.webosarchive.accountsapp, com.palm.app.backup
+Version: 1.0.18
+Depends: com.palm.rootcertsupdate, org.webosinternals.browser-tls13 (>= 1.1.2), org.webosinternals.ntpdate-sync, org.webosinternals.curl-tls13, org.webosinternals.luna-tls13 (>= 1.1.4), org.webosinternals.downloadmgr-tls13 (>= 1.1.0), org.webosinternals.mail-tls13 (>= 1.3.2), org.webosinternals.mojomail-imap-tagfix, org.webosarchive.help-redirect, com.palm.app.enyo-findapps, com.webosarchive.usbsettings (>= 1.1.9), org.webosarchive.btgamepad (>= 1.1.0), com.palm.app.accounts (>= 3.1.1), com.palm.app.backup
 Section: System
 Architecture: all
-MD5Sum: 0203084c14ff2b99e541e977203d4474
-Size: 2888
-Filename: org.webosarchive.tls-updates_1.0.17_all.ipk
+MD5Sum: 10d47cfd9825a6b8f46aae19cd1b3a4f
+Size: 4710
+Filename: org.webosarchive.tls-updates_1.0.18_all.ipk
 Description: TLS 1.3 Updates - SSL/TLS, root certs, App Catalog, Help, USB, gamepad, Accounts and Backup fixes
 Maintainer: webOS Archive
-Source: { "Type":"OS Application", "Feed":"WOSA Modernize", "Category":"Modernize", "LastUpdated":"1787603201", "Title":"TLS 1.3 Updates (TouchPad)", "FullDescription":"One-tap bundle of the safe webOS Archive modernization patches. Pulls in: modern OpenSSL 1.1.1w + TLS 1.2/1.3 for the browser, command-line curl, in-app WebKit (Mojo/Enyo), the mail client and the system Download Manager; updated Mozilla root certificates; NTP clock sync (so TLS certificate validity windows pass and apps work); the mojomail IMAP tag fix; the Help app redirect to help.webosarchive.org; and the Enyo App Catalog.<br><br>It also pulls the community Accounts app, which replaces the stock Accounts app and re-enables System account management (sign in, profile, devices, sign out) through the community account endpoint.<br><br>It also pulls <b>Backup and Restore</b>, which replaces the built-in Backup app -- that one has been dead since Palm's cloud servers went dark in 2013 -- with one that keeps backups on the device, in /media/internal/webos-backups, and can restore accounts, settings, application data and the applications themselves.<br><br>It also pulls two hardware-enablement packages that are not TLS fixes but are part of bringing the tablet up to date, both included by community request: <b>USB Settings</b> (USB host/OTG mode, high-power devices, USB storage mount/unmount, a live connected-device list and a USB reset -- for wired controllers, keyboards and flash drives) and <b>Bluetooth Gamepad Support</b> (pairs a DualShock 4 or other classic Bluetooth HID pad as a real gamepad). Between them, wired and wireless game controllers both work.<br><br>webOS 3.0.5 or higher (TouchPad) only. Does not install QupZilla, Atlas or LunaCE. The device reboots once at the end of the install.<br><br>Changelog:<br>1.0.17: require USB Settings 1.1.9 -- a mounted USB drive now appears at /media/usb, so it no longer shows up as an empty folder (with files copied into it going to internal storage instead of the stick) in Internalz Pro and other file managers.<br>1.0.16: require in-app TLS 1.1.4 -- a version-alignment build. On the TouchPad this changes only the wording of installer log messages; the functional fixes in 1.1.4 are for the webOS 2.x phones.<br>1.0.15: add Backup and Restore -- a working local backup/restore for the device, replacing the built-in app that has had nowhere to talk to since 2013.<br>1.0.14: require Download Manager TLS 1.3 1.1.0 -- fixes a crash that took the download service down roughly once every couple of dozen downloads, and repairs an uninstall restore point that could otherwise leave downloads dead.<br>1.0.13: add the community Accounts app -- replaces the stock Accounts app and re-enables System account management via the community endpoint.<br>1.0.12: require USB Settings 1.1.8 -- fixes a bug where the USB-monitor's controller check silently locked a gamepad away from any game launched afterward, and restores the 1.1.4 idle-daemon performance fix that a prior build had reverted.<br>1.0.11: require USB Settings 1.1.4 -- the idle USB-monitor daemon no longer forks a burst of processes once a second, fixing a game/frame-rate stutter it caused on some devices.<br>1.0.10: require USB Settings 1.1.0 -- auto-arms the OTG controller to fix a first-cable-insert hang, adds a live connected-device list, and adds a USB Reset button.<br>1.0.9: require USB Settings 1.0.8 -- high-power mode now also configures controllers the port left unconfigured.<br>1.0.8: add Bluetooth Gamepad Support to the bundle.<br>1.0.7: add USB Settings.<br>1.0.6: add the Download Manager TLS package.", "MinWebOSVersion":"3.0.5", "MaxWebOSVersion":"3.0.9", "PostInstallFlags":"RestartDevice", "PostUpdateFlags":"RestartDevice" }
+Source: { "Type":"OS Application", "Feed":"WOSA Modernize", "Category":"Modernize", "LastUpdated":"1787609034", "Title":"TLS 1.3 Updates (TouchPad)", "FullDescription":"One-tap bundle of the safe webOS Archive modernization patches. Pulls in: modern OpenSSL 1.1.1w + TLS 1.2/1.3 for the browser, command-line curl, in-app WebKit (Mojo/Enyo), the mail client and the system Download Manager; updated Mozilla root certificates; NTP clock sync (so TLS certificate validity windows pass and apps work); the mojomail IMAP tag fix; the Help app redirect to help.webosarchive.org; and the Enyo App Catalog.<br><br>It also pulls the community <b>Accounts</b> app (com.palm.app.accounts), which replaces the stock Accounts app and re-enables System account management -- sign in, profile, the devices on the account, sign out -- through the community account endpoint. It is the same build the webOS CE 3.1.0 release candidate ships, so the accounts list is captioned SYNERGY ACCOUNTS and is ready for the Synergy Revival connectors if you add them later.<br><br><b>If you already have Accounts (Community Build) installed, remove it first.</b> That package (org.webosarchive.accountsapp) came with this bundle up to 1.0.17 and is now retired: it replaces the same files and keeps its own saved copy of the original, so removing it after the new app is installed would quietly put the old Accounts app back. This bundle repairs both copies during install, so removing the retired package afterwards is safe -- but removing it first is cleaner.<br><br>Uninstalling the new Accounts app does not put HP's original back; the copy it replaced is kept as /media/cryptofs/core-apps-backup*.tar.<br><br>It also pulls <b>Backup and Restore</b>, which replaces the built-in Backup app -- that one has been dead since Palm's cloud servers went dark in 2013 -- with one that keeps backups on the device, in /media/internal/webos-backups, and can restore accounts, settings, application data and the applications themselves.<br><br>It also pulls two hardware-enablement packages that are not TLS fixes but are part of bringing the tablet up to date, both included by community request: <b>USB Settings</b> (USB host/OTG mode, high-power devices, USB storage mount/unmount, a live connected-device list and a USB reset -- for wired controllers, keyboards and flash drives) and <b>Bluetooth Gamepad Support</b> (pairs a DualShock 4 or other classic Bluetooth HID pad as a real gamepad). Between them, wired and wireless game controllers both work.<br><br>webOS 3.0.5 or higher (TouchPad) only. Does not install QupZilla, Atlas or LunaCE. The device reboots once at the end of the install.<br><br>Changelog:<br>1.0.18: replace the community Accounts app (org.webosarchive.accountsapp, now retired) with com.palm.app.accounts 3.1.1 -- the same app plus the SYNERGY ACCOUNTS grouping, the Delete Account Data page and the missing translations. If the retired package is still installed, uninstall it; this bundle makes that safe to do at any time.<br>1.0.17: require USB Settings 1.1.9 -- a mounted USB drive now appears at /media/usb, so it no longer shows up as an empty folder (with files copied into it going to internal storage instead of the stick) in Internalz Pro and other file managers.<br>1.0.16: require in-app TLS 1.1.4 -- a version-alignment build. On the TouchPad this changes only the wording of installer log messages; the functional fixes in 1.1.4 are for the webOS 2.x phones.<br>1.0.15: add Backup and Restore -- a working local backup/restore for the device, replacing the built-in app that has had nowhere to talk to since 2013.<br>1.0.14: require Download Manager TLS 1.3 1.1.0 -- fixes a crash that took the download service down roughly once every couple of dozen downloads, and repairs an uninstall restore point that could otherwise leave downloads dead.<br>1.0.13: add the community Accounts app -- replaces the stock Accounts app and re-enables System account management via the community endpoint.<br>1.0.12: require USB Settings 1.1.8 -- fixes a bug where the USB-monitor's controller check silently locked a gamepad away from any game launched afterward, and restores the 1.1.4 idle-daemon performance fix that a prior build had reverted.<br>1.0.11: require USB Settings 1.1.4 -- the idle USB-monitor daemon no longer forks a burst of processes once a second, fixing a game/frame-rate stutter it caused on some devices.<br>1.0.10: require USB Settings 1.1.0 -- auto-arms the OTG controller to fix a first-cable-insert hang, adds a live connected-device list, and adds a USB Reset button.<br>1.0.9: require USB Settings 1.0.8 -- high-power mode now also configures controllers the port left unconfigured.<br>1.0.8: add Bluetooth Gamepad Support to the bundle.<br>1.0.7: add USB Settings.<br>1.0.6: add the Download Manager TLS package.", "MinWebOSVersion":"3.0.5", "MaxWebOSVersion":"3.0.9", "PostInstallFlags":"RestartDevice", "PostUpdateFlags":"RestartDevice" }
 
 Package: org.webosports.app.atlas
 Version: 0.9.11
@@ -415,18 +415,6 @@ Description: USB Settings - toggle USB host (OTG), high-power devices, and USB s
 Maintainer: webOS Archive
 Source: { "Type":"Application", "Feed":"WOSA Modernize", "Category":"Modernize", "LastUpdated":"1787603201", "Title":"USB Settings", "FullDescription":"A Palm-style settings panel for the USB capabilities the TouchPad's OS hides.<br><br>Toggle <b>USB Host (OTG)</b> mode to use USB keyboards, game controllers and flash drives; enable <b>High-power devices</b> to run gear that draws more current than the port normally allows (such as a DualShock 4 over USB); and <b>mount / unmount USB storage</b> to browse a flash drive. Shows live status, a live list of connected devices (with icons for keyboard, mouse, gamepad and storage) while the panel is open, and posts a notification when a drive is detected, mounted or removed. A one-tap <b>USB Reset</b> recovers a device that stopped responding without a full reboot (refused while storage is mounted, so it can't yank a drive mid-use).<br><br>Self-contained: only uses capabilities and components already on the device, so it needs no other feeds. Adds no drivers, and there is no Bluetooth LE. Fully reversible.<br><br>Install <b>and uninstall via Preware / WebOS Quick Install</b>, then reboot. Do not use the launcher's Delete: it skips the cleanup script and would leave a background daemon running (the app hides its Delete button for this reason).<br><br>1.1.9: USB storage now mounts at <b>/media/usb</b> instead of a folder inside internal storage. Mounting under /media/internal made the drive look <i>empty</i> in Internalz Pro (and any file manager that reads the internal partition directly rather than through the mount table), and files copied into it silently went to internal storage instead of the stick. On a device whose root filesystem is still read-only, the old location is used as a fallback.<br>1.1.8: fixes a bug that made game controllers appear broken in OTHER apps -- the device monitor behind the \"input received\" indicator used to open each controller exclusively, silently starving every other reader, so a controller just verified here would then be dead in a game launched afterward. It now reads shared and never grabs, and releases as soon as the panel is no longer in front. Also restores the 1.1.4 daemon performance fix (builtins-only idle path) that an earlier build had inadvertently reverted.", "MinWebOSVersion":"3.0.0", "MaxWebOSVersion":"3.0.9", "PostInstallFlags":"RestartDevice", "PostUpdateFlags":"RestartDevice", "PostRemoveFlags":"RestartLuna", "License":"GPL", "Icon":"http://stacks.webosarchive.org/feeds/modernize/ipkgs/assets/icons/usbsettings-icon.png", "Screenshots":["http://stacks.webosarchive.org/feeds/modernize/ipkgs/assets/screenshots/usbsettings_screenshot.png"] }
 
-Package: org.webosarchive.accountsapp
-Version: 3.1.0
-Depends: org.webosinternals.browser-tls13, org.webosinternals.luna-tls13
-Section: System
-Architecture: all
-MD5Sum: 45ccc1a2da5d1c121d9acb82045a7113
-Size: 100162
-Filename: org.webosarchive.accountsapp_3.1.0_all.ipk
-Description: Accounts (webOS Archive build) - re-enables System account via the community endpoint
-Maintainer: webOS Archive
-Source: { "Type":"Application", "Feed":"WOSA Modernize", "Category":"Modernize", "LastUpdated":"1785974400", "Title":"Accounts (Community Build)", "FullDescription":"<b>webOS 3.0.x (TouchPad) only.</b> The postinst reads /etc/palm-build-info and refuses to run on anything else -- including a webOS 2.x phone (Pre3/Pre2/Veer) or webOS CE 3.1.0 -- so it fails safely instead of installing over an Accounts app it was not built against.<br><br>Replaces the stock Accounts app (com.palm.app.accounts) with the webOS-ports/LG open-source build, re-enabling System account management through the community account endpoint: sign in, view your name/email/password, your public username, the devices on the account, and sign out, all from Settings &gt; Accounts. Needs the companion webOS Account app to actually host the account -- without it the Accounts row simply stays greyed out, same as stock.<br><br>REQUIRES org.webosinternals.browser-tls13 and org.webosinternals.luna-tls13: the app talks to the community account endpoint over HTTPS from the LunaSysMgr WebKit host, which only reaches modern TLS once those are installed. The stock app is backed up on install and restored on uninstall. Restart Luna (or relaunch Settings) to apply.", "MinWebOSVersion":"3.0.0", "MaxWebOSVersion":"3.0.9", "PostInstallFlags":"RestartLuna", "PostUpdateFlags":"RestartLuna", "PostRemoveFlags":"RestartLuna", "Icon":"http://stacks.webosarchive.org/feeds/modernize/ipkgs/assets/icons/accounts-icon.png" }
-
 Package: com.palm.app.backup
 Version: 3.1.0
 Section: System
@@ -437,3 +425,639 @@ Filename: com.palm.app.backup_3.1.0_all.ipk
 Description: Backup and Restore - local on-device backups, replacing Palm's dead cloud service
 Maintainer: webOS Archive
 Source: { "Type":"Application", "Feed":"WOSA Modernize", "Category":"Modernize", "LastUpdated":"1787448795", "Title":"Backup and Restore", "FullDescription":"<b>webOS 3.0.5 (TouchPad) only.</b> A working Backup and Restore, storing backups <b>on the device</b> instead of on Palm's servers.<br><br>The Backup app that ships on every webOS device still launches, but it cannot work: it was a thin UI over a service that uploaded everything to Palm's cloud, and those servers went dark in 2013. Nothing underneath is broken \u2014 every service that participates in backup still answers \u2014 so this replaces only the destination.<br><br><b>What it backs up:</b> accounts, contacts and calendar; system settings and preferences; browser data and stored credentials; application data; anything a third-party app registers for itself; and the applications themselves, reinstalled automatically on restore. Optionally your media from /media/internal, as individually selectable categories (off by default, since a local backup lives on the same volume).<br><br>Backups go to /media/internal/webos-backups as plain files you can copy off the device over USB. They are content-addressed, so an unchanged file is stored once no matter how many backups reference it.<br><br><b>Backups are not encrypted.</b> This is a deliberate departure from stock. The original encrypted every file with a device key that does not survive a webOS Doctor and does not exist on another device \u2014 making the backup unreadable in precisely the two situations you would reach for it. Anyone with access to the device's USB storage can read a backup, so move it somewhere safe if that matters to you.<br><br><b>Install with Preware or WebOS Quick Install, not palm-install, and reboot afterwards.</b> Only an install that runs the postinst as root can install the privileged helper the full backup needs, and move the dead built-in Backup app aside so this one wins the launcher tile; without that the app runs in a limited mode and says so. The built-in app is backed up and put back on uninstall.<br><br>This is built against webOS 3.0.5 specifically and is offered only to a device reporting exactly that version, because it has to move the built-in Backup app aside to win the launcher tile and that is not a thing to do against a build it was not tested on. Installing it another way (WebOS Quick Install, or ipkg by hand) bypasses that check, but the postinst applies the same rule itself: it reads /etc/palm-build-info and, on anything other than 3.0.5, installs the helper but leaves the built-in app alone \u2014 so the tile keeps opening the old, dead one.", "MinWebOSVersion":"3.0.5", "MaxWebOSVersion":"3.0.5", "PostInstallFlags":"RestartDevice", "PostUpdateFlags":"RestartDevice", "PostRemoveFlags":"RestartLuna", "License":"GPL v2 Open Source", "Homepage":"https://webosarchive.org", "Icon":"http://stacks.webosarchive.org/feeds/modernize/ipkgs/assets/icons/backup-icon.png" }
+
+
+Package: com.palm.synergy.generic
+Version: 0.9.3
+Section: System
+Architecture: armv7
+MD5Sum: 80d59cf513d641be033a1ced22c76db8
+Size: 13031724
+Filename: com.palm.synergy.generic_0.9.3_all.ipk
+Description: webOS Synergy Revival - shared runtime (imlibpurpleservice + libpurple backend, cloudcore, QuickOffice/Photos/DocViewer integration, device-setup fixes). Required by every other com.palm.synergy.* connector package.
+Maintainer: Herman van Hazendonk <github.com@herrie.org>
+Source: { "Type":"OS Application", "Feed":"WOSA Modernize", "Category":"Synergy", "LastUpdated":"1787609034", "Title":"Synergy Shared Runtime", "FullDescription":"The engine every Synergy connector runs on: the imlibpurple transport with a modern libpurple backend, the cloud core that talks to the storage services, the OAuth sign-in app, and the QuickOffice / Photos / Document Viewer integration. Replaces the stock, long-dead imlibpurpleservice.<br><br>Part of <b>Synergy Revival</b>, which pulls this package in automatically -- install that rather than picking the pieces by hand. webOS 3.0.5 (TouchPad) only; webOS CE 3.1.0 has it built in.<br><br>Install through Preware, from this feed. WebOS Quick Install and a manual ipkg install skip the feed's device checks and the dependency chain.<br><br>Uninstalling does not put HP's original app back; the copy it replaced is kept as /media/cryptofs/core-apps-backup*.tar.", "MinWebOSVersion":"3.0.5", "MaxWebOSVersion":"3.0.9", "PostInstallFlags":"RestartDevice", "PostUpdateFlags":"RestartDevice", "PostRemoveFlags":"RestartLuna", "Icon":"http://stacks.webosarchive.org/feeds/modernize/ipkgs/assets/icons/synergy/synergy-generic.png" }
+
+Package: com.palm.service.accounts
+Version: 1.1.0
+Section: System
+Architecture: armv7
+MD5Sum: f033ff14217a144aa8d24e7a6d9134a7
+Size: 50330
+Filename: com.palm.service.accounts_1.1.0_all.ipk
+Description: Accounts service (forwards keepData/alias/templateId through the delete flow to onDelete).
+Maintainer: Herman van Hazendonk <github.com@herrie.org>
+Source: { "Type":"OS Application", "Feed":"WOSA Modernize", "Category":"Synergy", "LastUpdated":"1787609034", "Title":"Accounts Service (Synergy Revival)", "FullDescription":"The system accounts service, updated to carry keepData, alias and templateId through the account-delete flow so a removed account can keep or purge its data.<br><br>Part of <b>Synergy Revival</b>, which pulls this package in automatically -- install that rather than picking the pieces by hand. webOS 3.0.5 (TouchPad) only; webOS CE 3.1.0 has it built in.<br><br>Install through Preware, from this feed. WebOS Quick Install and a manual ipkg install skip the feed's device checks and the dependency chain.<br><br>Uninstalling does not put HP's original app back; the copy it replaced is kept as /media/cryptofs/core-apps-backup*.tar.", "MinWebOSVersion":"3.0.5", "MaxWebOSVersion":"3.0.9", "PostInstallFlags":"RestartLuna", "PostUpdateFlags":"RestartLuna", "PostRemoveFlags":"RestartLuna", "Icon":"http://stacks.webosarchive.org/feeds/modernize/ipkgs/assets/icons/synergy/synergy-accounts.png" }
+
+Package: com.palm.service.contacts.linker
+Version: 1.1.0
+Section: System
+Architecture: armv7
+MD5Sum: a2d174bd61f35e2388597fcb5d7b9a38
+Size: 59446
+Filename: com.palm.service.contacts.linker_1.1.0_all.ipk
+Description: Contacts linker service (parallel similarity-ranker reads, opt(b)).
+Maintainer: Herman van Hazendonk <github.com@herrie.org>
+Source: { "Type":"OS Application", "Feed":"WOSA Modernize", "Category":"Synergy", "LastUpdated":"1787609034", "Title":"Contacts Linker Service (Synergy Revival)", "FullDescription":"The contact-linking service, updated to read the similarity ranker in parallel -- linking contacts across several Synergy accounts is what makes this slow on stock.<br><br>Part of <b>Synergy Revival</b>, which pulls this package in automatically -- install that rather than picking the pieces by hand. webOS 3.0.5 (TouchPad) only; webOS CE 3.1.0 has it built in.<br><br>Install through Preware, from this feed. WebOS Quick Install and a manual ipkg install skip the feed's device checks and the dependency chain.<br><br>Uninstalling does not put HP's original app back; the copy it replaced is kept as /media/cryptofs/core-apps-backup*.tar.", "MinWebOSVersion":"3.0.5", "MaxWebOSVersion":"3.0.9", "PostInstallFlags":"RestartLuna", "PostUpdateFlags":"RestartLuna", "PostRemoveFlags":"RestartLuna", "Icon":"http://stacks.webosarchive.org/feeds/modernize/ipkgs/assets/icons/synergy/synergy-contacts.png" }
+
+Package: com.palm.messaging.chatthreader
+Version: 1.1.0
+Section: System
+Architecture: armv7
+MD5Sum: ccf60d683f79605ea31a57bd7c91d850
+Size: 42724
+Filename: com.palm.messaging.chatthreader_1.1.0_all.ipk
+Description: Chatthreader service (WhatsApp raw-JID guard, person-link fallback).
+Maintainer: Herman van Hazendonk <github.com@herrie.org>
+Source: { "Type":"OS Application", "Feed":"WOSA Modernize", "Category":"Synergy", "LastUpdated":"1787609034", "Title":"Chat Threader Service (Synergy Revival)", "FullDescription":"The service that groups messages into conversations, with a guard for WhatsApp raw JIDs and a fallback when a message cannot be linked to a person.<br><br>Part of <b>Synergy Revival</b>, which pulls this package in automatically -- install that rather than picking the pieces by hand. webOS 3.0.5 (TouchPad) only; webOS CE 3.1.0 has it built in.<br><br>Install through Preware, from this feed. WebOS Quick Install and a manual ipkg install skip the feed's device checks and the dependency chain.<br><br>Uninstalling does not put HP's original app back; the copy it replaced is kept as /media/cryptofs/core-apps-backup*.tar.", "MinWebOSVersion":"3.0.5", "MaxWebOSVersion":"3.0.9", "PostInstallFlags":"RestartLuna", "PostUpdateFlags":"RestartLuna", "PostRemoveFlags":"RestartLuna", "Icon":"http://stacks.webosarchive.org/feeds/modernize/ipkgs/assets/icons/synergy/synergy-messaging.png" }
+
+Package: enyo-accounts
+Version: 1.1.1
+Section: System
+Architecture: armv7
+MD5Sum: b6a953097ed01f3249a6ac80b61653d9
+Size: 84156
+Filename: enyo-accounts_1.1.1_all.ipk
+Description: Enyo accounts framework (SYNERGY ACCOUNTS grouping, keep-data-on-remove opt-out).
+Maintainer: Herman van Hazendonk <github.com@herrie.org>
+Source: { "Type":"OS Application", "Feed":"WOSA Modernize", "Category":"Synergy", "LastUpdated":"1787609034", "Title":"Enyo Accounts Framework (Synergy Revival)", "FullDescription":"The shared Enyo accounts framework: adds the SYNERGY ACCOUNTS grouping and the option to keep an account's data when you remove it.<br><br>Part of <b>Synergy Revival</b>, which pulls this package in automatically -- install that rather than picking the pieces by hand. webOS 3.0.5 (TouchPad) only; webOS CE 3.1.0 has it built in.<br><br>Install through Preware, from this feed. WebOS Quick Install and a manual ipkg install skip the feed's device checks and the dependency chain.<br><br>Uninstalling does not put HP's original app back; the copy it replaced is kept as /media/cryptofs/core-apps-backup*.tar.", "MinWebOSVersion":"3.0.5", "MaxWebOSVersion":"3.0.9", "PostInstallFlags":"RestartLuna", "PostUpdateFlags":"RestartLuna", "PostRemoveFlags":"RestartLuna", "Icon":"http://stacks.webosarchive.org/feeds/modernize/ipkgs/assets/icons/synergy/synergy-accounts.png" }
+
+Package: enyo-contactsui
+Version: 1.0.1
+Section: System
+Architecture: armv7
+MD5Sum: 1ed2c53a17808d94e7868517bde87ff7
+Size: 95334
+Filename: enyo-contactsui_1.0.1_all.ipk
+Description: Enyo contactsui framework (label IM rows by real service name from account templates, not a hardcoded map).
+Maintainer: Herman van Hazendonk <github.com@herrie.org>
+Source: { "Type":"OS Application", "Feed":"WOSA Modernize", "Category":"Synergy", "LastUpdated":"1787609034", "Title":"Enyo Contacts UI Framework (Synergy Revival)", "FullDescription":"The shared Enyo contacts UI: labels IM rows with the real service name taken from the account template instead of a hardcoded list, so new services are named correctly.<br><br>Part of <b>Synergy Revival</b>, which pulls this package in automatically -- install that rather than picking the pieces by hand. webOS 3.0.5 (TouchPad) only; webOS CE 3.1.0 has it built in.<br><br>Install through Preware, from this feed. WebOS Quick Install and a manual ipkg install skip the feed's device checks and the dependency chain.<br><br>Uninstalling does not put HP's original app back; the copy it replaced is kept as /media/cryptofs/core-apps-backup*.tar.", "MinWebOSVersion":"3.0.5", "MaxWebOSVersion":"3.0.9", "PostInstallFlags":"RestartLuna", "PostUpdateFlags":"RestartLuna", "PostRemoveFlags":"RestartLuna", "Icon":"http://stacks.webosarchive.org/feeds/modernize/ipkgs/assets/icons/synergy/synergy-contacts.png" }
+
+Package: messaging.library
+Version: 1.3.1
+Section: System
+Architecture: armv7
+MD5Sum: 501cc2b4bd92d08e76a4d41a8449627b
+Size: 24076
+Filename: messaging.library_1.3.1_all.ipk
+Description: messaging.library framework (WhatsApp E.164 '+phone' address normalization).
+Maintainer: Herman van Hazendonk <github.com@herrie.org>
+Source: { "Type":"OS Application", "Feed":"WOSA Modernize", "Category":"Synergy", "LastUpdated":"1787609034", "Title":"Messaging Library (Synergy Revival)", "FullDescription":"The shared messaging framework, with E.164 '+phone' address normalization so WhatsApp threads match the right contact.<br><br>Part of <b>Synergy Revival</b>, which pulls this package in automatically -- install that rather than picking the pieces by hand. webOS 3.0.5 (TouchPad) only; webOS CE 3.1.0 has it built in.<br><br>Install through Preware, from this feed. WebOS Quick Install and a manual ipkg install skip the feed's device checks and the dependency chain.<br><br>Uninstalling does not put HP's original app back; the copy it replaced is kept as /media/cryptofs/core-apps-backup*.tar.", "MinWebOSVersion":"3.0.5", "MaxWebOSVersion":"3.0.9", "PostInstallFlags":"RestartLuna", "PostUpdateFlags":"RestartLuna", "PostRemoveFlags":"RestartLuna", "Icon":"http://stacks.webosarchive.org/feeds/modernize/ipkgs/assets/icons/synergy/synergy-messaging.png" }
+
+Package: contacts.plugin.messaging
+Version: 12.2.0
+Section: System
+Architecture: armv7
+MD5Sum: cb259debe2fc4a74fbde465ab4702e01
+Size: 26460
+Filename: contacts.plugin.messaging_12.2.0_all.ipk
+Description: contacts.plugin.messaging framework (skip redundant re-association for already-linked contacts).
+Maintainer: Herman van Hazendonk <github.com@herrie.org>
+Source: { "Type":"OS Application", "Feed":"WOSA Modernize", "Category":"Synergy", "LastUpdated":"1787609034", "Title":"Contacts Messaging Plugin (Synergy Revival)", "FullDescription":"The contacts/messaging bridge, updated to skip redundant re-association for contacts that are already linked.<br><br>Part of <b>Synergy Revival</b>, which pulls this package in automatically -- install that rather than picking the pieces by hand. webOS 3.0.5 (TouchPad) only; webOS CE 3.1.0 has it built in.<br><br>Install through Preware, from this feed. WebOS Quick Install and a manual ipkg install skip the feed's device checks and the dependency chain.<br><br>Uninstalling does not put HP's original app back; the copy it replaced is kept as /media/cryptofs/core-apps-backup*.tar.", "MinWebOSVersion":"3.0.5", "MaxWebOSVersion":"3.0.9", "PostInstallFlags":"RestartLuna", "PostUpdateFlags":"RestartLuna", "PostRemoveFlags":"RestartLuna", "Icon":"http://stacks.webosarchive.org/feeds/modernize/ipkgs/assets/icons/synergy/synergy-contacts.png" }
+
+Package: luna-systemui
+Version: 3.1.1
+Section: System
+Architecture: armv7
+MD5Sum: e48cd2e4a7a707f681fc29bd0d894d7e
+Size: 21374
+Filename: luna-systemui_3.1.1_all.ipk
+Description: luna-systemui (FilePicker album grid sorts newest-first).
+Maintainer: Herman van Hazendonk <github.com@herrie.org>
+Source: { "Type":"OS Application", "Feed":"WOSA Modernize", "Category":"Synergy", "LastUpdated":"1787609034", "Title":"Luna System UI (Synergy Revival)", "FullDescription":"The system UI, with the file-picker album grid sorted newest-first -- the picker you get when attaching a photo to a message.<br><br>Part of <b>Synergy Revival</b>, which pulls this package in automatically -- install that rather than picking the pieces by hand. webOS 3.0.5 (TouchPad) only; webOS CE 3.1.0 has it built in.<br><br>Install through Preware, from this feed. WebOS Quick Install and a manual ipkg install skip the feed's device checks and the dependency chain.<br><br>Uninstalling does not put HP's original app back; the copy it replaced is kept as /media/cryptofs/core-apps-backup*.tar.", "MinWebOSVersion":"3.0.5", "MaxWebOSVersion":"3.0.9", "PostInstallFlags":"RestartLuna", "PostUpdateFlags":"RestartLuna", "PostRemoveFlags":"RestartLuna", "Icon":"http://stacks.webosarchive.org/feeds/modernize/ipkgs/assets/icons/synergy/synergy-generic.png" }
+
+Package: com.palm.app.accounts
+Version: 3.1.1
+Section: System
+Architecture: armv7
+MD5Sum: 89f3e067c7380b63d3ff910c173a6a35
+Size: 112900
+Filename: com.palm.app.accounts_3.1.1_all.ipk
+Description: Accounts app (SYNERGY ACCOUNTS grouping, Delete Account Data page, deep-link from Phone).
+Maintainer: Herman van Hazendonk <github.com@herrie.org>
+Source: { "Type":"OS Application", "Feed":"WOSA Modernize", "Category":"Synergy", "LastUpdated":"1787609034", "Title":"Accounts (Synergy Revival)", "FullDescription":"<b>Remove Accounts (Community Build) first.</b> This app supersedes org.webosarchive.accountsapp -- it is that same build plus the SYNERGY ACCOUNTS grouping, the Delete Account Data page, the deep link from Phone and the missing translations. Both replace /usr/palm/applications/com.palm.app.accounts and each keeps its own backup of what it found there, so if the old package is still installed when this one goes on, uninstalling it afterwards would restore the older app over this one. TLS 1.3 Updates 1.0.18 and Synergy Revival both repair that during install -- but removing the retired package first is cleaner.<br><br>The Accounts app: sign in to your community account, edit your name, email, password and public username, see the devices on the account and sign out, all from Settings &gt; Accounts. With Synergy Revival installed it also groups your Synergy accounts and offers Delete Account Data for accounts you have removed. This is the build shipped in the webOS CE 3.1.0 release candidate.<br><br>Part of <b>Synergy Revival</b>, which pulls this package in automatically -- install that rather than picking the pieces by hand. webOS 3.0.5 (TouchPad) only; webOS CE 3.1.0 has it built in.<br><br>Install through Preware, from this feed. WebOS Quick Install and a manual ipkg install skip the feed's device checks and the dependency chain.<br><br>Uninstalling does not put HP's original app back; the copy it replaced is kept as /media/cryptofs/core-apps-backup*.tar.", "MinWebOSVersion":"3.0.5", "MaxWebOSVersion":"3.0.9", "PostInstallFlags":"RestartLuna", "PostUpdateFlags":"RestartLuna", "PostRemoveFlags":"RestartLuna", "Icon":"http://stacks.webosarchive.org/feeds/modernize/ipkgs/assets/icons/synergy/synergy-accounts.png" }
+
+Package: com.palm.app.contacts
+Version: 3.0.6701
+Section: System
+Architecture: armv7
+MD5Sum: 1de185f351b59c630b34ad150baa9cb5
+Size: 165048
+Filename: com.palm.app.contacts_3.0.6701_all.ipk
+Description: Contacts app (label IM rows by real service name from account templates, not a hardcoded map).
+Maintainer: Herman van Hazendonk <github.com@herrie.org>
+Source: { "Type":"OS Application", "Feed":"WOSA Modernize", "Category":"Synergy", "LastUpdated":"1787609034", "Title":"Contacts (Synergy Revival)", "FullDescription":"The Contacts app, updated to label IM rows with the real service name from the account template rather than a hardcoded map.<br><br>Part of <b>Synergy Revival</b>, which pulls this package in automatically -- install that rather than picking the pieces by hand. webOS 3.0.5 (TouchPad) only; webOS CE 3.1.0 has it built in.<br><br>Install through Preware, from this feed. WebOS Quick Install and a manual ipkg install skip the feed's device checks and the dependency chain.<br><br>Uninstalling does not put HP's original app back; the copy it replaced is kept as /media/cryptofs/core-apps-backup*.tar.", "MinWebOSVersion":"3.0.5", "MaxWebOSVersion":"3.0.9", "PostInstallFlags":"RestartLuna", "PostUpdateFlags":"RestartLuna", "PostRemoveFlags":"RestartLuna", "Icon":"http://stacks.webosarchive.org/feeds/modernize/ipkgs/assets/icons/synergy/synergy-contacts.png" }
+
+Package: com.palm.app.messaging
+Version: 3.0.6607
+Section: System
+Architecture: armv7
+MD5Sum: 6668886ab0f792ef02049a300e135651
+Size: 4889210
+Filename: com.palm.app.messaging_3.0.6607_all.ipk
+Description: Messaging app (reactions, replies, receipts, voice/document/video attachments, resend, Synergy multi-protocol calling UI).
+Maintainer: Herman van Hazendonk <github.com@herrie.org>
+Source: { "Type":"OS Application", "Feed":"WOSA Modernize", "Category":"Synergy", "LastUpdated":"1787609034", "Title":"Messaging (Synergy Revival)", "FullDescription":"The Messaging app, brought up to what modern chat services expect: reactions, replies, read receipts, voice / document / video attachments, resend, and the multi-protocol calling UI.<br><br>Part of <b>Synergy Revival</b>, which pulls this package in automatically -- install that rather than picking the pieces by hand. webOS 3.0.5 (TouchPad) only; webOS CE 3.1.0 has it built in.<br><br>Install through Preware, from this feed. WebOS Quick Install and a manual ipkg install skip the feed's device checks and the dependency chain.<br><br>Uninstalling does not put HP's original app back; the copy it replaced is kept as /media/cryptofs/core-apps-backup*.tar.", "MinWebOSVersion":"3.0.5", "MaxWebOSVersion":"3.0.9", "PostInstallFlags":"RestartLuna", "PostUpdateFlags":"RestartLuna", "PostRemoveFlags":"RestartLuna", "Icon":"http://stacks.webosarchive.org/feeds/modernize/ipkgs/assets/icons/synergy/synergy-messaging.png" }
+
+Package: com.palm.app.phone
+Version: 2.0.1
+Section: System
+Architecture: armv7
+MD5Sum: 3924b6d455a02cdd5fb35ab5593ade4a
+Size: 6397572
+Filename: com.palm.app.phone_2.0.1_all.ipk
+Description: Phone app (route Synergy calling accounts' Add/Modify to the Accounts app, VoIP dial chooser).
+Maintainer: Herman van Hazendonk <github.com@herrie.org>
+Source: { "Type":"OS Application", "Feed":"WOSA Modernize", "Category":"Synergy", "LastUpdated":"1787609034", "Title":"Phone (Synergy Revival)", "FullDescription":"The Phone app, updated to route Synergy calling accounts' Add/Modify to the Accounts app and to offer a VoIP dial chooser when more than one account can place the call.<br><br>Part of <b>Synergy Revival</b>, which pulls this package in automatically -- install that rather than picking the pieces by hand. webOS 3.0.5 (TouchPad) only; webOS CE 3.1.0 has it built in.<br><br>Install through Preware, from this feed. WebOS Quick Install and a manual ipkg install skip the feed's device checks and the dependency chain.<br><br>Uninstalling does not put HP's original app back; the copy it replaced is kept as /media/cryptofs/core-apps-backup*.tar.", "MinWebOSVersion":"3.0.5", "MaxWebOSVersion":"3.0.9", "PostInstallFlags":"RestartLuna", "PostUpdateFlags":"RestartLuna", "PostRemoveFlags":"RestartLuna", "Icon":"http://stacks.webosarchive.org/feeds/modernize/ipkgs/assets/icons/synergy/synergy-phone.png" }
+
+Package: org.webosarchive.synergy-revival
+Version: 1.0.0
+Depends: org.webosarchive.tls-updates, org.webosports.app.atlas (>= 0.9.11), com.palm.synergy.generic (>= 0.9.3), com.palm.service.accounts (>= 1.1.0), com.palm.service.contacts.linker (>= 1.1.0), com.palm.messaging.chatthreader (>= 1.1.0), enyo-accounts (>= 1.1.1), enyo-contactsui (>= 1.0.1), messaging.library (>= 1.3.1), contacts.plugin.messaging (>= 12.2.0), luna-systemui (>= 3.1.1), com.palm.app.accounts (>= 3.1.1), com.palm.app.contacts (>= 3.0.6701), com.palm.app.messaging (>= 3.0.6607), com.palm.app.phone (>= 2.0.1)
+Section: System
+Architecture: all
+MD5Sum: 8e92929d0e8cbd1362fa573e1e78a4a0
+Size: 3992
+Filename: org.webosarchive.synergy-revival_1.0.0_all.ipk
+Description: Synergy Revival - shared runtime plus the updated Accounts, Contacts, Messaging and Phone apps
+Maintainer: webOS Archive
+Source: { "Type":"OS Application", "Feed":"WOSA Modernize", "Category":"Synergy", "LastUpdated":"1787609034", "Title":"Synergy Revival (TouchPad)", "FullDescription":"<b>Experimental -- new in this feed.</b> Synergy Revival brings account-based messaging and cloud storage back to webOS: modern IM services (WhatsApp, Telegram, Signal, Teams, Discord, Google Chat, Facebook), cloud and photo storage (Dropbox, Google Drive, OneDrive, Box, MEGA, pCloud, Koofr, kDrive, HiDrive, Yandex Disk, S3, Flickr) and CalDAV/CardDAV -- all as real Synergy accounts under Settings &gt; Accounts, with contact linking and Messaging threads the way webOS always did it.<br><br><b>Before you install: remove the old Accounts app first.</b> If Preware lists <b>Accounts (Community Build)</b> (org.webosarchive.accountsapp) as installed -- it came with the TLS 1.3 Updates bundle up to 1.0.17 -- uninstall it BEFORE installing Synergy Revival. Synergy Revival ships a newer Accounts app that replaces the same files, and the old package keeps its own saved copy of the original: leave it installed and removing it later will quietly put the stock Accounts app back over the Synergy one, taking the SYNERGY ACCOUNTS section with it. If you forget, this package repairs both copies during install so the old one can then be removed safely.<br><br>This package is Part 1: the shared runtime (imlibpurple + the libpurple backend, the cloud core and the OAuth sign-in app) together with the updated Accounts, Contacts, Messaging and Phone apps and their frameworks and services. Install it first, then pick the connectors you want from the Synergy category -- every connector needs this bundle.<br><br>It also pulls <b>TLS 1.3 Updates</b> (the cloud connectors sign in over modern HTTPS through the system curl) and <b>Atlas</b> (the OAuth sign-in page is rendered by Atlas's browser engine -- the stock webview cannot complete a modern TLS handshake). Together that is a large download: budget roughly 130 MB before you add any connectors.<br><br>webOS 3.0.5 (TouchPad) only. webOS CE 3.1.0 already has Part 1 built in and does not need this package -- CE users install the connectors directly. Install through Preware, from this feed: WebOS Quick Install and a manual ipkg install skip the feed's device checks and the whole dependency chain. The device reboots once at the end of the install.<br><br>Uninstalling does not put the original HP apps back; the copies they replaced are kept as /media/cryptofs/core-apps-backup*.tar.", "MinWebOSVersion":"3.0.5", "MaxWebOSVersion":"3.0.9", "PostInstallFlags":"RestartDevice", "PostUpdateFlags":"RestartDevice", "PostRemoveFlags":"RestartLuna", "Icon":"http://stacks.webosarchive.org/feeds/modernize/ipkgs/assets/icons/synergy/synergy-generic.png" }
+
+Package: com.palm.synergy.whatsapp
+Version: 0.9.3
+Depends: org.webosports.app.atlas (>= 0.9.11)
+Section: misc
+Architecture: armv7
+MD5Sum: 8b994de05cfaf529169a9dadd5eaaf2a
+Size: 11155204
+Filename: com.palm.synergy.whatsapp_0.9.3_all.ipk
+Description: WhatsApp messaging connector (purple-combined/whatsmeow) for Synergy IM/calling.
+Maintainer: Herman van Hazendonk <github.com@herrie.org>
+Source: { "Type":"Application", "Feed":"WOSA Modernize", "Category":"Synergy", "LastUpdated":"1787609034", "Title":"WhatsApp (Synergy)", "FullDescription":"<b>Experimental.</b> Adds WhatsApp as a Synergy account. Conversations appear in Messaging next to SMS, contacts link to the people you already have, and reactions, replies, receipts and voice/photo/video attachments all work. Uses the purple-combined/whatsmeow backend; you pair it the way you pair WhatsApp Web.<br><br>webOS CE 3.1.0 already has the Synergy runtime built in, so this package adds just the connector. <b>Atlas</b> is installed alongside it: the Synergy sign-in pages render through its browser engine, and the OAuth-based connectors cannot sign in without it.<br><br>Add the account from Settings &gt; Accounts &gt; Add an Account. Install through Preware, from this feed. WebOS Quick Install and a manual ipkg install skip the feed's device checks and the dependency chain. The device reboots once at the end of the install.", "MinWebOSVersion":"3.1.0", "MaxWebOSVersion":"3.9.9", "PostInstallFlags":"RestartDevice", "PostUpdateFlags":"RestartDevice", "PostRemoveFlags":"RestartLuna", "Icon":"http://stacks.webosarchive.org/feeds/modernize/ipkgs/assets/icons/synergy/synergy-whatsapp.png" }
+
+Package: com.palm.synergy.whatsapp
+Version: 0.9.3
+Depends: org.webosarchive.synergy-revival, org.webosports.app.atlas (>= 0.9.11)
+Section: misc
+Architecture: armv7
+MD5Sum: 8b994de05cfaf529169a9dadd5eaaf2a
+Size: 11155204
+Filename: com.palm.synergy.whatsapp_0.9.3_all.ipk
+Description: WhatsApp messaging connector (purple-combined/whatsmeow) for Synergy IM/calling.
+Maintainer: Herman van Hazendonk <github.com@herrie.org>
+Source: { "Type":"Application", "Feed":"WOSA Modernize", "Category":"Synergy", "LastUpdated":"1787609034", "Title":"WhatsApp (Synergy)", "FullDescription":"<b>Experimental.</b> Adds WhatsApp as a Synergy account. Conversations appear in Messaging next to SMS, contacts link to the people you already have, and reactions, replies, receipts and voice/photo/video attachments all work. Uses the purple-combined/whatsmeow backend; you pair it the way you pair WhatsApp Web.<br><br>Needs <b>Synergy Revival</b> (Part 1 -- the shared runtime and the updated Accounts, Contacts, Messaging and Phone apps); Preware installs it for you, so expect a large first-time download. <b>Atlas</b> is installed alongside it: the Synergy sign-in pages render through its browser engine, and the OAuth-based connectors cannot sign in without it.<br><br>Add the account from Settings &gt; Accounts &gt; Add an Account. Install through Preware, from this feed. WebOS Quick Install and a manual ipkg install skip the feed's device checks and the dependency chain. The device reboots once at the end of the install.", "MinWebOSVersion":"3.0.5", "MaxWebOSVersion":"3.0.9", "PostInstallFlags":"RestartDevice", "PostUpdateFlags":"RestartDevice", "PostRemoveFlags":"RestartLuna", "Icon":"http://stacks.webosarchive.org/feeds/modernize/ipkgs/assets/icons/synergy/synergy-whatsapp.png" }
+
+Package: com.palm.synergy.telegram
+Version: 0.9.3
+Depends: org.webosports.app.atlas (>= 0.9.11)
+Section: misc
+Architecture: armv7
+MD5Sum: 25f5492b0e4a4c0aed00f52c8d80aa05
+Size: 12030028
+Filename: com.palm.synergy.telegram_0.9.3_all.ipk
+Description: Telegram messaging connector (tdlib-purple) for Synergy IM/calling.
+Maintainer: Herman van Hazendonk <github.com@herrie.org>
+Source: { "Type":"Application", "Feed":"WOSA Modernize", "Category":"Synergy", "LastUpdated":"1787609034", "Title":"Telegram (Synergy)", "FullDescription":"<b>Experimental.</b> Adds Telegram as a Synergy account, using the official tdlib. Chats, groups and channels appear in Messaging, with calling supported through the Synergy calling UI.<br><br>webOS CE 3.1.0 already has the Synergy runtime built in, so this package adds just the connector. <b>Atlas</b> is installed alongside it: the Synergy sign-in pages render through its browser engine, and the OAuth-based connectors cannot sign in without it.<br><br>Add the account from Settings &gt; Accounts &gt; Add an Account. Install through Preware, from this feed. WebOS Quick Install and a manual ipkg install skip the feed's device checks and the dependency chain. The device reboots once at the end of the install.", "MinWebOSVersion":"3.1.0", "MaxWebOSVersion":"3.9.9", "PostInstallFlags":"RestartDevice", "PostUpdateFlags":"RestartDevice", "PostRemoveFlags":"RestartLuna", "Icon":"http://stacks.webosarchive.org/feeds/modernize/ipkgs/assets/icons/synergy/synergy-telegram.png" }
+
+Package: com.palm.synergy.telegram
+Version: 0.9.3
+Depends: org.webosarchive.synergy-revival, org.webosports.app.atlas (>= 0.9.11)
+Section: misc
+Architecture: armv7
+MD5Sum: 25f5492b0e4a4c0aed00f52c8d80aa05
+Size: 12030028
+Filename: com.palm.synergy.telegram_0.9.3_all.ipk
+Description: Telegram messaging connector (tdlib-purple) for Synergy IM/calling.
+Maintainer: Herman van Hazendonk <github.com@herrie.org>
+Source: { "Type":"Application", "Feed":"WOSA Modernize", "Category":"Synergy", "LastUpdated":"1787609034", "Title":"Telegram (Synergy)", "FullDescription":"<b>Experimental.</b> Adds Telegram as a Synergy account, using the official tdlib. Chats, groups and channels appear in Messaging, with calling supported through the Synergy calling UI.<br><br>Needs <b>Synergy Revival</b> (Part 1 -- the shared runtime and the updated Accounts, Contacts, Messaging and Phone apps); Preware installs it for you, so expect a large first-time download. <b>Atlas</b> is installed alongside it: the Synergy sign-in pages render through its browser engine, and the OAuth-based connectors cannot sign in without it.<br><br>Add the account from Settings &gt; Accounts &gt; Add an Account. Install through Preware, from this feed. WebOS Quick Install and a manual ipkg install skip the feed's device checks and the dependency chain. The device reboots once at the end of the install.", "MinWebOSVersion":"3.0.5", "MaxWebOSVersion":"3.0.9", "PostInstallFlags":"RestartDevice", "PostUpdateFlags":"RestartDevice", "PostRemoveFlags":"RestartLuna", "Icon":"http://stacks.webosarchive.org/feeds/modernize/ipkgs/assets/icons/synergy/synergy-telegram.png" }
+
+Package: com.palm.synergy.signal
+Version: 0.9.3
+Depends: org.webosports.app.atlas (>= 0.9.11)
+Section: misc
+Architecture: armv7
+MD5Sum: 9f53ce89bb48699a856693f1ad543f20
+Size: 12857980
+Filename: com.palm.synergy.signal_0.9.3_all.ipk
+Description: Signal messaging connector (purple-presage) for Synergy IM.
+Maintainer: Herman van Hazendonk <github.com@herrie.org>
+Source: { "Type":"Application", "Feed":"WOSA Modernize", "Category":"Synergy", "LastUpdated":"1787609034", "Title":"Signal (Synergy)", "FullDescription":"<b>Experimental.</b> Adds Signal as a Synergy account, via purple-presage. Link it to your phone the way you link Signal Desktop, and your conversations appear in Messaging.<br><br>webOS CE 3.1.0 already has the Synergy runtime built in, so this package adds just the connector. <b>Atlas</b> is installed alongside it: the Synergy sign-in pages render through its browser engine, and the OAuth-based connectors cannot sign in without it.<br><br>Add the account from Settings &gt; Accounts &gt; Add an Account. Install through Preware, from this feed. WebOS Quick Install and a manual ipkg install skip the feed's device checks and the dependency chain. The device reboots once at the end of the install.", "MinWebOSVersion":"3.1.0", "MaxWebOSVersion":"3.9.9", "PostInstallFlags":"RestartDevice", "PostUpdateFlags":"RestartDevice", "PostRemoveFlags":"RestartLuna", "Icon":"http://stacks.webosarchive.org/feeds/modernize/ipkgs/assets/icons/synergy/synergy-signal.png" }
+
+Package: com.palm.synergy.signal
+Version: 0.9.3
+Depends: org.webosarchive.synergy-revival, org.webosports.app.atlas (>= 0.9.11)
+Section: misc
+Architecture: armv7
+MD5Sum: 9f53ce89bb48699a856693f1ad543f20
+Size: 12857980
+Filename: com.palm.synergy.signal_0.9.3_all.ipk
+Description: Signal messaging connector (purple-presage) for Synergy IM.
+Maintainer: Herman van Hazendonk <github.com@herrie.org>
+Source: { "Type":"Application", "Feed":"WOSA Modernize", "Category":"Synergy", "LastUpdated":"1787609034", "Title":"Signal (Synergy)", "FullDescription":"<b>Experimental.</b> Adds Signal as a Synergy account, via purple-presage. Link it to your phone the way you link Signal Desktop, and your conversations appear in Messaging.<br><br>Needs <b>Synergy Revival</b> (Part 1 -- the shared runtime and the updated Accounts, Contacts, Messaging and Phone apps); Preware installs it for you, so expect a large first-time download. <b>Atlas</b> is installed alongside it: the Synergy sign-in pages render through its browser engine, and the OAuth-based connectors cannot sign in without it.<br><br>Add the account from Settings &gt; Accounts &gt; Add an Account. Install through Preware, from this feed. WebOS Quick Install and a manual ipkg install skip the feed's device checks and the dependency chain. The device reboots once at the end of the install.", "MinWebOSVersion":"3.0.5", "MaxWebOSVersion":"3.0.9", "PostInstallFlags":"RestartDevice", "PostUpdateFlags":"RestartDevice", "PostRemoveFlags":"RestartLuna", "Icon":"http://stacks.webosarchive.org/feeds/modernize/ipkgs/assets/icons/synergy/synergy-signal.png" }
+
+Package: com.palm.synergy.teams
+Version: 0.9.3
+Depends: org.webosports.app.atlas (>= 0.9.11)
+Section: misc
+Architecture: armv7
+MD5Sum: 611318a460a37650f1fe584af12e832f
+Size: 179780
+Filename: com.palm.synergy.teams_0.9.3_all.ipk
+Description: Microsoft Teams messaging connector (purple-teams) for Synergy IM/calling.
+Maintainer: Herman van Hazendonk <github.com@herrie.org>
+Source: { "Type":"Application", "Feed":"WOSA Modernize", "Category":"Synergy", "LastUpdated":"1787609034", "Title":"Microsoft Teams (Synergy)", "FullDescription":"<b>Experimental.</b> Adds Microsoft Teams as a Synergy account (purple-teams): chats in Messaging, and calling through the Synergy calling UI.<br><br>webOS CE 3.1.0 already has the Synergy runtime built in, so this package adds just the connector. <b>Atlas</b> is installed alongside it: the Synergy sign-in pages render through its browser engine, and the OAuth-based connectors cannot sign in without it.<br><br>Add the account from Settings &gt; Accounts &gt; Add an Account. Install through Preware, from this feed. WebOS Quick Install and a manual ipkg install skip the feed's device checks and the dependency chain. The device reboots once at the end of the install.", "MinWebOSVersion":"3.1.0", "MaxWebOSVersion":"3.9.9", "PostInstallFlags":"RestartDevice", "PostUpdateFlags":"RestartDevice", "PostRemoveFlags":"RestartLuna", "Icon":"http://stacks.webosarchive.org/feeds/modernize/ipkgs/assets/icons/synergy/synergy-teams.png" }
+
+Package: com.palm.synergy.teams
+Version: 0.9.3
+Depends: org.webosarchive.synergy-revival, org.webosports.app.atlas (>= 0.9.11)
+Section: misc
+Architecture: armv7
+MD5Sum: 611318a460a37650f1fe584af12e832f
+Size: 179780
+Filename: com.palm.synergy.teams_0.9.3_all.ipk
+Description: Microsoft Teams messaging connector (purple-teams) for Synergy IM/calling.
+Maintainer: Herman van Hazendonk <github.com@herrie.org>
+Source: { "Type":"Application", "Feed":"WOSA Modernize", "Category":"Synergy", "LastUpdated":"1787609034", "Title":"Microsoft Teams (Synergy)", "FullDescription":"<b>Experimental.</b> Adds Microsoft Teams as a Synergy account (purple-teams): chats in Messaging, and calling through the Synergy calling UI.<br><br>Needs <b>Synergy Revival</b> (Part 1 -- the shared runtime and the updated Accounts, Contacts, Messaging and Phone apps); Preware installs it for you, so expect a large first-time download. <b>Atlas</b> is installed alongside it: the Synergy sign-in pages render through its browser engine, and the OAuth-based connectors cannot sign in without it.<br><br>Add the account from Settings &gt; Accounts &gt; Add an Account. Install through Preware, from this feed. WebOS Quick Install and a manual ipkg install skip the feed's device checks and the dependency chain. The device reboots once at the end of the install.", "MinWebOSVersion":"3.0.5", "MaxWebOSVersion":"3.0.9", "PostInstallFlags":"RestartDevice", "PostUpdateFlags":"RestartDevice", "PostRemoveFlags":"RestartLuna", "Icon":"http://stacks.webosarchive.org/feeds/modernize/ipkgs/assets/icons/synergy/synergy-teams.png" }
+
+Package: com.palm.synergy.discord
+Version: 0.9.3
+Depends: org.webosports.app.atlas (>= 0.9.11)
+Section: misc
+Architecture: armv7
+MD5Sum: 375ba0645315ca00ea194bbb2da5c048
+Size: 173208
+Filename: com.palm.synergy.discord_0.9.3_all.ipk
+Description: Discord messaging connector (purple-discord) for Synergy IM.
+Maintainer: Herman van Hazendonk <github.com@herrie.org>
+Source: { "Type":"Application", "Feed":"WOSA Modernize", "Category":"Synergy", "LastUpdated":"1787609034", "Title":"Discord (Synergy)", "FullDescription":"<b>Experimental.</b> Adds Discord as a Synergy account (purple-discord). Direct messages and server channels arrive as Messaging conversations.<br><br>webOS CE 3.1.0 already has the Synergy runtime built in, so this package adds just the connector. <b>Atlas</b> is installed alongside it: the Synergy sign-in pages render through its browser engine, and the OAuth-based connectors cannot sign in without it.<br><br>Add the account from Settings &gt; Accounts &gt; Add an Account. Install through Preware, from this feed. WebOS Quick Install and a manual ipkg install skip the feed's device checks and the dependency chain. The device reboots once at the end of the install.", "MinWebOSVersion":"3.1.0", "MaxWebOSVersion":"3.9.9", "PostInstallFlags":"RestartDevice", "PostUpdateFlags":"RestartDevice", "PostRemoveFlags":"RestartLuna", "Icon":"http://stacks.webosarchive.org/feeds/modernize/ipkgs/assets/icons/synergy/synergy-discord.png" }
+
+Package: com.palm.synergy.discord
+Version: 0.9.3
+Depends: org.webosarchive.synergy-revival, org.webosports.app.atlas (>= 0.9.11)
+Section: misc
+Architecture: armv7
+MD5Sum: 375ba0645315ca00ea194bbb2da5c048
+Size: 173208
+Filename: com.palm.synergy.discord_0.9.3_all.ipk
+Description: Discord messaging connector (purple-discord) for Synergy IM.
+Maintainer: Herman van Hazendonk <github.com@herrie.org>
+Source: { "Type":"Application", "Feed":"WOSA Modernize", "Category":"Synergy", "LastUpdated":"1787609034", "Title":"Discord (Synergy)", "FullDescription":"<b>Experimental.</b> Adds Discord as a Synergy account (purple-discord). Direct messages and server channels arrive as Messaging conversations.<br><br>Needs <b>Synergy Revival</b> (Part 1 -- the shared runtime and the updated Accounts, Contacts, Messaging and Phone apps); Preware installs it for you, so expect a large first-time download. <b>Atlas</b> is installed alongside it: the Synergy sign-in pages render through its browser engine, and the OAuth-based connectors cannot sign in without it.<br><br>Add the account from Settings &gt; Accounts &gt; Add an Account. Install through Preware, from this feed. WebOS Quick Install and a manual ipkg install skip the feed's device checks and the dependency chain. The device reboots once at the end of the install.", "MinWebOSVersion":"3.0.5", "MaxWebOSVersion":"3.0.9", "PostInstallFlags":"RestartDevice", "PostUpdateFlags":"RestartDevice", "PostRemoveFlags":"RestartLuna", "Icon":"http://stacks.webosarchive.org/feeds/modernize/ipkgs/assets/icons/synergy/synergy-discord.png" }
+
+Package: com.palm.synergy.googlechat
+Version: 0.9.3
+Depends: org.webosports.app.atlas (>= 0.9.11)
+Section: misc
+Architecture: armv7
+MD5Sum: d831ea992697ec19a653445235b7f06b
+Size: 255538
+Filename: com.palm.synergy.googlechat_0.9.3_all.ipk
+Description: Google Chat messaging connector (purple-googlechat) for Synergy IM.
+Maintainer: Herman van Hazendonk <github.com@herrie.org>
+Source: { "Type":"Application", "Feed":"WOSA Modernize", "Category":"Synergy", "LastUpdated":"1787609034", "Title":"Google Chat (Synergy)", "FullDescription":"<b>Experimental.</b> Adds Google Chat as a Synergy account (purple-googlechat), so Google conversations arrive in Messaging.<br><br>webOS CE 3.1.0 already has the Synergy runtime built in, so this package adds just the connector. Sign-in happens in a page rendered by <b>Atlas</b>'s browser engine, because the stock webview cannot complete a modern TLS handshake -- Preware installs Atlas for you.<br><br>Add the account from Settings &gt; Accounts &gt; Add an Account. Install through Preware, from this feed. WebOS Quick Install and a manual ipkg install skip the feed's device checks and the dependency chain. The device reboots once at the end of the install.", "MinWebOSVersion":"3.1.0", "MaxWebOSVersion":"3.9.9", "PostInstallFlags":"RestartDevice", "PostUpdateFlags":"RestartDevice", "PostRemoveFlags":"RestartLuna", "Icon":"http://stacks.webosarchive.org/feeds/modernize/ipkgs/assets/icons/synergy/synergy-googlechat.png" }
+
+Package: com.palm.synergy.googlechat
+Version: 0.9.3
+Depends: org.webosarchive.synergy-revival, org.webosports.app.atlas (>= 0.9.11)
+Section: misc
+Architecture: armv7
+MD5Sum: d831ea992697ec19a653445235b7f06b
+Size: 255538
+Filename: com.palm.synergy.googlechat_0.9.3_all.ipk
+Description: Google Chat messaging connector (purple-googlechat) for Synergy IM.
+Maintainer: Herman van Hazendonk <github.com@herrie.org>
+Source: { "Type":"Application", "Feed":"WOSA Modernize", "Category":"Synergy", "LastUpdated":"1787609034", "Title":"Google Chat (Synergy)", "FullDescription":"<b>Experimental.</b> Adds Google Chat as a Synergy account (purple-googlechat), so Google conversations arrive in Messaging.<br><br>Needs <b>Synergy Revival</b> (Part 1 -- the shared runtime and the updated Accounts, Contacts, Messaging and Phone apps); Preware installs it for you, so expect a large first-time download. Sign-in happens in a page rendered by <b>Atlas</b>'s browser engine, because the stock webview cannot complete a modern TLS handshake -- Preware installs Atlas for you.<br><br>Add the account from Settings &gt; Accounts &gt; Add an Account. Install through Preware, from this feed. WebOS Quick Install and a manual ipkg install skip the feed's device checks and the dependency chain. The device reboots once at the end of the install.", "MinWebOSVersion":"3.0.5", "MaxWebOSVersion":"3.0.9", "PostInstallFlags":"RestartDevice", "PostUpdateFlags":"RestartDevice", "PostRemoveFlags":"RestartLuna", "Icon":"http://stacks.webosarchive.org/feeds/modernize/ipkgs/assets/icons/synergy/synergy-googlechat.png" }
+
+Package: com.palm.synergy.facebook
+Version: 0.9.3
+Depends: org.webosports.app.atlas (>= 0.9.11)
+Section: misc
+Architecture: armv7
+MD5Sum: 387c0b26d0402b7d1d7f93376fb7d476
+Size: 11147262
+Filename: com.palm.synergy.facebook_0.9.3_all.ipk
+Description: Facebook E2EE messaging connector (purple-combined/gometa) for Synergy IM.
+Maintainer: Herman van Hazendonk <github.com@herrie.org>
+Source: { "Type":"Application", "Feed":"WOSA Modernize", "Category":"Synergy", "LastUpdated":"1787609034", "Title":"Facebook Messenger (Synergy)", "FullDescription":"<b>Experimental.</b> Adds Facebook Messenger as a Synergy account, with end-to-end encrypted chats (purple-combined/gometa).<br><br>webOS CE 3.1.0 already has the Synergy runtime built in, so this package adds just the connector. <b>Atlas</b> is installed alongside it: the Synergy sign-in pages render through its browser engine, and the OAuth-based connectors cannot sign in without it.<br><br>Add the account from Settings &gt; Accounts &gt; Add an Account. Install through Preware, from this feed. WebOS Quick Install and a manual ipkg install skip the feed's device checks and the dependency chain. The device reboots once at the end of the install.", "MinWebOSVersion":"3.1.0", "MaxWebOSVersion":"3.9.9", "PostInstallFlags":"RestartDevice", "PostUpdateFlags":"RestartDevice", "PostRemoveFlags":"RestartLuna", "Icon":"http://stacks.webosarchive.org/feeds/modernize/ipkgs/assets/icons/synergy/synergy-facebook.png" }
+
+Package: com.palm.synergy.facebook
+Version: 0.9.3
+Depends: org.webosarchive.synergy-revival, org.webosports.app.atlas (>= 0.9.11)
+Section: misc
+Architecture: armv7
+MD5Sum: 387c0b26d0402b7d1d7f93376fb7d476
+Size: 11147262
+Filename: com.palm.synergy.facebook_0.9.3_all.ipk
+Description: Facebook E2EE messaging connector (purple-combined/gometa) for Synergy IM.
+Maintainer: Herman van Hazendonk <github.com@herrie.org>
+Source: { "Type":"Application", "Feed":"WOSA Modernize", "Category":"Synergy", "LastUpdated":"1787609034", "Title":"Facebook Messenger (Synergy)", "FullDescription":"<b>Experimental.</b> Adds Facebook Messenger as a Synergy account, with end-to-end encrypted chats (purple-combined/gometa).<br><br>Needs <b>Synergy Revival</b> (Part 1 -- the shared runtime and the updated Accounts, Contacts, Messaging and Phone apps); Preware installs it for you, so expect a large first-time download. <b>Atlas</b> is installed alongside it: the Synergy sign-in pages render through its browser engine, and the OAuth-based connectors cannot sign in without it.<br><br>Add the account from Settings &gt; Accounts &gt; Add an Account. Install through Preware, from this feed. WebOS Quick Install and a manual ipkg install skip the feed's device checks and the dependency chain. The device reboots once at the end of the install.", "MinWebOSVersion":"3.0.5", "MaxWebOSVersion":"3.0.9", "PostInstallFlags":"RestartDevice", "PostUpdateFlags":"RestartDevice", "PostRemoveFlags":"RestartLuna", "Icon":"http://stacks.webosarchive.org/feeds/modernize/ipkgs/assets/icons/synergy/synergy-facebook.png" }
+
+Package: com.palm.synergy.dropbox
+Version: 0.9.3
+Depends: org.webosports.app.atlas (>= 0.9.11)
+Section: misc
+Architecture: armv7
+MD5Sum: df8752236d4feee0c284a35f3fa16173
+Size: 26782
+Filename: com.palm.synergy.dropbox_0.9.3_all.ipk
+Description: Dropbox cloud connector (OAuth2 + PKCE) for Synergy DOCUMENTS/PHOTO.UPLOAD.
+Maintainer: Herman van Hazendonk <github.com@herrie.org>
+Source: { "Type":"Application", "Feed":"WOSA Modernize", "Category":"Synergy", "LastUpdated":"1787609034", "Title":"Dropbox (Synergy)", "FullDescription":"<b>Experimental.</b> Adds Dropbox as a Synergy account so you can browse and open its files from the Document Viewer and QuickOffice, and upload photos from the Photos app. Signs in with OAuth2 + PKCE -- no password is stored on the device.<br><br>webOS CE 3.1.0 already has the Synergy runtime built in, so this package adds just the connector. Sign-in happens in a page rendered by <b>Atlas</b>'s browser engine, because the stock webview cannot complete a modern TLS handshake -- Preware installs Atlas for you.<br><br>Add the account from Settings &gt; Accounts &gt; Add an Account. Install through Preware, from this feed. WebOS Quick Install and a manual ipkg install skip the feed's device checks and the dependency chain. The device reboots once at the end of the install.", "MinWebOSVersion":"3.1.0", "MaxWebOSVersion":"3.9.9", "PostInstallFlags":"RestartDevice", "PostUpdateFlags":"RestartDevice", "PostRemoveFlags":"RestartLuna", "Icon":"http://stacks.webosarchive.org/feeds/modernize/ipkgs/assets/icons/synergy/synergy-dropbox.png" }
+
+Package: com.palm.synergy.dropbox
+Version: 0.9.3
+Depends: org.webosarchive.synergy-revival, org.webosports.app.atlas (>= 0.9.11)
+Section: misc
+Architecture: armv7
+MD5Sum: df8752236d4feee0c284a35f3fa16173
+Size: 26782
+Filename: com.palm.synergy.dropbox_0.9.3_all.ipk
+Description: Dropbox cloud connector (OAuth2 + PKCE) for Synergy DOCUMENTS/PHOTO.UPLOAD.
+Maintainer: Herman van Hazendonk <github.com@herrie.org>
+Source: { "Type":"Application", "Feed":"WOSA Modernize", "Category":"Synergy", "LastUpdated":"1787609034", "Title":"Dropbox (Synergy)", "FullDescription":"<b>Experimental.</b> Adds Dropbox as a Synergy account so you can browse and open its files from the Document Viewer and QuickOffice, and upload photos from the Photos app. Signs in with OAuth2 + PKCE -- no password is stored on the device.<br><br>Needs <b>Synergy Revival</b> (Part 1 -- the shared runtime and the updated Accounts, Contacts, Messaging and Phone apps); Preware installs it for you, so expect a large first-time download. Sign-in happens in a page rendered by <b>Atlas</b>'s browser engine, because the stock webview cannot complete a modern TLS handshake -- Preware installs Atlas for you.<br><br>Add the account from Settings &gt; Accounts &gt; Add an Account. Install through Preware, from this feed. WebOS Quick Install and a manual ipkg install skip the feed's device checks and the dependency chain. The device reboots once at the end of the install.", "MinWebOSVersion":"3.0.5", "MaxWebOSVersion":"3.0.9", "PostInstallFlags":"RestartDevice", "PostUpdateFlags":"RestartDevice", "PostRemoveFlags":"RestartLuna", "Icon":"http://stacks.webosarchive.org/feeds/modernize/ipkgs/assets/icons/synergy/synergy-dropbox.png" }
+
+Package: com.palm.synergy.gdrive
+Version: 0.9.3
+Depends: org.webosports.app.atlas (>= 0.9.11)
+Section: misc
+Architecture: armv7
+MD5Sum: f0c417c3a68577fb0b94f72b60eed205
+Size: 25650
+Filename: com.palm.synergy.gdrive_0.9.3_all.ipk
+Description: Google Drive cloud connector (OAuth2 + PKCE + client_secret) for Synergy DOCUMENTS.
+Maintainer: Herman van Hazendonk <github.com@herrie.org>
+Source: { "Type":"Application", "Feed":"WOSA Modernize", "Category":"Synergy", "LastUpdated":"1787609034", "Title":"Google Drive (Synergy)", "FullDescription":"<b>Experimental.</b> Adds Google Drive as a Synergy account so you can browse and open your Drive files from the Document Viewer and QuickOffice. Signs in with OAuth2 + PKCE.<br><br>webOS CE 3.1.0 already has the Synergy runtime built in, so this package adds just the connector. Sign-in happens in a page rendered by <b>Atlas</b>'s browser engine, because the stock webview cannot complete a modern TLS handshake -- Preware installs Atlas for you.<br><br>Add the account from Settings &gt; Accounts &gt; Add an Account. Install through Preware, from this feed. WebOS Quick Install and a manual ipkg install skip the feed's device checks and the dependency chain. The device reboots once at the end of the install.", "MinWebOSVersion":"3.1.0", "MaxWebOSVersion":"3.9.9", "PostInstallFlags":"RestartDevice", "PostUpdateFlags":"RestartDevice", "PostRemoveFlags":"RestartLuna", "Icon":"http://stacks.webosarchive.org/feeds/modernize/ipkgs/assets/icons/synergy/synergy-gdrive.png" }
+
+Package: com.palm.synergy.gdrive
+Version: 0.9.3
+Depends: org.webosarchive.synergy-revival, org.webosports.app.atlas (>= 0.9.11)
+Section: misc
+Architecture: armv7
+MD5Sum: f0c417c3a68577fb0b94f72b60eed205
+Size: 25650
+Filename: com.palm.synergy.gdrive_0.9.3_all.ipk
+Description: Google Drive cloud connector (OAuth2 + PKCE + client_secret) for Synergy DOCUMENTS.
+Maintainer: Herman van Hazendonk <github.com@herrie.org>
+Source: { "Type":"Application", "Feed":"WOSA Modernize", "Category":"Synergy", "LastUpdated":"1787609034", "Title":"Google Drive (Synergy)", "FullDescription":"<b>Experimental.</b> Adds Google Drive as a Synergy account so you can browse and open your Drive files from the Document Viewer and QuickOffice. Signs in with OAuth2 + PKCE.<br><br>Needs <b>Synergy Revival</b> (Part 1 -- the shared runtime and the updated Accounts, Contacts, Messaging and Phone apps); Preware installs it for you, so expect a large first-time download. Sign-in happens in a page rendered by <b>Atlas</b>'s browser engine, because the stock webview cannot complete a modern TLS handshake -- Preware installs Atlas for you.<br><br>Add the account from Settings &gt; Accounts &gt; Add an Account. Install through Preware, from this feed. WebOS Quick Install and a manual ipkg install skip the feed's device checks and the dependency chain. The device reboots once at the end of the install.", "MinWebOSVersion":"3.0.5", "MaxWebOSVersion":"3.0.9", "PostInstallFlags":"RestartDevice", "PostUpdateFlags":"RestartDevice", "PostRemoveFlags":"RestartLuna", "Icon":"http://stacks.webosarchive.org/feeds/modernize/ipkgs/assets/icons/synergy/synergy-gdrive.png" }
+
+Package: com.palm.synergy.onedrive
+Version: 0.9.3
+Depends: org.webosports.app.atlas (>= 0.9.11)
+Section: misc
+Architecture: armv7
+MD5Sum: 91a25142dde27ba145ababa2d96b37b8
+Size: 27934
+Filename: com.palm.synergy.onedrive_0.9.3_all.ipk
+Description: OneDrive cloud connector (OAuth2 + PKCE, MS Graph) for Synergy DOCUMENTS/PHOTO.UPLOAD.
+Maintainer: Herman van Hazendonk <github.com@herrie.org>
+Source: { "Type":"Application", "Feed":"WOSA Modernize", "Category":"Synergy", "LastUpdated":"1787609034", "Title":"OneDrive (Synergy)", "FullDescription":"<b>Experimental.</b> Adds Microsoft OneDrive as a Synergy account so you can browse and open its files from the Document Viewer and QuickOffice, and upload photos from the Photos app. Signs in with OAuth2 + PKCE against Microsoft Graph.<br><br>webOS CE 3.1.0 already has the Synergy runtime built in, so this package adds just the connector. Sign-in happens in a page rendered by <b>Atlas</b>'s browser engine, because the stock webview cannot complete a modern TLS handshake -- Preware installs Atlas for you.<br><br>Add the account from Settings &gt; Accounts &gt; Add an Account. Install through Preware, from this feed. WebOS Quick Install and a manual ipkg install skip the feed's device checks and the dependency chain. The device reboots once at the end of the install.", "MinWebOSVersion":"3.1.0", "MaxWebOSVersion":"3.9.9", "PostInstallFlags":"RestartDevice", "PostUpdateFlags":"RestartDevice", "PostRemoveFlags":"RestartLuna", "Icon":"http://stacks.webosarchive.org/feeds/modernize/ipkgs/assets/icons/synergy/synergy-onedrive.png" }
+
+Package: com.palm.synergy.onedrive
+Version: 0.9.3
+Depends: org.webosarchive.synergy-revival, org.webosports.app.atlas (>= 0.9.11)
+Section: misc
+Architecture: armv7
+MD5Sum: 91a25142dde27ba145ababa2d96b37b8
+Size: 27934
+Filename: com.palm.synergy.onedrive_0.9.3_all.ipk
+Description: OneDrive cloud connector (OAuth2 + PKCE, MS Graph) for Synergy DOCUMENTS/PHOTO.UPLOAD.
+Maintainer: Herman van Hazendonk <github.com@herrie.org>
+Source: { "Type":"Application", "Feed":"WOSA Modernize", "Category":"Synergy", "LastUpdated":"1787609034", "Title":"OneDrive (Synergy)", "FullDescription":"<b>Experimental.</b> Adds Microsoft OneDrive as a Synergy account so you can browse and open its files from the Document Viewer and QuickOffice, and upload photos from the Photos app. Signs in with OAuth2 + PKCE against Microsoft Graph.<br><br>Needs <b>Synergy Revival</b> (Part 1 -- the shared runtime and the updated Accounts, Contacts, Messaging and Phone apps); Preware installs it for you, so expect a large first-time download. Sign-in happens in a page rendered by <b>Atlas</b>'s browser engine, because the stock webview cannot complete a modern TLS handshake -- Preware installs Atlas for you.<br><br>Add the account from Settings &gt; Accounts &gt; Add an Account. Install through Preware, from this feed. WebOS Quick Install and a manual ipkg install skip the feed's device checks and the dependency chain. The device reboots once at the end of the install.", "MinWebOSVersion":"3.0.5", "MaxWebOSVersion":"3.0.9", "PostInstallFlags":"RestartDevice", "PostUpdateFlags":"RestartDevice", "PostRemoveFlags":"RestartLuna", "Icon":"http://stacks.webosarchive.org/feeds/modernize/ipkgs/assets/icons/synergy/synergy-onedrive.png" }
+
+Package: com.palm.synergy.box
+Version: 0.9.3
+Depends: org.webosports.app.atlas (>= 0.9.11)
+Section: misc
+Architecture: armv7
+MD5Sum: 93e3f16d72ed92304fdb6a09a3b1e57d
+Size: 30420
+Filename: com.palm.synergy.box_0.9.3_all.ipk
+Description: Box cloud connector (OAuth2 + PKCE) for Synergy DOCUMENTS/PHOTO.UPLOAD.
+Maintainer: Herman van Hazendonk <github.com@herrie.org>
+Source: { "Type":"Application", "Feed":"WOSA Modernize", "Category":"Synergy", "LastUpdated":"1787609034", "Title":"Box (Synergy)", "FullDescription":"<b>Experimental.</b> Adds Box as a Synergy account so you can browse and open its files from the Document Viewer and QuickOffice, and upload photos from the Photos app. Signs in with OAuth2 + PKCE.<br><br>webOS CE 3.1.0 already has the Synergy runtime built in, so this package adds just the connector. Sign-in happens in a page rendered by <b>Atlas</b>'s browser engine, because the stock webview cannot complete a modern TLS handshake -- Preware installs Atlas for you.<br><br>Add the account from Settings &gt; Accounts &gt; Add an Account. Install through Preware, from this feed. WebOS Quick Install and a manual ipkg install skip the feed's device checks and the dependency chain. The device reboots once at the end of the install.", "MinWebOSVersion":"3.1.0", "MaxWebOSVersion":"3.9.9", "PostInstallFlags":"RestartDevice", "PostUpdateFlags":"RestartDevice", "PostRemoveFlags":"RestartLuna", "Icon":"http://stacks.webosarchive.org/feeds/modernize/ipkgs/assets/icons/synergy/synergy-box.png" }
+
+Package: com.palm.synergy.box
+Version: 0.9.3
+Depends: org.webosarchive.synergy-revival, org.webosports.app.atlas (>= 0.9.11)
+Section: misc
+Architecture: armv7
+MD5Sum: 93e3f16d72ed92304fdb6a09a3b1e57d
+Size: 30420
+Filename: com.palm.synergy.box_0.9.3_all.ipk
+Description: Box cloud connector (OAuth2 + PKCE) for Synergy DOCUMENTS/PHOTO.UPLOAD.
+Maintainer: Herman van Hazendonk <github.com@herrie.org>
+Source: { "Type":"Application", "Feed":"WOSA Modernize", "Category":"Synergy", "LastUpdated":"1787609034", "Title":"Box (Synergy)", "FullDescription":"<b>Experimental.</b> Adds Box as a Synergy account so you can browse and open its files from the Document Viewer and QuickOffice, and upload photos from the Photos app. Signs in with OAuth2 + PKCE.<br><br>Needs <b>Synergy Revival</b> (Part 1 -- the shared runtime and the updated Accounts, Contacts, Messaging and Phone apps); Preware installs it for you, so expect a large first-time download. Sign-in happens in a page rendered by <b>Atlas</b>'s browser engine, because the stock webview cannot complete a modern TLS handshake -- Preware installs Atlas for you.<br><br>Add the account from Settings &gt; Accounts &gt; Add an Account. Install through Preware, from this feed. WebOS Quick Install and a manual ipkg install skip the feed's device checks and the dependency chain. The device reboots once at the end of the install.", "MinWebOSVersion":"3.0.5", "MaxWebOSVersion":"3.0.9", "PostInstallFlags":"RestartDevice", "PostUpdateFlags":"RestartDevice", "PostRemoveFlags":"RestartLuna", "Icon":"http://stacks.webosarchive.org/feeds/modernize/ipkgs/assets/icons/synergy/synergy-box.png" }
+
+Package: com.palm.synergy.pcloud
+Version: 0.9.3
+Depends: org.webosports.app.atlas (>= 0.9.11)
+Section: misc
+Architecture: armv7
+MD5Sum: 26ad772c246dff4432f1354489a7de83
+Size: 35912
+Filename: com.palm.synergy.pcloud_0.9.3_all.ipk
+Description: pCloud cloud connector (OAuth2 + secret) for Synergy DOCUMENTS/PHOTO.UPLOAD.
+Maintainer: Herman van Hazendonk <github.com@herrie.org>
+Source: { "Type":"Application", "Feed":"WOSA Modernize", "Category":"Synergy", "LastUpdated":"1787609034", "Title":"pCloud (Synergy)", "FullDescription":"<b>Experimental.</b> Adds pCloud as a Synergy account so you can browse and open its files from the Document Viewer and QuickOffice, and upload photos from the Photos app. Signs in with OAuth2.<br><br>webOS CE 3.1.0 already has the Synergy runtime built in, so this package adds just the connector. Sign-in happens in a page rendered by <b>Atlas</b>'s browser engine, because the stock webview cannot complete a modern TLS handshake -- Preware installs Atlas for you.<br><br>Add the account from Settings &gt; Accounts &gt; Add an Account. Install through Preware, from this feed. WebOS Quick Install and a manual ipkg install skip the feed's device checks and the dependency chain. The device reboots once at the end of the install.", "MinWebOSVersion":"3.1.0", "MaxWebOSVersion":"3.9.9", "PostInstallFlags":"RestartDevice", "PostUpdateFlags":"RestartDevice", "PostRemoveFlags":"RestartLuna", "Icon":"http://stacks.webosarchive.org/feeds/modernize/ipkgs/assets/icons/synergy/synergy-pcloud.png" }
+
+Package: com.palm.synergy.pcloud
+Version: 0.9.3
+Depends: org.webosarchive.synergy-revival, org.webosports.app.atlas (>= 0.9.11)
+Section: misc
+Architecture: armv7
+MD5Sum: 26ad772c246dff4432f1354489a7de83
+Size: 35912
+Filename: com.palm.synergy.pcloud_0.9.3_all.ipk
+Description: pCloud cloud connector (OAuth2 + secret) for Synergy DOCUMENTS/PHOTO.UPLOAD.
+Maintainer: Herman van Hazendonk <github.com@herrie.org>
+Source: { "Type":"Application", "Feed":"WOSA Modernize", "Category":"Synergy", "LastUpdated":"1787609034", "Title":"pCloud (Synergy)", "FullDescription":"<b>Experimental.</b> Adds pCloud as a Synergy account so you can browse and open its files from the Document Viewer and QuickOffice, and upload photos from the Photos app. Signs in with OAuth2.<br><br>Needs <b>Synergy Revival</b> (Part 1 -- the shared runtime and the updated Accounts, Contacts, Messaging and Phone apps); Preware installs it for you, so expect a large first-time download. Sign-in happens in a page rendered by <b>Atlas</b>'s browser engine, because the stock webview cannot complete a modern TLS handshake -- Preware installs Atlas for you.<br><br>Add the account from Settings &gt; Accounts &gt; Add an Account. Install through Preware, from this feed. WebOS Quick Install and a manual ipkg install skip the feed's device checks and the dependency chain. The device reboots once at the end of the install.", "MinWebOSVersion":"3.0.5", "MaxWebOSVersion":"3.0.9", "PostInstallFlags":"RestartDevice", "PostUpdateFlags":"RestartDevice", "PostRemoveFlags":"RestartLuna", "Icon":"http://stacks.webosarchive.org/feeds/modernize/ipkgs/assets/icons/synergy/synergy-pcloud.png" }
+
+Package: com.palm.synergy.koofr
+Version: 0.9.3
+Depends: org.webosports.app.atlas (>= 0.9.11)
+Section: misc
+Architecture: armv7
+MD5Sum: ea8281bd272fc7e1eeb4d879146a5fc1
+Size: 27316
+Filename: com.palm.synergy.koofr_0.9.3_all.ipk
+Description: Koofr cloud connector (OAuth2 + PKCE, scope public) for Synergy DOCUMENTS/PHOTO.UPLOAD.
+Maintainer: Herman van Hazendonk <github.com@herrie.org>
+Source: { "Type":"Application", "Feed":"WOSA Modernize", "Category":"Synergy", "LastUpdated":"1787609034", "Title":"Koofr (Synergy)", "FullDescription":"<b>Experimental.</b> Adds Koofr as a Synergy account so you can browse and open its files from the Document Viewer and QuickOffice, and upload photos from the Photos app. Signs in with OAuth2 + PKCE.<br><br>webOS CE 3.1.0 already has the Synergy runtime built in, so this package adds just the connector. Sign-in happens in a page rendered by <b>Atlas</b>'s browser engine, because the stock webview cannot complete a modern TLS handshake -- Preware installs Atlas for you.<br><br>Add the account from Settings &gt; Accounts &gt; Add an Account. Install through Preware, from this feed. WebOS Quick Install and a manual ipkg install skip the feed's device checks and the dependency chain. The device reboots once at the end of the install.", "MinWebOSVersion":"3.1.0", "MaxWebOSVersion":"3.9.9", "PostInstallFlags":"RestartDevice", "PostUpdateFlags":"RestartDevice", "PostRemoveFlags":"RestartLuna", "Icon":"http://stacks.webosarchive.org/feeds/modernize/ipkgs/assets/icons/synergy/synergy-koofr.png" }
+
+Package: com.palm.synergy.koofr
+Version: 0.9.3
+Depends: org.webosarchive.synergy-revival, org.webosports.app.atlas (>= 0.9.11)
+Section: misc
+Architecture: armv7
+MD5Sum: ea8281bd272fc7e1eeb4d879146a5fc1
+Size: 27316
+Filename: com.palm.synergy.koofr_0.9.3_all.ipk
+Description: Koofr cloud connector (OAuth2 + PKCE, scope public) for Synergy DOCUMENTS/PHOTO.UPLOAD.
+Maintainer: Herman van Hazendonk <github.com@herrie.org>
+Source: { "Type":"Application", "Feed":"WOSA Modernize", "Category":"Synergy", "LastUpdated":"1787609034", "Title":"Koofr (Synergy)", "FullDescription":"<b>Experimental.</b> Adds Koofr as a Synergy account so you can browse and open its files from the Document Viewer and QuickOffice, and upload photos from the Photos app. Signs in with OAuth2 + PKCE.<br><br>Needs <b>Synergy Revival</b> (Part 1 -- the shared runtime and the updated Accounts, Contacts, Messaging and Phone apps); Preware installs it for you, so expect a large first-time download. Sign-in happens in a page rendered by <b>Atlas</b>'s browser engine, because the stock webview cannot complete a modern TLS handshake -- Preware installs Atlas for you.<br><br>Add the account from Settings &gt; Accounts &gt; Add an Account. Install through Preware, from this feed. WebOS Quick Install and a manual ipkg install skip the feed's device checks and the dependency chain. The device reboots once at the end of the install.", "MinWebOSVersion":"3.0.5", "MaxWebOSVersion":"3.0.9", "PostInstallFlags":"RestartDevice", "PostUpdateFlags":"RestartDevice", "PostRemoveFlags":"RestartLuna", "Icon":"http://stacks.webosarchive.org/feeds/modernize/ipkgs/assets/icons/synergy/synergy-koofr.png" }
+
+Package: com.palm.synergy.hidrive
+Version: 0.9.3
+Depends: org.webosports.app.atlas (>= 0.9.11)
+Section: misc
+Architecture: armv7
+MD5Sum: a7799627ead84f793d7fabc2ef56cd0f
+Size: 29668
+Filename: com.palm.synergy.hidrive_0.9.3_all.ipk
+Description: HiDrive (STRATO) cloud connector (OAuth2 + secret) for Synergy DOCUMENTS/PHOTO.UPLOAD.
+Maintainer: Herman van Hazendonk <github.com@herrie.org>
+Source: { "Type":"Application", "Feed":"WOSA Modernize", "Category":"Synergy", "LastUpdated":"1787609034", "Title":"HiDrive (Synergy)", "FullDescription":"<b>Experimental.</b> Adds STRATO HiDrive as a Synergy account so you can browse and open its files from the Document Viewer and QuickOffice, and upload photos from the Photos app. Signs in with OAuth2.<br><br>webOS CE 3.1.0 already has the Synergy runtime built in, so this package adds just the connector. Sign-in happens in a page rendered by <b>Atlas</b>'s browser engine, because the stock webview cannot complete a modern TLS handshake -- Preware installs Atlas for you.<br><br>Add the account from Settings &gt; Accounts &gt; Add an Account. Install through Preware, from this feed. WebOS Quick Install and a manual ipkg install skip the feed's device checks and the dependency chain. The device reboots once at the end of the install.", "MinWebOSVersion":"3.1.0", "MaxWebOSVersion":"3.9.9", "PostInstallFlags":"RestartDevice", "PostUpdateFlags":"RestartDevice", "PostRemoveFlags":"RestartLuna", "Icon":"http://stacks.webosarchive.org/feeds/modernize/ipkgs/assets/icons/synergy/synergy-hidrive.png" }
+
+Package: com.palm.synergy.hidrive
+Version: 0.9.3
+Depends: org.webosarchive.synergy-revival, org.webosports.app.atlas (>= 0.9.11)
+Section: misc
+Architecture: armv7
+MD5Sum: a7799627ead84f793d7fabc2ef56cd0f
+Size: 29668
+Filename: com.palm.synergy.hidrive_0.9.3_all.ipk
+Description: HiDrive (STRATO) cloud connector (OAuth2 + secret) for Synergy DOCUMENTS/PHOTO.UPLOAD.
+Maintainer: Herman van Hazendonk <github.com@herrie.org>
+Source: { "Type":"Application", "Feed":"WOSA Modernize", "Category":"Synergy", "LastUpdated":"1787609034", "Title":"HiDrive (Synergy)", "FullDescription":"<b>Experimental.</b> Adds STRATO HiDrive as a Synergy account so you can browse and open its files from the Document Viewer and QuickOffice, and upload photos from the Photos app. Signs in with OAuth2.<br><br>Needs <b>Synergy Revival</b> (Part 1 -- the shared runtime and the updated Accounts, Contacts, Messaging and Phone apps); Preware installs it for you, so expect a large first-time download. Sign-in happens in a page rendered by <b>Atlas</b>'s browser engine, because the stock webview cannot complete a modern TLS handshake -- Preware installs Atlas for you.<br><br>Add the account from Settings &gt; Accounts &gt; Add an Account. Install through Preware, from this feed. WebOS Quick Install and a manual ipkg install skip the feed's device checks and the dependency chain. The device reboots once at the end of the install.", "MinWebOSVersion":"3.0.5", "MaxWebOSVersion":"3.0.9", "PostInstallFlags":"RestartDevice", "PostUpdateFlags":"RestartDevice", "PostRemoveFlags":"RestartLuna", "Icon":"http://stacks.webosarchive.org/feeds/modernize/ipkgs/assets/icons/synergy/synergy-hidrive.png" }
+
+Package: com.palm.synergy.yandex
+Version: 0.9.3
+Depends: org.webosports.app.atlas (>= 0.9.11)
+Section: misc
+Architecture: armv7
+MD5Sum: ce26849469fc47eacffe18065b8dcc91
+Size: 29136
+Filename: com.palm.synergy.yandex_0.9.3_all.ipk
+Description: Yandex Disk cloud connector (OAuth2 + PKCE + secret) for Synergy DOCUMENTS/PHOTO.UPLOAD.
+Maintainer: Herman van Hazendonk <github.com@herrie.org>
+Source: { "Type":"Application", "Feed":"WOSA Modernize", "Category":"Synergy", "LastUpdated":"1787609034", "Title":"Yandex Disk (Synergy)", "FullDescription":"<b>Experimental.</b> Adds Yandex Disk as a Synergy account so you can browse and open its files from the Document Viewer and QuickOffice, and upload photos from the Photos app. Signs in with OAuth2 + PKCE.<br><br>webOS CE 3.1.0 already has the Synergy runtime built in, so this package adds just the connector. Sign-in happens in a page rendered by <b>Atlas</b>'s browser engine, because the stock webview cannot complete a modern TLS handshake -- Preware installs Atlas for you.<br><br>Add the account from Settings &gt; Accounts &gt; Add an Account. Install through Preware, from this feed. WebOS Quick Install and a manual ipkg install skip the feed's device checks and the dependency chain. The device reboots once at the end of the install.", "MinWebOSVersion":"3.1.0", "MaxWebOSVersion":"3.9.9", "PostInstallFlags":"RestartDevice", "PostUpdateFlags":"RestartDevice", "PostRemoveFlags":"RestartLuna", "Icon":"http://stacks.webosarchive.org/feeds/modernize/ipkgs/assets/icons/synergy/synergy-yandex.png" }
+
+Package: com.palm.synergy.yandex
+Version: 0.9.3
+Depends: org.webosarchive.synergy-revival, org.webosports.app.atlas (>= 0.9.11)
+Section: misc
+Architecture: armv7
+MD5Sum: ce26849469fc47eacffe18065b8dcc91
+Size: 29136
+Filename: com.palm.synergy.yandex_0.9.3_all.ipk
+Description: Yandex Disk cloud connector (OAuth2 + PKCE + secret) for Synergy DOCUMENTS/PHOTO.UPLOAD.
+Maintainer: Herman van Hazendonk <github.com@herrie.org>
+Source: { "Type":"Application", "Feed":"WOSA Modernize", "Category":"Synergy", "LastUpdated":"1787609034", "Title":"Yandex Disk (Synergy)", "FullDescription":"<b>Experimental.</b> Adds Yandex Disk as a Synergy account so you can browse and open its files from the Document Viewer and QuickOffice, and upload photos from the Photos app. Signs in with OAuth2 + PKCE.<br><br>Needs <b>Synergy Revival</b> (Part 1 -- the shared runtime and the updated Accounts, Contacts, Messaging and Phone apps); Preware installs it for you, so expect a large first-time download. Sign-in happens in a page rendered by <b>Atlas</b>'s browser engine, because the stock webview cannot complete a modern TLS handshake -- Preware installs Atlas for you.<br><br>Add the account from Settings &gt; Accounts &gt; Add an Account. Install through Preware, from this feed. WebOS Quick Install and a manual ipkg install skip the feed's device checks and the dependency chain. The device reboots once at the end of the install.", "MinWebOSVersion":"3.0.5", "MaxWebOSVersion":"3.0.9", "PostInstallFlags":"RestartDevice", "PostUpdateFlags":"RestartDevice", "PostRemoveFlags":"RestartLuna", "Icon":"http://stacks.webosarchive.org/feeds/modernize/ipkgs/assets/icons/synergy/synergy-yandex.png" }
+
+Package: com.palm.synergy.kdrive
+Version: 0.9.3
+Depends: org.webosports.app.atlas (>= 0.9.11)
+Section: misc
+Architecture: armv7
+MD5Sum: ec5f6530df9b3131b60f75a9a408b26a
+Size: 38882
+Filename: com.palm.synergy.kdrive_0.9.3_all.ipk
+Description: Infomaniak kDrive connector (personal API token) for Synergy DOCUMENTS/PHOTO.UPLOAD.
+Maintainer: Herman van Hazendonk <github.com@herrie.org>
+Source: { "Type":"Application", "Feed":"WOSA Modernize", "Category":"Synergy", "LastUpdated":"1787609034", "Title":"kDrive (Synergy)", "FullDescription":"<b>Experimental.</b> Adds Infomaniak kDrive as a Synergy account so you can browse and open its files from the Document Viewer and QuickOffice, and upload photos from the Photos app. Authenticates with a personal API token you paste in -- no browser sign-in needed.<br><br>webOS CE 3.1.0 already has the Synergy runtime built in, so this package adds just the connector. <b>Atlas</b> is installed alongside it: the Synergy sign-in pages render through its browser engine, and the OAuth-based connectors cannot sign in without it.<br><br>Add the account from Settings &gt; Accounts &gt; Add an Account. Install through Preware, from this feed. WebOS Quick Install and a manual ipkg install skip the feed's device checks and the dependency chain. The device reboots once at the end of the install.", "MinWebOSVersion":"3.1.0", "MaxWebOSVersion":"3.9.9", "PostInstallFlags":"RestartDevice", "PostUpdateFlags":"RestartDevice", "PostRemoveFlags":"RestartLuna", "Icon":"http://stacks.webosarchive.org/feeds/modernize/ipkgs/assets/icons/synergy/synergy-kdrive.png" }
+
+Package: com.palm.synergy.kdrive
+Version: 0.9.3
+Depends: org.webosarchive.synergy-revival, org.webosports.app.atlas (>= 0.9.11)
+Section: misc
+Architecture: armv7
+MD5Sum: ec5f6530df9b3131b60f75a9a408b26a
+Size: 38882
+Filename: com.palm.synergy.kdrive_0.9.3_all.ipk
+Description: Infomaniak kDrive connector (personal API token) for Synergy DOCUMENTS/PHOTO.UPLOAD.
+Maintainer: Herman van Hazendonk <github.com@herrie.org>
+Source: { "Type":"Application", "Feed":"WOSA Modernize", "Category":"Synergy", "LastUpdated":"1787609034", "Title":"kDrive (Synergy)", "FullDescription":"<b>Experimental.</b> Adds Infomaniak kDrive as a Synergy account so you can browse and open its files from the Document Viewer and QuickOffice, and upload photos from the Photos app. Authenticates with a personal API token you paste in -- no browser sign-in needed.<br><br>Needs <b>Synergy Revival</b> (Part 1 -- the shared runtime and the updated Accounts, Contacts, Messaging and Phone apps); Preware installs it for you, so expect a large first-time download. <b>Atlas</b> is installed alongside it: the Synergy sign-in pages render through its browser engine, and the OAuth-based connectors cannot sign in without it.<br><br>Add the account from Settings &gt; Accounts &gt; Add an Account. Install through Preware, from this feed. WebOS Quick Install and a manual ipkg install skip the feed's device checks and the dependency chain. The device reboots once at the end of the install.", "MinWebOSVersion":"3.0.5", "MaxWebOSVersion":"3.0.9", "PostInstallFlags":"RestartDevice", "PostUpdateFlags":"RestartDevice", "PostRemoveFlags":"RestartLuna", "Icon":"http://stacks.webosarchive.org/feeds/modernize/ipkgs/assets/icons/synergy/synergy-kdrive.png" }
+
+Package: com.palm.synergy.mega
+Version: 0.9.3
+Depends: org.webosports.app.atlas (>= 0.9.11)
+Section: misc
+Architecture: armv7
+MD5Sum: ccdbc17043e16e5034e7d9b59d689fc2
+Size: 57652
+Filename: com.palm.synergy.mega_0.9.3_all.ipk
+Description: MEGA cloud connector (email+password, E2E crypto) for Synergy DOCUMENTS/PHOTO.UPLOAD.
+Maintainer: Herman van Hazendonk <github.com@herrie.org>
+Source: { "Type":"Application", "Feed":"WOSA Modernize", "Category":"Synergy", "LastUpdated":"1787609034", "Title":"MEGA (Synergy)", "FullDescription":"<b>Experimental.</b> Adds MEGA as a Synergy account so you can browse and open its files from the Document Viewer and QuickOffice, and upload photos from the Photos app. Signs in with your email and password and does MEGA's end-to-end crypto on the device.<br><br>webOS CE 3.1.0 already has the Synergy runtime built in, so this package adds just the connector. <b>Atlas</b> is installed alongside it: the Synergy sign-in pages render through its browser engine, and the OAuth-based connectors cannot sign in without it.<br><br>Add the account from Settings &gt; Accounts &gt; Add an Account. Install through Preware, from this feed. WebOS Quick Install and a manual ipkg install skip the feed's device checks and the dependency chain. The device reboots once at the end of the install.", "MinWebOSVersion":"3.1.0", "MaxWebOSVersion":"3.9.9", "PostInstallFlags":"RestartDevice", "PostUpdateFlags":"RestartDevice", "PostRemoveFlags":"RestartLuna", "Icon":"http://stacks.webosarchive.org/feeds/modernize/ipkgs/assets/icons/synergy/synergy-mega.png" }
+
+Package: com.palm.synergy.mega
+Version: 0.9.3
+Depends: org.webosarchive.synergy-revival, org.webosports.app.atlas (>= 0.9.11)
+Section: misc
+Architecture: armv7
+MD5Sum: ccdbc17043e16e5034e7d9b59d689fc2
+Size: 57652
+Filename: com.palm.synergy.mega_0.9.3_all.ipk
+Description: MEGA cloud connector (email+password, E2E crypto) for Synergy DOCUMENTS/PHOTO.UPLOAD.
+Maintainer: Herman van Hazendonk <github.com@herrie.org>
+Source: { "Type":"Application", "Feed":"WOSA Modernize", "Category":"Synergy", "LastUpdated":"1787609034", "Title":"MEGA (Synergy)", "FullDescription":"<b>Experimental.</b> Adds MEGA as a Synergy account so you can browse and open its files from the Document Viewer and QuickOffice, and upload photos from the Photos app. Signs in with your email and password and does MEGA's end-to-end crypto on the device.<br><br>Needs <b>Synergy Revival</b> (Part 1 -- the shared runtime and the updated Accounts, Contacts, Messaging and Phone apps); Preware installs it for you, so expect a large first-time download. <b>Atlas</b> is installed alongside it: the Synergy sign-in pages render through its browser engine, and the OAuth-based connectors cannot sign in without it.<br><br>Add the account from Settings &gt; Accounts &gt; Add an Account. Install through Preware, from this feed. WebOS Quick Install and a manual ipkg install skip the feed's device checks and the dependency chain. The device reboots once at the end of the install.", "MinWebOSVersion":"3.0.5", "MaxWebOSVersion":"3.0.9", "PostInstallFlags":"RestartDevice", "PostUpdateFlags":"RestartDevice", "PostRemoveFlags":"RestartLuna", "Icon":"http://stacks.webosarchive.org/feeds/modernize/ipkgs/assets/icons/synergy/synergy-mega.png" }
+
+Package: com.palm.synergy.s3
+Version: 0.9.3
+Depends: org.webosports.app.atlas (>= 0.9.11)
+Section: misc
+Architecture: armv7
+MD5Sum: 0751fbeb68ff2f4361ac3a399c38a2a1
+Size: 37890
+Filename: com.palm.synergy.s3_0.9.3_all.ipk
+Description: S3-compatible cloud connector (AWS SigV4) for Synergy DOCUMENTS/PHOTO.UPLOAD.
+Maintainer: Herman van Hazendonk <github.com@herrie.org>
+Source: { "Type":"Application", "Feed":"WOSA Modernize", "Category":"Synergy", "LastUpdated":"1787609034", "Title":"S3 Storage (Synergy)", "FullDescription":"<b>Experimental.</b> Adds any S3-compatible bucket (AWS or a self-hosted service) as a Synergy account so you can browse and open its files from the Document Viewer and QuickOffice, and upload photos from the Photos app. Authenticates with an access key pair, AWS SigV4 -- no browser sign-in needed.<br><br>webOS CE 3.1.0 already has the Synergy runtime built in, so this package adds just the connector. <b>Atlas</b> is installed alongside it: the Synergy sign-in pages render through its browser engine, and the OAuth-based connectors cannot sign in without it.<br><br>Add the account from Settings &gt; Accounts &gt; Add an Account. Install through Preware, from this feed. WebOS Quick Install and a manual ipkg install skip the feed's device checks and the dependency chain. The device reboots once at the end of the install.", "MinWebOSVersion":"3.1.0", "MaxWebOSVersion":"3.9.9", "PostInstallFlags":"RestartDevice", "PostUpdateFlags":"RestartDevice", "PostRemoveFlags":"RestartLuna", "Icon":"http://stacks.webosarchive.org/feeds/modernize/ipkgs/assets/icons/synergy/synergy-s3.png" }
+
+Package: com.palm.synergy.s3
+Version: 0.9.3
+Depends: org.webosarchive.synergy-revival, org.webosports.app.atlas (>= 0.9.11)
+Section: misc
+Architecture: armv7
+MD5Sum: 0751fbeb68ff2f4361ac3a399c38a2a1
+Size: 37890
+Filename: com.palm.synergy.s3_0.9.3_all.ipk
+Description: S3-compatible cloud connector (AWS SigV4) for Synergy DOCUMENTS/PHOTO.UPLOAD.
+Maintainer: Herman van Hazendonk <github.com@herrie.org>
+Source: { "Type":"Application", "Feed":"WOSA Modernize", "Category":"Synergy", "LastUpdated":"1787609034", "Title":"S3 Storage (Synergy)", "FullDescription":"<b>Experimental.</b> Adds any S3-compatible bucket (AWS or a self-hosted service) as a Synergy account so you can browse and open its files from the Document Viewer and QuickOffice, and upload photos from the Photos app. Authenticates with an access key pair, AWS SigV4 -- no browser sign-in needed.<br><br>Needs <b>Synergy Revival</b> (Part 1 -- the shared runtime and the updated Accounts, Contacts, Messaging and Phone apps); Preware installs it for you, so expect a large first-time download. <b>Atlas</b> is installed alongside it: the Synergy sign-in pages render through its browser engine, and the OAuth-based connectors cannot sign in without it.<br><br>Add the account from Settings &gt; Accounts &gt; Add an Account. Install through Preware, from this feed. WebOS Quick Install and a manual ipkg install skip the feed's device checks and the dependency chain. The device reboots once at the end of the install.", "MinWebOSVersion":"3.0.5", "MaxWebOSVersion":"3.0.9", "PostInstallFlags":"RestartDevice", "PostUpdateFlags":"RestartDevice", "PostRemoveFlags":"RestartLuna", "Icon":"http://stacks.webosarchive.org/feeds/modernize/ipkgs/assets/icons/synergy/synergy-s3.png" }
+
+Package: com.palm.synergy.flickr
+Version: 0.9.3
+Depends: org.webosports.app.atlas (>= 0.9.11)
+Section: misc
+Architecture: armv7
+MD5Sum: 3c33dafeccb54b6f78abc41562a96aa3
+Size: 37316
+Filename: com.palm.synergy.flickr_0.9.3_all.ipk
+Description: Flickr photo connector (OAuth 1.0a) for Synergy PHOTO.UPLOAD.
+Maintainer: Herman van Hazendonk <github.com@herrie.org>
+Source: { "Type":"Application", "Feed":"WOSA Modernize", "Category":"Synergy", "LastUpdated":"1787609034", "Title":"Flickr (Synergy)", "FullDescription":"<b>Experimental.</b> Adds Flickr as a Synergy account so you can upload photos to it straight from the Photos app. Signs in with OAuth 1.0a.<br><br>webOS CE 3.1.0 already has the Synergy runtime built in, so this package adds just the connector. Sign-in happens in a page rendered by <b>Atlas</b>'s browser engine, because the stock webview cannot complete a modern TLS handshake -- Preware installs Atlas for you.<br><br>Add the account from Settings &gt; Accounts &gt; Add an Account. Install through Preware, from this feed. WebOS Quick Install and a manual ipkg install skip the feed's device checks and the dependency chain. The device reboots once at the end of the install.", "MinWebOSVersion":"3.1.0", "MaxWebOSVersion":"3.9.9", "PostInstallFlags":"RestartDevice", "PostUpdateFlags":"RestartDevice", "PostRemoveFlags":"RestartLuna", "Icon":"http://stacks.webosarchive.org/feeds/modernize/ipkgs/assets/icons/synergy/synergy-generic.png" }
+
+Package: com.palm.synergy.flickr
+Version: 0.9.3
+Depends: org.webosarchive.synergy-revival, org.webosports.app.atlas (>= 0.9.11)
+Section: misc
+Architecture: armv7
+MD5Sum: 3c33dafeccb54b6f78abc41562a96aa3
+Size: 37316
+Filename: com.palm.synergy.flickr_0.9.3_all.ipk
+Description: Flickr photo connector (OAuth 1.0a) for Synergy PHOTO.UPLOAD.
+Maintainer: Herman van Hazendonk <github.com@herrie.org>
+Source: { "Type":"Application", "Feed":"WOSA Modernize", "Category":"Synergy", "LastUpdated":"1787609034", "Title":"Flickr (Synergy)", "FullDescription":"<b>Experimental.</b> Adds Flickr as a Synergy account so you can upload photos to it straight from the Photos app. Signs in with OAuth 1.0a.<br><br>Needs <b>Synergy Revival</b> (Part 1 -- the shared runtime and the updated Accounts, Contacts, Messaging and Phone apps); Preware installs it for you, so expect a large first-time download. Sign-in happens in a page rendered by <b>Atlas</b>'s browser engine, because the stock webview cannot complete a modern TLS handshake -- Preware installs Atlas for you.<br><br>Add the account from Settings &gt; Accounts &gt; Add an Account. Install through Preware, from this feed. WebOS Quick Install and a manual ipkg install skip the feed's device checks and the dependency chain. The device reboots once at the end of the install.", "MinWebOSVersion":"3.0.5", "MaxWebOSVersion":"3.0.9", "PostInstallFlags":"RestartDevice", "PostUpdateFlags":"RestartDevice", "PostRemoveFlags":"RestartLuna", "Icon":"http://stacks.webosarchive.org/feeds/modernize/ipkgs/assets/icons/synergy/synergy-generic.png" }
+
+Package: org.webosports.cdav
+Version: 0.9.3
+Depends: org.webosports.app.atlas (>= 0.9.11)
+Section: misc
+Architecture: armv7
+MD5Sum: be48fa11e2fb5bf292523ae907a4d722
+Size: 632434
+Filename: org.webosports.cdav_0.9.3_all.ipk
+Description: CardDAV/CalDAV Synergy connector (contacts + calendar sync) for webOS 3.0.5.
+Maintainer: Herman van Hazendonk <github.com@herrie.org>
+Source: { "Type":"Application", "Feed":"WOSA Modernize", "Category":"Synergy", "LastUpdated":"1787609034", "Title":"CalDAV / CardDAV (Synergy)", "FullDescription":"<b>Experimental.</b> Adds any CalDAV/CardDAV server -- Nextcloud, Fastmail, iCloud, a self-hosted Radicale -- as a Synergy account, syncing its contacts and calendars into the stock Contacts and Calendar apps. Authenticates with a username and password (an app password where the provider requires one).<br><br>webOS CE 3.1.0 already has the Synergy runtime built in, so this package adds just the connector. <b>Atlas</b> is installed alongside it: the Synergy sign-in pages render through its browser engine, and the OAuth-based connectors cannot sign in without it.<br><br>Add the account from Settings &gt; Accounts &gt; Add an Account. Install through Preware, from this feed. WebOS Quick Install and a manual ipkg install skip the feed's device checks and the dependency chain. The device reboots once at the end of the install.", "MinWebOSVersion":"3.1.0", "MaxWebOSVersion":"3.9.9", "PostInstallFlags":"RestartDevice", "PostUpdateFlags":"RestartDevice", "PostRemoveFlags":"RestartLuna", "Icon":"http://stacks.webosarchive.org/feeds/modernize/ipkgs/assets/icons/synergy/synergy-cdav.png" }
+
+Package: org.webosports.cdav
+Version: 0.9.3
+Depends: org.webosarchive.synergy-revival, org.webosports.app.atlas (>= 0.9.11)
+Section: misc
+Architecture: armv7
+MD5Sum: be48fa11e2fb5bf292523ae907a4d722
+Size: 632434
+Filename: org.webosports.cdav_0.9.3_all.ipk
+Description: CardDAV/CalDAV Synergy connector (contacts + calendar sync) for webOS 3.0.5.
+Maintainer: Herman van Hazendonk <github.com@herrie.org>
+Source: { "Type":"Application", "Feed":"WOSA Modernize", "Category":"Synergy", "LastUpdated":"1787609034", "Title":"CalDAV / CardDAV (Synergy)", "FullDescription":"<b>Experimental.</b> Adds any CalDAV/CardDAV server -- Nextcloud, Fastmail, iCloud, a self-hosted Radicale -- as a Synergy account, syncing its contacts and calendars into the stock Contacts and Calendar apps. Authenticates with a username and password (an app password where the provider requires one).<br><br>Needs <b>Synergy Revival</b> (Part 1 -- the shared runtime and the updated Accounts, Contacts, Messaging and Phone apps); Preware installs it for you, so expect a large first-time download. <b>Atlas</b> is installed alongside it: the Synergy sign-in pages render through its browser engine, and the OAuth-based connectors cannot sign in without it.<br><br>Add the account from Settings &gt; Accounts &gt; Add an Account. Install through Preware, from this feed. WebOS Quick Install and a manual ipkg install skip the feed's device checks and the dependency chain. The device reboots once at the end of the install.", "MinWebOSVersion":"3.0.5", "MaxWebOSVersion":"3.0.9", "PostInstallFlags":"RestartDevice", "PostUpdateFlags":"RestartDevice", "PostRemoveFlags":"RestartLuna", "Icon":"http://stacks.webosarchive.org/feeds/modernize/ipkgs/assets/icons/synergy/synergy-cdav.png" }
