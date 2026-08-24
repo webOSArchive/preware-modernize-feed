@@ -57,12 +57,11 @@ server cert), `downloadmgr-tls13 1.1.0` (RPATHs the system Download Manager /
 `/usr/bin/LunaDownloadMgr` onto the ssl11 curl so background downloads AND uploads reach modern
 HTTPS; depends browser-tls13. **1.1.0** adds the one-byte code patch that stops the SIGSEGV in
 `curl_multi_remove_handle`, and repairs a poisoned uninstall restore point — see the package
-bullet), `usbsettings 1.1.0` (**new** — auto-arms the OTG controller the first
-time the port goes idle, fixing a hard hang some devices hit on their first-ever OTG cable insert;
-adds a live connected-device list with device-type icons via a new `usbdevmon` helper binary, and a
-USB Reset button to recover a wedged connection without a full reboot),
-`com.palm.app.backup 3.1.0` (see below), `tls-updates 1.0.16`
-(version-floors browser `>= 1.1.2` / usbsettings `>= 1.1.8` / btgamepad `>= 1.1.0` / luna
+bullet), `usbsettings 1.1.9` (**new** — a mounted USB drive now lands on
+`/media/usb` instead of a folder inside `/media/internal`, so it stops showing as an empty folder in
+Internalz Pro and stops swallowing files onto internal storage; see the package bullet),
+`com.palm.app.backup 3.1.0` (see below), `tls-updates 1.0.17`
+(version-floors browser `>= 1.1.2` / usbsettings `>= 1.1.9` / btgamepad `>= 1.1.0` / luna
 `>= 1.1.4` / mail `>= 1.3.2` / downloadmgr `>= 1.1.0`; also pulls in `ntpdate-sync`,
 `downloadmgr-tls13`, `accountsapp` and `com.palm.app.backup` — apps break
 when the clock is wrong, TLS cert validity checks fail).
@@ -398,10 +397,10 @@ floors) resolves.
 - **`org.webosarchive.help-redirect`** (built + verified this session): patches `com.palm.app.help`
   `UrlManager.js` `helpUrl` (drives all content) + `HelpApp.js` palm.com domain check + device.do
   → `http://help.webosarchive.org`. Backs up `*.webosce-orig`, restores on removal, RestartLuna.
-- **`org.webosarchive.tls-updates`** ("TLS 1.3 Updates (TouchPad)", **1.0.16**) — payload-free **meta**
+- **`org.webosarchive.tls-updates`** ("TLS 1.3 Updates (TouchPad)", **1.0.17**) — payload-free **meta**
   package. Depends: rootcerts, browser-tls13, ntpdate-sync, curl/luna/mail-tls13,
   **downloadmgr-tls13 (>= 1.1.0)**, mojomail-imap-tagfix, help-redirect, enyo-findapps,
-  **usbsettings (>= 1.1.8)**, **btgamepad (>= 1.1.0)**, **accountsapp** (unversioned — new in 1.0.13),
+  **usbsettings (>= 1.1.9)**, **btgamepad (>= 1.1.0)**, **accountsapp** (unversioned — new in 1.0.13),
   **`com.palm.app.backup`** (unversioned — added in 1.0.15). `ntpdate-sync` sits **after** browser-tls13
   and **before** luna — added because apps break when the clock is wrong (TLS cert validity windows
   fail); left unversioned (new dep, nothing to drag up). ⚠️ The old rationale "it's browser's own dep,
@@ -410,7 +409,7 @@ floors) resolves.
   ordering it. Harmless either way: it just drops in an upstart job and needs no ssl11. `downloadmgr-tls13` is ordered **after** luna-tls13 (per request; it also
   hard-depends browser-tls13 so browser installs first regardless); unversioned (new dep).
   Carries **version floors** on the packages that get revved: `browser-tls13 (>= 1.1.2)`,
-  **`luna-tls13 (>= 1.1.4)`**, `mail-tls13 (>= 1.3.2)`, `usbsettings (>= 1.1.8)`,
+  **`luna-tls13 (>= 1.1.4)`**, `mail-tls13 (>= 1.3.2)`, **`usbsettings (>= 1.1.9)`**,
   `btgamepad (>= 1.1.0)`, `downloadmgr-tls13 (>= 1.1.0)` (rest unversioned).
   Bumping a floor requires bumping tls-updates' own version too (1.0.6→1.0.7 for usbsettings,
   1.0.7→1.0.8 for btgamepad, 1.0.8→1.0.9 to drag usbsettings to 1.0.8, 1.0.9→1.0.10 to drag
@@ -595,7 +594,7 @@ not the name triple alone** — the check in this repo was updated accordingly.
   `"Icon": .../assets/icons/bt-gamepad.png` (the ipk's own control Source has no Icon — index is the
   curated copy, per the pattern above).
 
-- **`com.webosarchive.usbsettings`** ("USB Settings", **1.1.0**, arch `all`, TouchPad only) — Enyo app
+- **`com.webosarchive.usbsettings`** ("USB Settings", **1.1.9**, arch `all`, TouchPad only) — Enyo app
   + JS bridge service + a root upstart daemon (`usbctl-watchd`) controlling the USB port: **USB host
   mode (OTG)** for keyboards / game controllers / flash drives, **high-power devices** (e.g. a
   DualShock 4 over USB — enable before plugging in), and **USB storage** mount/unmount with live
@@ -644,9 +643,30 @@ not the name triple alone** — the check in this repo was updated accordingly.
     storage/generic) that `GetStatusAssistant.js` reads back if fresh (<6s old) — kept off otherwise so
     it never contends for input nodes while, e.g., a game is running. Shipping it needed the meta
     bumped **1.0.9 → 1.0.10** with the floor moved to `usbsettings (>= 1.1.0)`.
+  - **1.1.0 → 1.1.9** covers three releases not written up here individually (see the meta's own
+    changelog in its `Source` for 1.1.4 and 1.1.8: an idle-daemon fork storm that caused frame-rate
+    stutter, and a device-monitor bug that opened controllers *exclusively* so a pad verified in this
+    app was then dead in any game launched afterwards).
+  - **1.1.8 → 1.1.9 changes exactly one thing:** the USB storage mountpoint moves from
+    `/media/internal/usbdrive` to **`/media/usb`**. Verified by unpack-diff — 3 files differ, two of
+    them version strings (`appinfo.json`, `packageinfo.json`), the third `usbctl-watchd.sh`; postinst
+    and prerm are **byte-identical**. The bug it fixes is a good one to remember, because it will bite
+    anything else that mounts under the media partition: **Internalz Pro's backend (FileMgr-Service)
+    lists any path under `/media/internal` with mtools** (`mdir` against mtools.conf's
+    `drive A: file="/dev/mapper/store-media"`) whenever the caller asks to hide hidden files — which
+    is that app's default. mtools parses the internal partition's FAT directly and is therefore
+    **blind to the kernel mount table**, so a stick mounted at a subdirectory of that volume listed as
+    an **empty folder**, and writes into it silently landed on internal storage *underneath* the
+    mountpoint. The check is a bare `startsWith("/media/internal")` with no trailing slash, so a name
+    like `/media/internal-usb` would not have helped either. ⚠️ The catch the old code was right
+    about: **`/media` is on the read-only rootfs**, so `mkdir -p /media/usb` only succeeds once rootfs
+    has been opened for writing (which Preware / webOS Internals users have generally done). The
+    script falls back to the old in-partition path when the mkdir fails, so a locked-down device still
+    gets a working — if Internalz-blind — mount. Shipping it needed the meta bumped
+    **1.0.16 → 1.0.17** with the floor moved to `usbsettings (>= 1.1.9)`.
   - **It is a member of the TouchPad `tls-updates` meta** (community request) even though it is not
     TLS-related — "part of making the device more modern". Added as
-    `com.webosarchive.usbsettings (>= 1.1.0)` at the END of the Depends list; it is self-contained and
+    `com.webosarchive.usbsettings (>= 1.1.9)` at the END of the Depends list; it is self-contained and
     order-independent, so position is cosmetic. Adding it required bumping the meta **1.0.6 → 1.0.7**
     AND rebuilding the meta ipk so its control `Depends` match the index — verified by an automated
     check that now compares every meta's control `Version`/`Depends` against its index stanza.
