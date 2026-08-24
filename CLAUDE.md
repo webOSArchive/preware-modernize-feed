@@ -14,7 +14,7 @@ The feed (35 pkgs) is built, live and **hardware-verified on both device familie
   stack + root certs + NTP clock sync + mail/mojomail fix + Help redirect + Enyo App Catalog + USB
   Settings + Bluetooth Gamepad Support; **no** QupZilla/Atlas/LunaCE). Help app + content
   (help.webosarchive.org) work end-to-end.
-- **HP Pre 3 (mantaray): VERIFIED ON HARDWARE.** `org.webosarchive.tls-updates-phone` **1.0.0** →
+- **HP Pre 3 (mantaray): VERIFIED ON HARDWARE.** `org.webosarchive.tls-updates-phone` **1.0.1** →
   the `*-phone` package family. This confirms the two values that were previously unverified guesses:
   `DeviceCompatibility: "Pre3"` matches the real `modelNameAscii` (wrong string ⇒ the packages would
   have been invisible in Preware), and the postinst board detection resolves a Pre 3 correctly
@@ -45,9 +45,12 @@ and are worth repeating for any Enyo-app patch: run the injected JS in node agai
 kind file with an Enyo-1-faithful `enyo.kind` stub, and dry-run postinst/prerm against a copy of the
 target file with `BROWSER_DIR` re-pointed.)
 
-Latest revs (deployed): `browser-tls13 1.1.2`, `luna-tls13 1.1.3` (1.1.0 was faulty — media wedged;
+Latest revs (deployed): `browser-tls13 1.1.2`, `luna-tls13 1.1.4` (1.1.0 was faulty — media wedged;
 1.1.1 added the media-pipeline wrapper; 1.1.2 added a `/usr/sbin/setcpushares-pdk` wrapper so
-PDK apps — QupZilla, nizovn Qt5 — launch normally, incl. under LunaCE; **1.1.3** current),
+PDK apps — QupZilla, nizovn Qt5 — launch normally, incl. under LunaCE; **1.1.4** current —
+⚠️ note **1.1.4 is cosmetic-only on the TouchPad**: four reworded postinst/prerm echo strings, payload
+byte-identical apart from the version. It was bumped for symmetry with the phone 1.1.4, which is where
+the real fixes are. See the luna-tls13 history bullet),
 `mail-tls13 1.3.2` (**1.3.2** fixes Gmail/ECDSA-cert IMAP/POP sign-in that falsely failed with
 "certificate is not trusted"/error 4010 — the imap/pop/smtp launchers now pin TLS 1.2 + an RSA
 server cert), `downloadmgr-tls13 1.1.0` (RPATHs the system Download Manager /
@@ -58,10 +61,10 @@ bullet), `usbsettings 1.1.0` (**new** — auto-arms the OTG controller the first
 time the port goes idle, fixing a hard hang some devices hit on their first-ever OTG cable insert;
 adds a live connected-device list with device-type icons via a new `usbdevmon` helper binary, and a
 USB Reset button to recover a wedged connection without a full reboot),
-`com.palm.app.backup 3.1.0` (**new** — see below), `tls-updates 1.0.15`
+`com.palm.app.backup 3.1.0` (see below), `tls-updates 1.0.16`
 (version-floors browser `>= 1.1.2` / usbsettings `>= 1.1.8` / btgamepad `>= 1.1.0` / luna
-`>= 1.1.3` / mail `>= 1.3.2` / **downloadmgr `>= 1.1.0`**; also pulls in `ntpdate-sync`,
-`downloadmgr-tls13`, `accountsapp` and — **new in 1.0.15** — `com.palm.app.backup` — apps break
+`>= 1.1.4` / mail `>= 1.3.2` / downloadmgr `>= 1.1.0`; also pulls in `ntpdate-sync`,
+`downloadmgr-tls13`, `accountsapp` and `com.palm.app.backup` — apps break
 when the clock is wrong, TLS cert validity checks fail).
 
 QupZilla/Qt5 chain now carries version floors so installing QupZilla drags the Qt5 stack up:
@@ -319,7 +322,7 @@ floors) resolves.
   qupzilla/qt5qpaplugins ipks are stock-packaged/GNU-ar; we curate the index Source (retag
   Feed/Category, host Icon) and keep the ipk as-delivered.
 - **TLS 1.2/1.3 chain** (`org.webosinternals.*`, armv7): `browser-tls13` (**1.1.2**)→`com.palm.rootcertsupdate`;
-  `curl-tls13` (1.0.1), `luna-tls13` (**1.1.3**), `mail-tls13` (**1.3.2**), `downloadmgr-tls13`
+  `curl-tls13` (1.0.1), `luna-tls13` (**1.1.4**), `mail-tls13` (**1.3.2**), `downloadmgr-tls13`
   (**1.0.0**) → browser-tls13; `mojomail-imap-tagfix` → mail-tls13; `ntpdate-sync`. (These came
   with `Feed:"WebOS Internals"` in
   their control — we retagged the index `Source` to `WOSA Modernize`/`Modernize` so they show in the
@@ -330,8 +333,15 @@ floors) resolves.
     after one track) → **1.1.1** adds a `/usr/bin/media-pipeline` wrapper that keeps the ssl11 stack
     out of the media worker so streaming/local media play → **1.1.2** adds a `/usr/sbin/setcpushares-pdk`
     wrapper that keeps the ssl11 launcher env (LD_BIND_NOW, compat-shim preload) out of PDK app
-    launches, so PDK apps (QupZilla, nizovn Qt5) launch normally, incl. under LunaCE → **1.1.3**
-    (current). Its FullDescription is synced in BOTH the index stanza and the ipk's own control
+    launches, so PDK apps (QupZilla, nizovn Qt5) launch normally, incl. under LunaCE → 1.1.3 →
+    **1.1.4** (current) — **cosmetic only on the TouchPad.** Verified by unpack-diff: the three wrap
+    binaries and every other payload file are byte-identical, `appinfo.json` differs only in the version
+    string, and postinst/prerm differ only in four reworded `echo` messages (dropping "(and to activate
+    the media fix)" and naming Preware/WOSQI in the setcpushares-task line). It exists so both families
+    sit at 1.1.4; the functional work in 1.1.4 is the **phone** build's two new env-scrub wrappers.
+    This is the one place we deliberately departed from the mojomail/ntpdate precedent of NOT bumping a
+    no-op — the cost is a 677KB re-download plus the meta's `RestartDevice` reboot for every TouchPad
+    user, in exchange for version parity across the two families. Its FullDescription is synced in BOTH the index stanza and the ipk's own control
     (incoming ipk ships `Feed:"WebOS Internals"`/`Category:"System"`; we retag those in the index
     Source to `WOSA Modernize`/`Modernize` + add icon/LastUpdated — ipk kept as-delivered, index curated).
   - **`mail-tls13` history:** 1.3.1 → **1.3.2** fixes Gmail (and any ECDSA-leaf-cert) IMAP/POP
@@ -388,11 +398,11 @@ floors) resolves.
 - **`org.webosarchive.help-redirect`** (built + verified this session): patches `com.palm.app.help`
   `UrlManager.js` `helpUrl` (drives all content) + `HelpApp.js` palm.com domain check + device.do
   → `http://help.webosarchive.org`. Backs up `*.webosce-orig`, restores on removal, RestartLuna.
-- **`org.webosarchive.tls-updates`** ("TLS 1.3 Updates (TouchPad)", **1.0.15**) — payload-free **meta**
+- **`org.webosarchive.tls-updates`** ("TLS 1.3 Updates (TouchPad)", **1.0.16**) — payload-free **meta**
   package. Depends: rootcerts, browser-tls13, ntpdate-sync, curl/luna/mail-tls13,
   **downloadmgr-tls13 (>= 1.1.0)**, mojomail-imap-tagfix, help-redirect, enyo-findapps,
   **usbsettings (>= 1.1.8)**, **btgamepad (>= 1.1.0)**, **accountsapp** (unversioned — new in 1.0.13),
-  **`com.palm.app.backup`** (unversioned — new in 1.0.15). `ntpdate-sync` sits **after** browser-tls13
+  **`com.palm.app.backup`** (unversioned — added in 1.0.15). `ntpdate-sync` sits **after** browser-tls13
   and **before** luna — added because apps break when the clock is wrong (TLS cert validity windows
   fail); left unversioned (new dep, nothing to drag up). ⚠️ The old rationale "it's browser's own dep,
   so browser installs first regardless" is **no longer true** — upstream dropped ntpdate-sync's
@@ -400,7 +410,7 @@ floors) resolves.
   ordering it. Harmless either way: it just drops in an upstart job and needs no ssl11. `downloadmgr-tls13` is ordered **after** luna-tls13 (per request; it also
   hard-depends browser-tls13 so browser installs first regardless); unversioned (new dep).
   Carries **version floors** on the packages that get revved: `browser-tls13 (>= 1.1.2)`,
-  `luna-tls13 (>= 1.1.3)`, `mail-tls13 (>= 1.3.2)`, `usbsettings (>= 1.1.8)`,
+  **`luna-tls13 (>= 1.1.4)`**, `mail-tls13 (>= 1.3.2)`, `usbsettings (>= 1.1.8)`,
   `btgamepad (>= 1.1.0)`, `downloadmgr-tls13 (>= 1.1.0)` (rest unversioned).
   Bumping a floor requires bumping tls-updates' own version too (1.0.6→1.0.7 for usbsettings,
   1.0.7→1.0.8 for btgamepad, 1.0.8→1.0.9 to drag usbsettings to 1.0.8, 1.0.9→1.0.10 to drag
@@ -408,7 +418,8 @@ floors) resolves.
   the ipk so its control Depends match the index — else on-device opkg won't pull the new deps.
   Adding a plain (unversioned) new member is the same story minus the floor: **1.0.12→1.0.13**
   added `org.webosarchive.accountsapp` to Depends and still required the version bump + control
-  rebuild, since Preware only offers an update when the Version string itself changes; **1.0.14→1.0.15**
+  rebuild, since Preware only offers an update when the Version string itself changes; **1.0.15→1.0.16**
+  moved the luna floor to `>= 1.1.4`; **1.0.14→1.0.15**
   added `com.palm.app.backup` the same way — and 1.0.14 was *already on the server* (verified by
   `curl`-ing the live `Packages.gz` before touching anything, rather than assuming), so re-cutting it
   in place was never an option.
@@ -708,7 +719,7 @@ not the name triple alone** — the check in this repo was updated accordingly.
     Preware/WOSQI is the supported route. prerm restores `/etc/palm/mojodb.conf` from saved bytes and
     keeps `/media/internal/webos-backups`.
   - **Member of the TouchPad `tls-updates` roll-up** (unversioned, at the END of Depends —
-    self-contained and order-independent), which is what took the meta to **1.0.15**.
+    self-contained and order-independent), which took the meta to 1.0.15.
 - **`org.webosarchive.accountsapp`** ("Accounts (Community Build)", **3.1.0**, arch `all`,
   delivered pre-built by the user as `org.webosarchive.accountsapp_3.1.0_all.ipk`) — replaces the
   stock Accounts app (`com.palm.app.accounts`) with the webOS-ports/LG open-source Enyo 1.0 build,
@@ -774,9 +785,38 @@ Preware reports an unmet dep).
 |---|---|
 | `org.webosinternals.browser-tls13-phone` **1.1.2** | 3 × `BrowserServer.rpath.<board>` (~250KB each); the 3.9MB ssl11 OpenSSL/curl payload is shared |
 | `org.webosinternals.downloadmgr-tls13-phone` **1.0.0** | 3 × `LunaDownloadMgr.rpath.<board>`; shared mail libcurl |
-| `org.webosinternals.luna-tls13-phone` **1.1.3** | none — the webOS 2.x build is payload-free and byte-identical across all three boards |
+| `org.webosinternals.luna-tls13-phone` **1.1.4** | none per-board — but **1.1.4 added a 440KB payload** (see below); still byte-identical across all three boards |
 | `org.webosinternals.mojomail-imap-tagfix-phone` **1.0.0** | none — postinst only (per-board byte offset + 2 md5s) |
-| `org.webosarchive.tls-updates-phone` **1.0.0** | payload-free one-tap meta (hand-built in THIS repo, like `tls-updates`) |
+| `org.webosarchive.tls-updates-phone` **1.0.1** | payload-free one-tap meta (hand-built in THIS repo, like `tls-updates`) |
+
+#### `luna-tls13-phone` 1.1.4 — two env-scrub wrappers (the real content of this release)
+
+1.1.3 was payload-free (5,590B); **1.1.4 is 454,092B** because it now ships two static ARM wrapper
+binaries under `files/`. Both fix the same root cause: the launcher patch exports `LD_BIND_NOW=1` and
+the ssl11 compat preload into LunaSysMgr's environment, and **child processes inherit it**. Eager
+binding then hits `libpvrtc.so`'s lazily-unresolved `NApp_*` symbols and the child dies at exec,
+before `main()`.
+
+| wrapper | installed as | what was broken without it |
+|---|---|---|
+| `jailer.wrap` | `/usr/bin/jailer` (stock → `.real`) | webOS 2.x has no `setcpushares-pdk`; LunaSysMgr execs `jailer -t pdk …` directly, so **every PDK ("Linux binary") app silently failed to start** — `applicationManager/launch` still returned a processId, the death was in the child |
+| `setcpushares-task.wrap` | `/usr/sbin/setcpushares-task` (stock → `.real`) | the App-Manager install path runs `setcpushares-task /usr/bin/ApplicationInstallerUtility …`; `/bin/sh` died at exec (127 / status 32512) before the installer ran, so **Preware (installSvc/replaceSvc) and WOSQI wedged on a stuck IPKG lock** |
+
+Both wrappers are the **same static binary** (md5 `b87bcc11845aeda28eca13e5d3b7ae2f`, also identical to
+the TouchPad's `setcpushares-task.wrap`) — it strips only the tls13 additions and execs the `.real`
+beside it. Static on purpose: a shell-based scrub cannot run when the env is what kills `/bin/sh`.
+
+Two details worth keeping:
+- **Both blocks run BEFORE the launcher "already patched" short-circuit**, so an existing 1.0.0–1.1.3
+  install picks the wrappers up on upgrade rather than hitting `exit 0` and skipping them.
+- **Stray-wrapper detection differs per wrapper**, because you cannot grep a binary portably: the
+  script wrapper keys on a `#!` shebang, the jailer on **size** (stock ~124KB vs wrapper ~450KB, so
+  `>300000` with no `.real` beside it ⇒ refuse to wrap). `prerm` restores from `.real`, falling back to
+  `/var/luna/{jailer,setcpushares-task}.tls13-orig`.
+
+The TouchPad already had the `setcpushares-task` wrapper (since 1.1.2, alongside `setcpushares-pdk`
+and `media-pipeline`) — this release is the phone line catching up, plus a `jailer` wrapper the
+TouchPad does not need.
 
 Total **2.73MB** for all three phones (vs 6.7MB for the three separate per-board feeds this replaced).
 The postinst resolves the board from **`/etc/prefs/properties/machineName`** (what Preware's own
@@ -815,6 +855,13 @@ package replaces `/usr/bin/curl` that Synergy depends on.
 Phone stanzas: `Min 2.2.4` / `Max 2.9.9` + `DeviceCompatibility ["Pre3","Veer","Pre2"]`, `(Phones)`
 title suffix, bold not-for-TouchPad lead. `Min 2.2.4` deliberately excludes an un-upgraded Veer
 (2.2.0) or Pre 2 (2.1.0) — their stock binaries differ from what the patches were built against.
+
+**`tls-updates-phone` 1.0.1 carries the phone meta's first version floor**
+(`luna-tls13-phone (>= 1.1.4)`); every other dep of that meta is still unversioned. It shipped at
+1.0.0 with no floors at all, so an existing phone install would never have been dragged up to a new
+member version — the floor plus the meta's own `1.0.0 → 1.0.1` bump is what makes the 1.1.4 fixes
+actually reach a device that already ran the bundle. Same rule as the TouchPad meta: a new floor needs
+the meta's own version bumped **and** its ipk control rebuilt to match the index.
 
 **After ANY change to gates, names or versions, re-run both checks** (they have each caught real
 bugs): (1) **no two stanzas share name+version+arch *while pointing at different files*** — the ipkg
