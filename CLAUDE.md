@@ -1029,6 +1029,31 @@ members. Verified by unpack-diff — `./control` and every payload byte unchange
 regenerated, and the full per-device sweep re-run: 90 stanzas / 69 ipks, deps OK at both
 `ignoreDevices` settings, only the known pre-existing `squid` gap.
 
+### The 20 connectors carried the deadlock too — fixed in the feed (2026-08-25)
+
+Herrie's ports covered core-apps, enyo-1.0, luna-systemui, chatthreader and app-services. The
+**connectors live in `webos-synergy-revival`**, which was not in that set, so all 20 still shipped the
+blocking `luna-send -n 1 …/rescan` in both postinst and prerm (bug #6). `com.palm.synergy.generic`
+was already clean — our `0.9.3.1` repackage had fixed it.
+
+Verified on a CE 3.1.0 device that this is the same deadlock class: `/usr/share/ls2/roles/prv/
+com.palm.luna.json` lists **both `com.palm.applicationManager` and `com.palm.appinstaller`** in
+LunaSysMgr's `allowedNames`, so `carddav/postinst`'s two `appinstaller/notifyAppInstalled` calls block
+on the same process and were wrapped as well. Left blocking on purpose:
+`com.palm.service.accounts/listAccountTemplates` (a separate JS service) and the already-backgrounded
+`checkStatus` ping.
+
+**84 lines wrapped across 20 ipks** — every script exists twice in an ipk (`control.tar.gz`'s
+`./postinst`/`./prerm` and the `pm*.script` ar members), so the transform touches both copies and a
+check asserts they stay identical. Re-cut **in place at the same versions** again, same reasoning and
+same caveat as the six above. Payload/`./control` byte-identical, all 80 scripts `sh -n` clean, no
+bare blocking call left, index md5/size refreshed on **40 stanzas** (each connector has two).
+
+⚠️ Same stickiness: a device already carrying a connector (the CE 3.1.0 test tablet has
+`org.webosports.cdav 0.9.3`) runs its stored `pmPreRemove.script` at the next removal, so it needs the
+device-local `sed` repair — see `~/Desktop/synergy-revival-connector-deadlock.md`, the write-up for
+Herrie, which also carries the file/line list for the upstream fix.
+
 ### ⚠️ Deferred: `generic`'s prerm SIGBUSes a live UI (not fixed)
 
 Replacing a **live** `com.palm.synergy.generic` crashed LunaSysMgr on a real device: its prerm does
