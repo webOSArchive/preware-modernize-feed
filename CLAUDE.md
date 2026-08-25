@@ -288,6 +288,13 @@ Search is unaffected — it is a substring `include()` on the lowercased title
 leading space away**; it is load-bearing, and it is the only lever we have over list order, since
 Preware exposes no weight/priority field. Index-only, so it needs no version bump.
 
+⚠️ **Never regenerate a stanza from the ipk's own control.** The index `Source` is the *curated*
+copy and is routinely ahead of the control — titles, icons, Category/Feed retags, lead paragraphs.
+Rebuilding a stanza from `control_of(ipk)` silently reverts every one of those (hit twice on
+`synergy-revival` 2026-08-24: the roll-up lost its leading-space title, its icon and its opening line
+when the meta was re-cut at 1.0.1). When a meta is rebuilt, take `Version` and `Depends` from the new
+control and **keep the existing stanza's `Source` verbatim**, editing only what changed.
+
 **Offering updates (Preware update mechanics — cost us a session):**
 - **Preware compares the `Version` STRING only.** To ship an update you MUST bump the version number.
   Rebuilding an ipk *in place at the same version* (new md5, new content) will **never** show as an
