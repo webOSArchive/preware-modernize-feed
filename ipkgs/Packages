@@ -430,8 +430,8 @@ Package: com.palm.synergy.generic
 Version: 0.9.3.1
 Section: System
 Architecture: armv7
-MD5Sum: 7fe39b84e6c0ec8d353264fe693d3c51
-Size: 13033008
+MD5Sum: 84fef52ed84f8497e39e052111eea983
+Size: 13035920
 Filename: com.palm.synergy.generic_0.9.3.1_all.ipk
 Description: webOS Synergy Revival - shared runtime (imlibpurpleservice + libpurple backend, cloudcore, QuickOffice/Photos/DocViewer integration, device-setup fixes). Required by every other com.palm.synergy.* connector package.
 Maintainer: Herman van Hazendonk <github.com@herrie.org>
@@ -564,8 +564,8 @@ Version: 0.9.3
 Depends: org.webosports.app.atlas (>= 0.9.11)
 Section: misc
 Architecture: armv7
-MD5Sum: 6f8a019b7db009d1306d9dc654d0fc2f
-Size: 11155190
+MD5Sum: 633daa4d10b30ba770ce7eb62150fea4
+Size: 11157420
 Filename: com.palm.synergy.whatsapp_0.9.3_all.ipk
 Description: WhatsApp messaging connector (purple-combined/whatsmeow) for Synergy IM/calling.
 Maintainer: Herman van Hazendonk <github.com@herrie.org>
@@ -576,8 +576,8 @@ Version: 0.9.3
 Depends: org.webosarchive.synergy-revival, org.webosports.app.atlas (>= 0.9.11)
 Section: misc
 Architecture: armv7
-MD5Sum: 6f8a019b7db009d1306d9dc654d0fc2f
-Size: 11155190
+MD5Sum: 633daa4d10b30ba770ce7eb62150fea4
+Size: 11157420
 Filename: com.palm.synergy.whatsapp_0.9.3_all.ipk
 Description: WhatsApp messaging connector (purple-combined/whatsmeow) for Synergy IM/calling.
 Maintainer: Herman van Hazendonk <github.com@herrie.org>
@@ -588,8 +588,8 @@ Version: 0.9.3
 Depends: org.webosports.app.atlas (>= 0.9.11)
 Section: misc
 Architecture: armv7
-MD5Sum: ba5d6ec2eb11cb492e2bfa39533c220d
-Size: 12030016
+MD5Sum: f02bad170fb337152fafe7dfdde455ca
+Size: 12032244
 Filename: com.palm.synergy.telegram_0.9.3_all.ipk
 Description: Telegram messaging connector (tdlib-purple) for Synergy IM/calling.
 Maintainer: Herman van Hazendonk <github.com@herrie.org>
@@ -600,8 +600,8 @@ Version: 0.9.3
 Depends: org.webosarchive.synergy-revival, org.webosports.app.atlas (>= 0.9.11)
 Section: misc
 Architecture: armv7
-MD5Sum: ba5d6ec2eb11cb492e2bfa39533c220d
-Size: 12030016
+MD5Sum: f02bad170fb337152fafe7dfdde455ca
+Size: 12032244
 Filename: com.palm.synergy.telegram_0.9.3_all.ipk
 Description: Telegram messaging connector (tdlib-purple) for Synergy IM/calling.
 Maintainer: Herman van Hazendonk <github.com@herrie.org>
@@ -612,8 +612,8 @@ Version: 0.9.3
 Depends: org.webosports.app.atlas (>= 0.9.11)
 Section: misc
 Architecture: armv7
-MD5Sum: f303fc4baacb60a61b7c4fec29daf465
-Size: 12857966
+MD5Sum: 021717e1eb38db538d5fbf69c07f27e1
+Size: 12860198
 Filename: com.palm.synergy.signal_0.9.3_all.ipk
 Description: Signal messaging connector (purple-presage) for Synergy IM.
 Maintainer: Herman van Hazendonk <github.com@herrie.org>
@@ -624,8 +624,8 @@ Version: 0.9.3
 Depends: org.webosarchive.synergy-revival, org.webosports.app.atlas (>= 0.9.11)
 Section: misc
 Architecture: armv7
-MD5Sum: f303fc4baacb60a61b7c4fec29daf465
-Size: 12857966
+MD5Sum: 021717e1eb38db538d5fbf69c07f27e1
+Size: 12860198
 Filename: com.palm.synergy.signal_0.9.3_all.ipk
 Description: Signal messaging connector (purple-presage) for Synergy IM.
 Maintainer: Herman van Hazendonk <github.com@herrie.org>
@@ -636,8 +636,8 @@ Version: 0.9.3
 Depends: org.webosports.app.atlas (>= 0.9.11)
 Section: misc
 Architecture: armv7
-MD5Sum: ca2d04782283d79c4bf03ef9e7baaecb
-Size: 179766
+MD5Sum: 6354f764fcafd97b8ffcb4d0d7218445
+Size: 182000
 Filename: com.palm.synergy.teams_0.9.3_all.ipk
 Description: Microsoft Teams messaging connector (purple-teams) for Synergy IM/calling.
 Maintainer: Herman van Hazendonk <github.com@herrie.org>
@@ -648,8 +648,8 @@ Version: 0.9.3
 Depends: org.webosarchive.synergy-revival, org.webosports.app.atlas (>= 0.9.11)
 Section: misc
 Architecture: armv7
-MD5Sum: ca2d04782283d79c4bf03ef9e7baaecb
-Size: 179766
+MD5Sum: 6354f764fcafd97b8ffcb4d0d7218445
+Size: 182000
 Filename: com.palm.synergy.teams_0.9.3_all.ipk
 Description: Microsoft Teams messaging connector (purple-teams) for Synergy IM/calling.
 Maintainer: Herman van Hazendonk <github.com@herrie.org>
@@ -660,8 +660,8 @@ Version: 0.9.3
 Depends: org.webosports.app.atlas (>= 0.9.11)
 Section: misc
 Architecture: armv7
-MD5Sum: b7752e1179a8719b432c5f5fadb00e04
-Size: 173194
+MD5Sum: 6d987faf6be1214e0b4b4bfd3c3ffee5
+Size: 175424
 Filename: com.palm.synergy.discord_0.9.3_all.ipk
 Description: Discord messaging connector (purple-discord) for Synergy IM.
 Maintainer: Herman van Hazendonk <github.com@herrie.org>
@@ -672,8 +672,8 @@ Version: 0.9.3
 Depends: org.webosarchive.synergy-revival, org.webosports.app.atlas (>= 0.9.11)
 Section: misc
 Architecture: armv7
-MD5Sum: b7752e1179a8719b432c5f5fadb00e04
-Size: 173194
+MD5Sum: 6d987faf6be1214e0b4b4bfd3c3ffee5
+Size: 175424
 Filename: com.palm.synergy.discord_0.9.3_all.ipk
 Description: Discord messaging connector (purple-discord) for Synergy IM.
 Maintainer: Herman van Hazendonk <github.com@herrie.org>
@@ -684,8 +684,8 @@ Version: 0.9.3
 Depends: org.webosports.app.atlas (>= 0.9.11)
 Section: misc
 Architecture: armv7
-MD5Sum: f39e5f97cc0a6a94625366c4effe4330
-Size: 255526
+MD5Sum: 276e3a2c3e1a0a1cfe92d755e1c2f7f0
+Size: 257760
 Filename: com.palm.synergy.googlechat_0.9.3_all.ipk
 Description: Google Chat messaging connector (purple-googlechat) for Synergy IM.
 Maintainer: Herman van Hazendonk <github.com@herrie.org>
@@ -696,8 +696,8 @@ Version: 0.9.3
 Depends: org.webosarchive.synergy-revival, org.webosports.app.atlas (>= 0.9.11)
 Section: misc
 Architecture: armv7
-MD5Sum: f39e5f97cc0a6a94625366c4effe4330
-Size: 255526
+MD5Sum: 276e3a2c3e1a0a1cfe92d755e1c2f7f0
+Size: 257760
 Filename: com.palm.synergy.googlechat_0.9.3_all.ipk
 Description: Google Chat messaging connector (purple-googlechat) for Synergy IM.
 Maintainer: Herman van Hazendonk <github.com@herrie.org>
@@ -708,8 +708,8 @@ Version: 0.9.3
 Depends: org.webosports.app.atlas (>= 0.9.11)
 Section: misc
 Architecture: armv7
-MD5Sum: 00a3566204541f482eb0ce44c926b456
-Size: 11147248
+MD5Sum: 066a5321227fc9b2a6eaead33e38716e
+Size: 11149484
 Filename: com.palm.synergy.facebook_0.9.3_all.ipk
 Description: Facebook E2EE messaging connector (purple-combined/gometa) for Synergy IM.
 Maintainer: Herman van Hazendonk <github.com@herrie.org>
@@ -720,8 +720,8 @@ Version: 0.9.3
 Depends: org.webosarchive.synergy-revival, org.webosports.app.atlas (>= 0.9.11)
 Section: misc
 Architecture: armv7
-MD5Sum: 00a3566204541f482eb0ce44c926b456
-Size: 11147248
+MD5Sum: 066a5321227fc9b2a6eaead33e38716e
+Size: 11149484
 Filename: com.palm.synergy.facebook_0.9.3_all.ipk
 Description: Facebook E2EE messaging connector (purple-combined/gometa) for Synergy IM.
 Maintainer: Herman van Hazendonk <github.com@herrie.org>
@@ -732,8 +732,8 @@ Version: 0.9.3
 Depends: org.webosports.app.atlas (>= 0.9.11)
 Section: misc
 Architecture: armv7
-MD5Sum: d6cd4f282fa3e24f214a8b8c5f11318a
-Size: 26768
+MD5Sum: 064708340947ea2bfbf91d17a6bca37f
+Size: 30074
 Filename: com.palm.synergy.dropbox_0.9.3_all.ipk
 Description: Dropbox cloud connector (OAuth2 + PKCE) for Synergy DOCUMENTS/PHOTO.UPLOAD.
 Maintainer: Herman van Hazendonk <github.com@herrie.org>
@@ -744,8 +744,8 @@ Version: 0.9.3
 Depends: org.webosarchive.synergy-revival, org.webosports.app.atlas (>= 0.9.11)
 Section: misc
 Architecture: armv7
-MD5Sum: d6cd4f282fa3e24f214a8b8c5f11318a
-Size: 26768
+MD5Sum: 064708340947ea2bfbf91d17a6bca37f
+Size: 30074
 Filename: com.palm.synergy.dropbox_0.9.3_all.ipk
 Description: Dropbox cloud connector (OAuth2 + PKCE) for Synergy DOCUMENTS/PHOTO.UPLOAD.
 Maintainer: Herman van Hazendonk <github.com@herrie.org>
@@ -756,8 +756,8 @@ Version: 0.9.3
 Depends: org.webosports.app.atlas (>= 0.9.11)
 Section: misc
 Architecture: armv7
-MD5Sum: d5bf904d8d931d959c351c60246f1b3f
-Size: 25636
+MD5Sum: 9fac75d798471ed773772a873c3d5110
+Size: 28944
 Filename: com.palm.synergy.gdrive_0.9.3_all.ipk
 Description: Google Drive cloud connector (OAuth2 + PKCE + client_secret) for Synergy DOCUMENTS.
 Maintainer: Herman van Hazendonk <github.com@herrie.org>
@@ -768,8 +768,8 @@ Version: 0.9.3
 Depends: org.webosarchive.synergy-revival, org.webosports.app.atlas (>= 0.9.11)
 Section: misc
 Architecture: armv7
-MD5Sum: d5bf904d8d931d959c351c60246f1b3f
-Size: 25636
+MD5Sum: 9fac75d798471ed773772a873c3d5110
+Size: 28944
 Filename: com.palm.synergy.gdrive_0.9.3_all.ipk
 Description: Google Drive cloud connector (OAuth2 + PKCE + client_secret) for Synergy DOCUMENTS.
 Maintainer: Herman van Hazendonk <github.com@herrie.org>
@@ -780,8 +780,8 @@ Version: 0.9.3
 Depends: org.webosports.app.atlas (>= 0.9.11)
 Section: misc
 Architecture: armv7
-MD5Sum: ecc0146828fb8016bbeeb817ac96ff87
-Size: 27922
+MD5Sum: fda5353d634acfc0594ad6f83d4c8712
+Size: 31230
 Filename: com.palm.synergy.onedrive_0.9.3_all.ipk
 Description: OneDrive cloud connector (OAuth2 + PKCE, MS Graph) for Synergy DOCUMENTS/PHOTO.UPLOAD.
 Maintainer: Herman van Hazendonk <github.com@herrie.org>
@@ -792,8 +792,8 @@ Version: 0.9.3
 Depends: org.webosarchive.synergy-revival, org.webosports.app.atlas (>= 0.9.11)
 Section: misc
 Architecture: armv7
-MD5Sum: ecc0146828fb8016bbeeb817ac96ff87
-Size: 27922
+MD5Sum: fda5353d634acfc0594ad6f83d4c8712
+Size: 31230
 Filename: com.palm.synergy.onedrive_0.9.3_all.ipk
 Description: OneDrive cloud connector (OAuth2 + PKCE, MS Graph) for Synergy DOCUMENTS/PHOTO.UPLOAD.
 Maintainer: Herman van Hazendonk <github.com@herrie.org>
@@ -804,8 +804,8 @@ Version: 0.9.3
 Depends: org.webosports.app.atlas (>= 0.9.11)
 Section: misc
 Architecture: armv7
-MD5Sum: f9b6b2a93dd958545917d0f0403d3115
-Size: 30406
+MD5Sum: aeb321462a37b493e400670e66ded182
+Size: 33712
 Filename: com.palm.synergy.box_0.9.3_all.ipk
 Description: Box cloud connector (OAuth2 + PKCE) for Synergy DOCUMENTS/PHOTO.UPLOAD.
 Maintainer: Herman van Hazendonk <github.com@herrie.org>
@@ -816,8 +816,8 @@ Version: 0.9.3
 Depends: org.webosarchive.synergy-revival, org.webosports.app.atlas (>= 0.9.11)
 Section: misc
 Architecture: armv7
-MD5Sum: f9b6b2a93dd958545917d0f0403d3115
-Size: 30406
+MD5Sum: aeb321462a37b493e400670e66ded182
+Size: 33712
 Filename: com.palm.synergy.box_0.9.3_all.ipk
 Description: Box cloud connector (OAuth2 + PKCE) for Synergy DOCUMENTS/PHOTO.UPLOAD.
 Maintainer: Herman van Hazendonk <github.com@herrie.org>
@@ -828,8 +828,8 @@ Version: 0.9.3
 Depends: org.webosports.app.atlas (>= 0.9.11)
 Section: misc
 Architecture: armv7
-MD5Sum: 329e4348abf8eb6e2f7baf2080b50a37
-Size: 35898
+MD5Sum: 79b3a8084177cc7cc011b83b50ec2940
+Size: 39204
 Filename: com.palm.synergy.pcloud_0.9.3_all.ipk
 Description: pCloud cloud connector (OAuth2 + secret) for Synergy DOCUMENTS/PHOTO.UPLOAD.
 Maintainer: Herman van Hazendonk <github.com@herrie.org>
@@ -840,8 +840,8 @@ Version: 0.9.3
 Depends: org.webosarchive.synergy-revival, org.webosports.app.atlas (>= 0.9.11)
 Section: misc
 Architecture: armv7
-MD5Sum: 329e4348abf8eb6e2f7baf2080b50a37
-Size: 35898
+MD5Sum: 79b3a8084177cc7cc011b83b50ec2940
+Size: 39204
 Filename: com.palm.synergy.pcloud_0.9.3_all.ipk
 Description: pCloud cloud connector (OAuth2 + secret) for Synergy DOCUMENTS/PHOTO.UPLOAD.
 Maintainer: Herman van Hazendonk <github.com@herrie.org>
@@ -852,8 +852,8 @@ Version: 0.9.3
 Depends: org.webosports.app.atlas (>= 0.9.11)
 Section: misc
 Architecture: armv7
-MD5Sum: 4cd93f58bfd14901c959271c1baab450
-Size: 27302
+MD5Sum: 2e9191bbc008a88515949c7a2605cca9
+Size: 30608
 Filename: com.palm.synergy.koofr_0.9.3_all.ipk
 Description: Koofr cloud connector (OAuth2 + PKCE, scope public) for Synergy DOCUMENTS/PHOTO.UPLOAD.
 Maintainer: Herman van Hazendonk <github.com@herrie.org>
@@ -864,8 +864,8 @@ Version: 0.9.3
 Depends: org.webosarchive.synergy-revival, org.webosports.app.atlas (>= 0.9.11)
 Section: misc
 Architecture: armv7
-MD5Sum: 4cd93f58bfd14901c959271c1baab450
-Size: 27302
+MD5Sum: 2e9191bbc008a88515949c7a2605cca9
+Size: 30608
 Filename: com.palm.synergy.koofr_0.9.3_all.ipk
 Description: Koofr cloud connector (OAuth2 + PKCE, scope public) for Synergy DOCUMENTS/PHOTO.UPLOAD.
 Maintainer: Herman van Hazendonk <github.com@herrie.org>
@@ -876,8 +876,8 @@ Version: 0.9.3
 Depends: org.webosports.app.atlas (>= 0.9.11)
 Section: misc
 Architecture: armv7
-MD5Sum: b3520d0db2ca47a4c56fb16d57af2ef8
-Size: 29654
+MD5Sum: 53b3c0000f9465cd90c850c40acdf237
+Size: 32964
 Filename: com.palm.synergy.hidrive_0.9.3_all.ipk
 Description: HiDrive (STRATO) cloud connector (OAuth2 + secret) for Synergy DOCUMENTS/PHOTO.UPLOAD.
 Maintainer: Herman van Hazendonk <github.com@herrie.org>
@@ -888,8 +888,8 @@ Version: 0.9.3
 Depends: org.webosarchive.synergy-revival, org.webosports.app.atlas (>= 0.9.11)
 Section: misc
 Architecture: armv7
-MD5Sum: b3520d0db2ca47a4c56fb16d57af2ef8
-Size: 29654
+MD5Sum: 53b3c0000f9465cd90c850c40acdf237
+Size: 32964
 Filename: com.palm.synergy.hidrive_0.9.3_all.ipk
 Description: HiDrive (STRATO) cloud connector (OAuth2 + secret) for Synergy DOCUMENTS/PHOTO.UPLOAD.
 Maintainer: Herman van Hazendonk <github.com@herrie.org>
@@ -900,8 +900,8 @@ Version: 0.9.3
 Depends: org.webosports.app.atlas (>= 0.9.11)
 Section: misc
 Architecture: armv7
-MD5Sum: e30c90f7898ab21542c49585268c27ea
-Size: 29122
+MD5Sum: 9b0955dcff4089473360e24fe81e8e46
+Size: 32428
 Filename: com.palm.synergy.yandex_0.9.3_all.ipk
 Description: Yandex Disk cloud connector (OAuth2 + PKCE + secret) for Synergy DOCUMENTS/PHOTO.UPLOAD.
 Maintainer: Herman van Hazendonk <github.com@herrie.org>
@@ -912,8 +912,8 @@ Version: 0.9.3
 Depends: org.webosarchive.synergy-revival, org.webosports.app.atlas (>= 0.9.11)
 Section: misc
 Architecture: armv7
-MD5Sum: e30c90f7898ab21542c49585268c27ea
-Size: 29122
+MD5Sum: 9b0955dcff4089473360e24fe81e8e46
+Size: 32428
 Filename: com.palm.synergy.yandex_0.9.3_all.ipk
 Description: Yandex Disk cloud connector (OAuth2 + PKCE + secret) for Synergy DOCUMENTS/PHOTO.UPLOAD.
 Maintainer: Herman van Hazendonk <github.com@herrie.org>
@@ -924,8 +924,8 @@ Version: 0.9.3
 Depends: org.webosports.app.atlas (>= 0.9.11)
 Section: misc
 Architecture: armv7
-MD5Sum: 8e7a6828967de901bec127633edba693
-Size: 38866
+MD5Sum: cf03d9b3ab8230c6da5e337e8bc6c1e1
+Size: 42174
 Filename: com.palm.synergy.kdrive_0.9.3_all.ipk
 Description: Infomaniak kDrive connector (personal API token) for Synergy DOCUMENTS/PHOTO.UPLOAD.
 Maintainer: Herman van Hazendonk <github.com@herrie.org>
@@ -936,8 +936,8 @@ Version: 0.9.3
 Depends: org.webosarchive.synergy-revival, org.webosports.app.atlas (>= 0.9.11)
 Section: misc
 Architecture: armv7
-MD5Sum: 8e7a6828967de901bec127633edba693
-Size: 38866
+MD5Sum: cf03d9b3ab8230c6da5e337e8bc6c1e1
+Size: 42174
 Filename: com.palm.synergy.kdrive_0.9.3_all.ipk
 Description: Infomaniak kDrive connector (personal API token) for Synergy DOCUMENTS/PHOTO.UPLOAD.
 Maintainer: Herman van Hazendonk <github.com@herrie.org>
@@ -948,8 +948,8 @@ Version: 0.9.3
 Depends: org.webosports.app.atlas (>= 0.9.11)
 Section: misc
 Architecture: armv7
-MD5Sum: 27a52c7ae06e83316d7b62ee8267c519
-Size: 57640
+MD5Sum: df0911397728743b578cb0c4464cb846
+Size: 60944
 Filename: com.palm.synergy.mega_0.9.3_all.ipk
 Description: MEGA cloud connector (email+password, E2E crypto) for Synergy DOCUMENTS/PHOTO.UPLOAD.
 Maintainer: Herman van Hazendonk <github.com@herrie.org>
@@ -960,8 +960,8 @@ Version: 0.9.3
 Depends: org.webosarchive.synergy-revival, org.webosports.app.atlas (>= 0.9.11)
 Section: misc
 Architecture: armv7
-MD5Sum: 27a52c7ae06e83316d7b62ee8267c519
-Size: 57640
+MD5Sum: df0911397728743b578cb0c4464cb846
+Size: 60944
 Filename: com.palm.synergy.mega_0.9.3_all.ipk
 Description: MEGA cloud connector (email+password, E2E crypto) for Synergy DOCUMENTS/PHOTO.UPLOAD.
 Maintainer: Herman van Hazendonk <github.com@herrie.org>
@@ -972,8 +972,8 @@ Version: 0.9.3
 Depends: org.webosports.app.atlas (>= 0.9.11)
 Section: misc
 Architecture: armv7
-MD5Sum: 4278877808d7039e25530df56cba6576
-Size: 37878
+MD5Sum: d5864056e0c0ab9ced263bf00d0512a5
+Size: 41182
 Filename: com.palm.synergy.s3_0.9.3_all.ipk
 Description: S3-compatible cloud connector (AWS SigV4) for Synergy DOCUMENTS/PHOTO.UPLOAD.
 Maintainer: Herman van Hazendonk <github.com@herrie.org>
@@ -984,8 +984,8 @@ Version: 0.9.3
 Depends: org.webosarchive.synergy-revival, org.webosports.app.atlas (>= 0.9.11)
 Section: misc
 Architecture: armv7
-MD5Sum: 4278877808d7039e25530df56cba6576
-Size: 37878
+MD5Sum: d5864056e0c0ab9ced263bf00d0512a5
+Size: 41182
 Filename: com.palm.synergy.s3_0.9.3_all.ipk
 Description: S3-compatible cloud connector (AWS SigV4) for Synergy DOCUMENTS/PHOTO.UPLOAD.
 Maintainer: Herman van Hazendonk <github.com@herrie.org>
@@ -996,8 +996,8 @@ Version: 0.9.3
 Depends: org.webosports.app.atlas (>= 0.9.11)
 Section: misc
 Architecture: armv7
-MD5Sum: 8c5b9933de13882e61ebe139fb4a7eed
-Size: 37304
+MD5Sum: 8bc7464c3e5f091a17f051f9a8df80a2
+Size: 40610
 Filename: com.palm.synergy.flickr_0.9.3_all.ipk
 Description: Flickr photo connector (OAuth 1.0a) for Synergy PHOTO.UPLOAD.
 Maintainer: Herman van Hazendonk <github.com@herrie.org>
@@ -1008,8 +1008,8 @@ Version: 0.9.3
 Depends: org.webosarchive.synergy-revival, org.webosports.app.atlas (>= 0.9.11)
 Section: misc
 Architecture: armv7
-MD5Sum: 8c5b9933de13882e61ebe139fb4a7eed
-Size: 37304
+MD5Sum: 8bc7464c3e5f091a17f051f9a8df80a2
+Size: 40610
 Filename: com.palm.synergy.flickr_0.9.3_all.ipk
 Description: Flickr photo connector (OAuth 1.0a) for Synergy PHOTO.UPLOAD.
 Maintainer: Herman van Hazendonk <github.com@herrie.org>
@@ -1020,8 +1020,8 @@ Version: 0.9.3
 Depends: org.webosports.app.atlas (>= 0.9.11)
 Section: misc
 Architecture: armv7
-MD5Sum: 90c98f4e1fcd2aeacca26040c229a568
-Size: 632462
+MD5Sum: 6af905f291500d8b7e48744a1700b7e9
+Size: 634460
 Filename: org.webosports.cdav_0.9.3_all.ipk
 Description: CardDAV/CalDAV Synergy connector (contacts + calendar sync) for webOS 3.0.5.
 Maintainer: Herman van Hazendonk <github.com@herrie.org>
@@ -1032,8 +1032,8 @@ Version: 0.9.3
 Depends: org.webosarchive.synergy-revival, org.webosports.app.atlas (>= 0.9.11)
 Section: misc
 Architecture: armv7
-MD5Sum: 90c98f4e1fcd2aeacca26040c229a568
-Size: 632462
+MD5Sum: 6af905f291500d8b7e48744a1700b7e9
+Size: 634460
 Filename: org.webosports.cdav_0.9.3_all.ipk
 Description: CardDAV/CalDAV Synergy connector (contacts + calendar sync) for webOS 3.0.5.
 Maintainer: Herman van Hazendonk <github.com@herrie.org>

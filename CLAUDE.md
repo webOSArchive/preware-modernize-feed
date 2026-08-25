@@ -1029,30 +1029,49 @@ members. Verified by unpack-diff — `./control` and every payload byte unchange
 regenerated, and the full per-device sweep re-run: 90 stanzas / 69 ipks, deps OK at both
 `ignoreDevices` settings, only the known pre-existing `squid` gap.
 
-### The 20 connectors carried the deadlock too — fixed in the feed (2026-08-25)
+### The connectors carried it too — now on upstream's own fix (2026-08-25)
 
-Herrie's ports covered core-apps, enyo-1.0, luna-systemui, chatthreader and app-services. The
-**connectors live in `webos-synergy-revival`**, which was not in that set, so all 20 still shipped the
-blocking `luna-send -n 1 …/rescan` in both postinst and prerm (bug #6). `com.palm.synergy.generic`
-was already clean — our `0.9.3.1` repackage had fixed it.
+Herrie's five ports covered core-apps, enyo-1.0, luna-systemui, chatthreader and app-services. The
+connectors live in **`webos-synergy-revival`**, which was not in that set, so all 20 still shipped the
+blocking `luna-send -n 1 …/rescan` in both postinst and prerm (issue #6).
 
-Verified on a CE 3.1.0 device that this is the same deadlock class: `/usr/share/ls2/roles/prv/
-com.palm.luna.json` lists **both `com.palm.applicationManager` and `com.palm.appinstaller`** in
-LunaSysMgr's `allowedNames`, so `carddav/postinst`'s two `appinstaller/notifyAppInstalled` calls block
-on the same process and were wrapped as well. Left blocking on purpose:
+The feed was first patched here with a minimal wrap of that one call; **`Herrie82/webos-synergy-revival`
+e71c8e4 then landed the canonical fix and the feed was re-cut from his scripts instead.** His version
+is a superset, and the extras are worth knowing:
+
+- **`ls-control scan-services`** after install (cloud + messaging + generic). Not a deadlock fix at
+  all: ls-hubd only scans `/usr/share/dbus-1/system-services/*.service` at **its own** startup, so a
+  freshly installed connector's service file sits on disk unseen until a reboot — reported live as
+  "Service not listed in service files: com.palm.service.mega". Our stanzas set `RestartDevice`, which
+  masks it, but the fix belongs in the script.
+- **`nudge_kill()` in `generic/postinst`**, replacing the unguarded `contacts.linker` `/proc` sweep
+  (issue #3) that our own `0.9.3.1` repackage had left in place.
+- **`cd /`** in all eight scripts (issue #4, defensive here), and **host-runnable tests** under
+  `tests/` — a static sweep for un-backgrounded `luna-send`, a `nudge_kill` matrix against a synthetic
+  `/proc`, and a sandboxed install→uninstall restore test.
+- He also notes this repo was **never** vulnerable to issue #2: `apply_rootfs_overwrite()` plus a
+  per-PKGID applied-paths manifest never depended on the `$OV/dest.txt` that postinst deletes.
+
+Verified on the CE 3.1.0 tablet that the appinstaller calls are the same deadlock class:
+`/usr/share/ls2/roles/prv/com.palm.luna.json` lists **both `com.palm.applicationManager` and
+`com.palm.appinstaller`** in LunaSysMgr's `allowedNames`, which is why `carddav/postinst`'s two
+`notifyAppInstalled` calls are wrapped too. Left blocking on purpose:
 `com.palm.service.accounts/listAccountTemplates` (a separate JS service) and the already-backgrounded
 `checkStatus` ping.
 
-**84 lines wrapped across 20 ipks** — every script exists twice in an ipk (`control.tar.gz`'s
-`./postinst`/`./prerm` and the `pm*.script` ar members), so the transform touches both copies and a
-check asserts they stay identical. Re-cut **in place at the same versions** again, same reasoning and
-same caveat as the six above. Payload/`./control` byte-identical, all 80 scripts `sh -n` clean, no
-bare blocking call left, index md5/size refreshed on **40 stanzas** (each connector has two).
+**Before swapping wholesale, check the scripts are not per-connector.** They are not: a diff of every
+shipped script against its family file found exactly **one** shipped-only code line in all 21 packages
+(generic's old sweep). So each ipk takes its family's scripts verbatim — `carddav` (cdav), `cloud`
+(12), `messaging` (7), `generic` (1). Classify by similarity if you need to re-derive the mapping, but
+use a real `ratio()`: `difflib`'s `quick_ratio()` is a bag-of-characters estimate and mis-sorted every
+cloud connector into carddav.
 
-⚠️ Same stickiness: a device already carrying a connector (the CE 3.1.0 test tablet has
-`org.webosports.cdav 0.9.3`) runs its stored `pmPreRemove.script` at the next removal, so it needs the
-device-local `sed` repair — see `~/Desktop/synergy-revival-connector-deadlock.md`, the write-up for
-Herrie, which also carries the file/line list for the upstream fix.
+Re-cut **in place at the same versions** again — payload and `./control` byte-identical, scripts
+byte-equal to upstream's, `sh -n` clean, index md5/size refreshed on **41 stanzas** (20 connectors × 2
++ generic). Same standing caveat as the six above: a device already carrying a connector runs its
+**stored** `pmPreRemove.script` at the next removal, so it needs the device-local `sed` in
+`~/Desktop/synergy-revival-connector-deadlock.md` (the write-up for Herrie, now superseded upstream but
+still the reference for the repair).
 
 ### ⚠️ Deferred: `generic`'s prerm SIGBUSes a live UI (not fixed)
 
