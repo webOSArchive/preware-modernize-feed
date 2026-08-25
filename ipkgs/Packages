@@ -441,8 +441,8 @@ Package: com.palm.service.accounts
 Version: 1.1.0.1
 Section: System
 Architecture: armv7
-MD5Sum: bd93ea0adbc4f37e4def72822f4dd3d3
-Size: 52056
+MD5Sum: 1fc55f125d12fe65122a47e9228b73ad
+Size: 56912
 Filename: com.palm.service.accounts_1.1.0.1_all.ipk
 Description: Accounts service (forwards keepData/alias/templateId through the delete flow to onDelete).
 Maintainer: Herman van Hazendonk <github.com@herrie.org>
@@ -452,8 +452,8 @@ Package: com.palm.service.contacts.linker
 Version: 1.1.0.2
 Section: System
 Architecture: armv7
-MD5Sum: 34b9cfcc4b87811bf2834f59223dcb80
-Size: 61922
+MD5Sum: 1a9e3c0f82f343de42f935639339d9ae
+Size: 66022
 Filename: com.palm.service.contacts.linker_1.1.0.2_all.ipk
 Description: Contacts linker service (parallel similarity-ranker reads, opt(b)).
 Maintainer: Herman van Hazendonk <github.com@herrie.org>
@@ -463,8 +463,8 @@ Package: com.palm.messaging.chatthreader
 Version: 1.1.0.2
 Section: System
 Architecture: armv7
-MD5Sum: 6d5fe69a0d9097a068dc8d79a437bacf
-Size: 45218
+MD5Sum: cf7c646a13c551b3394b8829a8691283
+Size: 49702
 Filename: com.palm.messaging.chatthreader_1.1.0.2_all.ipk
 Description: Chatthreader service (WhatsApp raw-JID guard, person-link fallback).
 Maintainer: Herman van Hazendonk <github.com@herrie.org>
@@ -474,8 +474,8 @@ Package: enyo-accounts
 Version: 1.1.1.1
 Section: System
 Architecture: armv7
-MD5Sum: c014f08cee11a68378c30aeaf6443559
-Size: 85894
+MD5Sum: 00dfb0eaf25bd8e9e62d031ef0d38ac0
+Size: 89798
 Filename: enyo-accounts_1.1.1.1_all.ipk
 Description: Enyo accounts framework (SYNERGY ACCOUNTS grouping, keep-data-on-remove opt-out).
 Maintainer: Herman van Hazendonk <github.com@herrie.org>
@@ -485,8 +485,8 @@ Package: enyo-contactsui
 Version: 1.0.1.1
 Section: System
 Architecture: armv7
-MD5Sum: 5fbd5cd9a37ff1552ec87740826b695b
-Size: 97076
+MD5Sum: 9150c1fead93755e9c81dfbca6ea225e
+Size: 100980
 Filename: enyo-contactsui_1.0.1.1_all.ipk
 Description: Enyo contactsui framework (label IM rows by real service name from account templates, not a hardcoded map).
 Maintainer: Herman van Hazendonk <github.com@herrie.org>
@@ -518,8 +518,8 @@ Package: luna-systemui
 Version: 3.1.1.1
 Section: System
 Architecture: armv7
-MD5Sum: 000ba4c6cd7ed37bbecb74dfbcdc066f
-Size: 23146
+MD5Sum: dd878512a6fe36e120e2a389bd3b6cbd
+Size: 27128
 Filename: luna-systemui_3.1.1.1_all.ipk
 Description: luna-systemui (FilePicker album grid sorts newest-first).
 Maintainer: Herman van Hazendonk <github.com@herrie.org>

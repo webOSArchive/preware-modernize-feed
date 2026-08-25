@@ -972,6 +972,63 @@ service logs "already installed. skipping...". No special backup machinery is ne
 postinst now simply refuses to save an empty-directory backup (a restore point that restores nothing)
 and says so.
 
+### Upstream merged those fixes — and finished them (2026-08-25). Feed re-cut in place.
+
+Herrie merged the core-apps PR and **ported it to the other four packaging trees**
+(`enyo-1.0` 57ba6b2, `luna-systemui` d74e8f5, `com.palm.messaging.chatthreader` 53e80fd,
+`app-services` 46aefaa). Verified by unpacking every feed ipk and diffing its scripts against the
+merged files:
+
+- **core-apps family — already current.** `com.palm.app.{accounts,contacts,messaging,phone}`,
+  `messaging.library` and `contacts.plugin.messaging` are **byte-identical** to the merged tree
+  (that PR is our own work). Nothing to do.
+- **The other six were behind.** Herrie did not just transplant the four fixes, he finished them.
+  Three additions our repackaged builds lacked: `bak_is_usable` (an empty-directory tar is a restore
+  point that restores nothing — rebuild it instead of trusting it forever); **the per-mode manifests
+  persisted beside the marker** (`.last-installed/<pkg-id>.{preserve,files}.txt`) with `PLIST`/`FLIST`
+  fallbacks in prerm; and **clearing the markers after a successful restore**, without which a second
+  prerm call (WOSQI makes one) re-resolves `DST` and `rm -rf`s the stock component the first call just
+  restored — whose backup tar that first call had already deleted.
+
+⚠️ **The `luna-systemui` case was a device-breaking bug that WE introduced.** It is the only package
+here in **surgical mode** (`files.txt` = `app/FilePicker/AlbumGridView.js`), and its prerm picks the
+branch with `[ -f "$OV/files.txt" ]`. On a normal uninstall `$OV` is gone — exactly the case our
+`LASTDEST` fallback was added to handle — so `DST` now resolves (before our change it did not, and the
+whole block was skipped), `files.txt` does not, and control falls into the **whole-dir** branch:
+`rm -rf /usr/lib/luna/system/luna-systemui`, then no whole-dir backup tar exists (postinst made a
+per-file one), so it logs "was never on stock" and stops. **The system UI directory is deleted with
+nothing put back.** Upstream's `FLIST` fallback is what closes it.
+
+**And it is sticky, like the deadlock:** the stored
+`/media/cryptofs/apps/.scripts/luna-systemui/pmPreRemove.script` is what runs at the next removal, and
+Preware updates by remove-then-install — so pushing the fixed build to a device already carrying the
+old one *is* the trigger. Device-local pre-repair (no script editing — just give the old prerm back
+the markers it looks for, after which it takes the surgical branch correctly and the new postinst
+cleans the directory up as usual):
+
+```sh
+mkdir -p /media/cryptofs/luna-systemui-overwrite/luna-systemui
+echo /usr/lib/luna/system/luna-systemui > /media/cryptofs/luna-systemui-overwrite/luna-systemui/dest.txt
+echo app/FilePicker/AlbumGridView.js   > /media/cryptofs/luna-systemui-overwrite/luna-systemui/files.txt
+```
+
+**How the six were shipped: re-cut IN PLACE at the same version** — `enyo-accounts 1.1.1.1`,
+`enyo-contactsui 1.0.1.1`, `luna-systemui 3.1.1.1`, `com.palm.messaging.chatthreader 1.1.0.2`,
+`com.palm.service.accounts 1.1.0.1`, `com.palm.service.contacts.linker 1.1.0.2`. ⚠️ This is a
+**deliberate exception** to the "once anything might be on the server, never re-cut at the same
+version" rule, made by the user on the grounds that almost nobody has installed them yet (the two test
+tablets were repaired by hand). The consequence is the usual one: **no device already carrying these
+versions will ever be offered the fix** — it must be uninstalled/reinstalled or repaired by hand. Do
+not treat this as precedent.
+
+Upstream touched only `packaging/lib/*`, so the rebuild was the standard repackage: `debian-binary`
+and `data.tar.gz` reused **verbatim**, only `control.tar.gz` re-rolled (same member order/modes/mtimes,
+only `./postinst` and `./prerm` replaced) plus the `pmPostInstall.script` / `pmPreRemove.script` ar
+members. Verified by unpack-diff — `./control` and every payload byte unchanged — then index `MD5Sum`/
+`Size` updated for those six stanzas only (no `Source`, `Version` or `Depends` edits), `Packages.gz`
+regenerated, and the full per-device sweep re-run: 90 stanzas / 69 ipks, deps OK at both
+`ignoreDevices` settings, only the known pre-existing `squid` gap.
+
 ### ⚠️ Deferred: `generic`'s prerm SIGBUSes a live UI (not fixed)
 
 Replacing a **live** `com.palm.synergy.generic` crashed LunaSysMgr on a real device: its prerm does
