@@ -37,6 +37,15 @@ and the packages are hidden on those so they cannot be installed by mistake.
 
 - **Atlas** — a modern WPE WebKit browser, plus a patch to make it the default, or a gentler
   "Open in Atlas" item in the stock browser's menu. Pick one of the two patches, not both.
+- **Synergy Revival (experimental)** — brings account-based messaging and cloud storage back to the
+  tablet: WhatsApp, Telegram, Signal, Teams, Discord, Google Chat, Facebook, Dropbox, Google Drive,
+  OneDrive, Box, MEGA, pCloud, Koofr, kDrive, HiDrive, Yandex Disk, S3, Flickr and CalDAV/CardDAV, as
+  real accounts under Settings > Accounts. Install **Synergy Revival** first, then pick the connectors
+  you want. It is a large download (roughly 130 MB before any connectors, since it pulls TLS 1.3
+  Updates and Atlas), and it replaces the Accounts, Contacts, Messaging and Phone apps with updated
+  builds. webOS CE 3.1.0 already includes the runtime, so CE users install connectors directly.
+  If you already have **Accounts (Community Build)** installed, uninstall it first — it has been
+  replaced by the newer Accounts app that comes with this.
 - **QupZilla** and the nizovn **Qt5** stack, **VLC Player**.
 - **USB Settings** (USB host/OTG, high-power devices, USB storage) and **Bluetooth Gamepad Support** —
   both already included in the TouchPad bundle above.

@@ -60,11 +60,21 @@ HTTPS; depends browser-tls13. **1.1.0** adds the one-byte code patch that stops 
 bullet), `usbsettings 1.1.9` (**new** — a mounted USB drive now lands on
 `/media/usb` instead of a folder inside `/media/internal`, so it stops showing as an empty folder in
 Internalz Pro and stops swallowing files onto internal storage; see the package bullet),
-`com.palm.app.backup 3.1.0` (see below), `tls-updates 1.0.17`
+`com.palm.app.backup 3.1.0` (see below), `tls-updates 1.0.18`
 (version-floors browser `>= 1.1.2` / usbsettings `>= 1.1.9` / btgamepad `>= 1.1.0` / luna
-`>= 1.1.4` / mail `>= 1.3.2` / downloadmgr `>= 1.1.0`; also pulls in `ntpdate-sync`,
-`downloadmgr-tls13`, `accountsapp` and `com.palm.app.backup` — apps break
+`>= 1.1.4` / mail `>= 1.3.2` / downloadmgr `>= 1.1.0` / **`com.palm.app.accounts >= 3.1.1`**; also
+pulls in `ntpdate-sync`, `downloadmgr-tls13` and `com.palm.app.backup` — apps break
 when the clock is wrong, TLS cert validity checks fail).
+
+**Synergy Revival is DEPLOYED and hardware-verified, but branch `synergy-connectors` is NOT MERGED
+to `main`** (6 commits; `main` still has zero Synergy packages, so a rebuild from `main` would drop
+them). Four upstream installer bugs were found and fixed along the way — see "Four upstream installer
+bugs" below before touching any of these packages.
+34 new packages (Part 1 runtime + core-app updates, 20 pick-and-choose connectors, and our
+`org.webosarchive.synergy-revival 1.0.0` roll-up) take the feed to **69 packages / 90 stanzas**. The same
+work retired `org.webosarchive.accountsapp` in favour of `com.palm.app.accounts` 3.1.1 and took
+`tls-updates` to **1.0.18**. Index checks all pass; **nothing has been run on hardware yet.** Read the
+"Synergy Revival" section before touching any of it.
 
 QupZilla/Qt5 chain now carries version floors so installing QupZilla drags the Qt5 stack up:
 `qupzilla → qt5sdk (>= 1.0.2), qt5qpaplugins (>= 1.0.4)` (the qt5qpaplugins floor is a **direct**
@@ -73,15 +83,23 @@ qt5's own floor); `qt5sdk → qt5 (>= 5.9.7-0)`; `qt5 → qt5qpaplugins (>= 1.0.
 earlier "leave the depends tree alone" stance for this chain (index-only edit; ipks kept as-delivered).
 
 **Open / TODO:**
+- **Synergy Revival: hardware test, then merge + deploy.** Branch `synergy-connectors`. Test order in the
+  Synergy section (3.0.5 TouchPad first: meta, then one OAuth connector and one IM connector; then a CE
+  3.1.0 device where the connector must install with no Part 1). Two things to report to Herrie while
+  testing: the shared prerm never restores (reads a `dest.txt` its postinst deleted), and no script has
+  an OS/board guard, so WOSQI/`ipkg install` bypass every device check. Also unconfirmed: which Atlas
+  build carries the `setWindowSize` mult=1 viewport fix the OAuth webview needs (we floored at 0.9.11).
 - **CE 3.1.0 gate drift — the Atlas half is FIXED (2026-08-23), the rest stands.** Atlas no longer
   has an unresolvable dep at 3.1.0: it now ships two stanzas and the 3.1.0 one carries no `Depends`
   at all (see "Atlas's two stanzas"). What remains is a *coverage* question, not a broken dep — a
-  device reporting `3.1.0` sees 15 of 31 TouchPad packages and gets **no one-tap meta**, because every
-  TouchPad stanza except Atlas's sits at `Max 3.0.9`. Still a gating-policy call: either move them back
+  device reporting `3.1.0` sees 35 of 69 packages and gets **no one-tap meta**, because every
+  TouchPad stanza except Atlas's and the Synergy connectors' sits at `Max 3.0.9`. (Synergy made CE 3.1.0
+  a first-class target for the first time: its 20 connectors ship a dep-free 3.1.0 stanza each.) Still a gating-policy call: either move them back
   to `3.9.9`, or accept CE 3.1.0 as out of scope. The two `atlas-*` patch packages are `Max 3.9.9` and
   depend only on Atlas, so they are fine either way.
-- **`accountsapp` floor drift (pre-existing, found 2026-08-23, NOT introduced by the backup work)** —
-  `org.webosarchive.accountsapp` is `Min 3.0.0` but its two deps (`browser-tls13`, `luna-tls13`) are
+- **~~`accountsapp` floor drift~~ — MOOT since 2026-08-24: the package is retired and out of the feed.**
+  Kept for the reasoning, which still applies to any `Min 3.0.0` package whose deps are `Min 3.0.5`:
+  `org.webosarchive.accountsapp` was `Min 3.0.0` but its two deps (`browser-tls13`, `luna-tls13`) are
   `Min 3.0.5`, so on a TouchPad reporting 3.0.0 / 3.0.2 / 3.0.4 the app is visible and neither dep is
   → unresolvable, two dep gaps. Verified identical in `git show HEAD:ipkgs/Packages`, so it predates
   this session. Fix is one index edit — raise accountsapp to `Min 3.0.5`, matching the rest of the TLS
@@ -262,6 +280,24 @@ remote — which splits ipks into `topaz/` TouchPad, `mantaray/` Pre3, `roadrunn
 self-consistent), pull the edited `Source`/`Description` back into the build control and rebuild
 the ipk (changes md5 → re-stanza). Editing only the index keeps ipk md5s unchanged → smaller deploy.
 
+**Sorting a package to the TOP of a Preware list — a leading space in `Source.Title`.** Verified in
+source and then **on device** (2026-08-24): Preware's default list sort is a raw
+`a.title.toLowerCase()` string compare with **no trim** (`models/packages.js:789`), and `title` is
+assigned straight from `Source.Title` untrimmed (`models/package.js:233`). A leading space (0x20)
+therefore sorts ahead of every letter and digit, which is how
+`" Synergy Revival Roll-up (Touchpad)"` sits above its 33 connectors when you search "Synergy".
+Search is unaffected — it is a substring `include()` on the lowercased title
+(`pkg-list-assistant.js:510`) — and the space does not render in the list row. ⚠️ **Do not "tidy" that
+leading space away**; it is load-bearing, and it is the only lever we have over list order, since
+Preware exposes no weight/priority field. Index-only, so it needs no version bump.
+
+⚠️ **Never regenerate a stanza from the ipk's own control.** The index `Source` is the *curated*
+copy and is routinely ahead of the control — titles, icons, Category/Feed retags, lead paragraphs.
+Rebuilding a stanza from `control_of(ipk)` silently reverts every one of those (hit twice on
+`synergy-revival` 2026-08-24: the roll-up lost its leading-space title, its icon and its opening line
+when the meta was re-cut at 1.0.1). When a meta is rebuilt, take `Version` and `Depends` from the new
+control and **keep the existing stanza's `Source` verbatim**, editing only what changed.
+
 **Offering updates (Preware update mechanics — cost us a session):**
 - **Preware compares the `Version` STRING only.** To ship an update you MUST bump the version number.
   Rebuilding an ipk *in place at the same version* (new md5, new content) will **never** show as an
@@ -307,7 +343,8 @@ floors) resolves.
   `c931…` (the bricked one). No hostnames set, so they're hard to tell apart — check health first
   (`hostname`, version, `ps | grep LunaSysMgr`, installed pkgs) before patching.
 
-## Package inventory (single feed = 36 packages / 37 stanzas — Atlas has two; phones detailed below)
+## Package inventory (single feed = 69 packages / 90 stanzas — Atlas and each of the 20 Synergy
+connectors have two; phones detailed below)
 
 - **nizovn stack** (hand-curated stanzas): cacert, glibc, openssl, qt5* (`qt5qpaplugins` **1.0.4**,
   qt5 5.9.7-0, qt5sdk 1.0.2), qtwebbrowser, `qupzilla` (**2.3.1**), squid (kept for old phones,
@@ -397,10 +434,14 @@ floors) resolves.
 - **`org.webosarchive.help-redirect`** (built + verified this session): patches `com.palm.app.help`
   `UrlManager.js` `helpUrl` (drives all content) + `HelpApp.js` palm.com domain check + device.do
   → `http://help.webosarchive.org`. Backs up `*.webosce-orig`, restores on removal, RestartLuna.
-- **`org.webosarchive.tls-updates`** ("TLS 1.3 Updates (TouchPad)", **1.0.17**) — payload-free **meta**
+- **`org.webosarchive.tls-updates`** (`" TLS 1.3 Updates (TouchPad)"` — ⚠️ deliberate leading
+  space, see the sorting note above; **1.0.18**) — **meta** package
+  (README-only payload; it gained a `postinst` in 1.0.18, see below)
   package. Depends: rootcerts, browser-tls13, ntpdate-sync, curl/luna/mail-tls13,
   **downloadmgr-tls13 (>= 1.1.0)**, mojomail-imap-tagfix, help-redirect, enyo-findapps,
-  **usbsettings (>= 1.1.9)**, **btgamepad (>= 1.1.0)**, **accountsapp** (unversioned — new in 1.0.13),
+  **usbsettings (>= 1.1.9)**, **btgamepad (>= 1.1.0)**, **`com.palm.app.accounts (>= 3.1.1)`**
+  (**1.0.18** — replaced `org.webosarchive.accountsapp`, which was a member from 1.0.13 and is now
+  retired; see the Synergy Revival section),
   **`com.palm.app.backup`** (unversioned — added in 1.0.15). `ntpdate-sync` sits **after** browser-tls13
   and **before** luna — added because apps break when the clock is wrong (TLS cert validity windows
   fail); left unversioned (new dep, nothing to drag up). ⚠️ The old rationale "it's browser's own dep,
@@ -740,8 +781,14 @@ not the name triple alone** — the check in this repo was updated accordingly.
     keeps `/media/internal/webos-backups`.
   - **Member of the TouchPad `tls-updates` roll-up** (unversioned, at the END of Depends —
     self-contained and order-independent), which took the meta to 1.0.15.
-- **`org.webosarchive.accountsapp`** ("Accounts (Community Build)", **3.1.0**, arch `all`,
-  delivered pre-built by the user as `org.webosarchive.accountsapp_3.1.0_all.ipk`) — replaces the
+- **`org.webosarchive.accountsapp`** — ⚠️ **RETIRED 2026-08-24, no longer in the feed.** Superseded by
+  `com.palm.app.accounts` **3.1.1** (Synergy Revival Part 1), which is a *strict superset*: byte-identical
+  files apart from `appinfo.json` version strings and `AccountManager.js`, plus 9 localization files.
+  Its stanza and ipk were removed and `tls-updates` 1.0.18 depends on the new package instead. Both metas
+  carry a postinst that defuses a still-installed copy — see "Retiring `accountsapp`" below. The rest of
+  this bullet is kept for archaeology.
+  Original description: "Accounts (Community Build)", **3.1.0**, arch `all`,
+  delivered pre-built by the user as `org.webosarchive.accountsapp_3.1.0_all.ipk` — replaces the
   stock Accounts app (`com.palm.app.accounts`) with the webOS-ports/LG open-source Enyo 1.0 build,
   re-enabling System account management (sign in, name/email/password, public username, devices on
   the account, sign out from Settings > Accounts) against the **community account endpoint**. Needs
@@ -774,6 +821,223 @@ not the name triple alone** — the check in this repo was updated accordingly.
     single-end-restart pattern as every other patch in this feed, see the mid-batch restart lesson).
   - **Added as a new (unversioned) member of `org.webosarchive.tls-updates`**, bumping the meta
     **1.0.12 → 1.0.13** — see the TLS 1.2/1.3 chain bullet above.
+
+## Synergy Revival (experimental — added 2026-08-24, branch `synergy-connectors`)
+
+**What it is.** Herman van Hazendonk's revival of webOS account aggregation: modern IM services
+(WhatsApp, Telegram, Signal, Teams, Discord, Google Chat, Facebook), cloud/photo storage (Dropbox,
+Google Drive, OneDrive, Box, MEGA, pCloud, Koofr, kDrive, HiDrive, Yandex Disk, S3, Flickr) and
+CalDAV/CardDAV, as real Synergy accounts under Settings > Accounts. **34 packages, ~71MB**, in two
+parts plus a roll-up we build here:
+
+- **Part 1 (13 pkgs, 24MB)** — required on 3.0.5, **built into webOS CE 3.1.0**. `com.palm.synergy.generic`
+  (13MB: imlibpurpletransport + libpurple + a frozen `synergy-glibc` + cloudcore + the `com.palm.app.cloud-auth`
+  OAuth app) plus whole-directory replacements of stock apps/frameworks/services: `com.palm.app.{accounts,
+  contacts,messaging,phone}`, `com.palm.service.{accounts,contacts.linker}`, `com.palm.messaging.chatthreader`,
+  `enyo-accounts`, `enyo-contactsui`, `messaging.library`, `contacts.plugin.messaging`, `luna-systemui`.
+- **Part 2 (20 pkgs, 47MB)** — the connectors themselves, pick-and-choose, **both** device classes.
+- **`org.webosarchive.synergy-revival` 1.0.0** — our hand-built meta (like `tls-updates`): pulls
+  `tls-updates`, `atlas (>= 0.9.11)` and all 13 Part 1 packages, each floored at its shipped version.
+
+**Sources:** `~/Downloads/synergy_revival_0.9.3_part1_v4/` and `..._part2_v3/`. ⚠️ For
+`com.palm.app.accounts` use the **`~/Desktop/com.palm.app.accounts_3.1.1_all.ipk`** copy, not the one in
+part1_v4 — the Downloads build is broken (its postinst is the old accountsapp script with
+`REL=media/cryptofs/webosarchive-accounts-overwrite`, while the payload ships at
+`core-apps-overwrite/com.palm.app.accounts/`, so it finds nothing: `exit 1` on a fresh device, or a silent
+"already installed" no-op where accountsapp was present). The Desktop build uses the shared core-apps
+postinst, which locates the payload by PKGID, and differs in content only in `AccountManager.js` (SYNERGY
+ACCOUNTS becomes a real `RowGroup`). It is what CE 3.1.0 RC ships.
+
+**Packaging facts (all ipks kept as-delivered):** every control is bare — **no `Depends`, no `Source`** —
+so every dependency here is index-only (safe: Preware installs by local file and ipkg reads the ipk's own
+control, the same reason Atlas must not carry `Depends`). Controls declare `Architecture: armv7` even
+though filenames say `_all`; the stanzas follow the control. All 33 are 5-member ars (`pmPostInstall.script`
+/ `pmPreRemove.script` alongside the usual three). **No script restarts LunaSysMgr or reboots** — they only
+log "restart the UI" — so they are safe inside a Preware dependency batch (`generic` does restart bluetooth
+and mediaserver, which is fine). `generic` declares `Replaces:`/`Conflicts: imlibpurpleservice`; Preware
+ignores both, and nothing in this feed ships that package.
+
+### Index layout — the Atlas two-stanza trick, reused per connector
+
+| stanza | gate | `Depends` |
+|---|---|---|
+| Part 1 (13) + the meta | `Min 3.0.5` / `Max 3.0.9` | none / (meta: tls-updates, atlas, the 13) |
+| connector — **FIRST** | `Min 3.1.0` / `Max 3.9.9` | `org.webosports.app.atlas (>= 0.9.11)` |
+| connector — SECOND | `Min 3.0.5` / `Max 3.0.9` | `org.webosarchive.synergy-revival, org.webosports.app.atlas (>= 0.9.11)` |
+
+Same reasoning as Atlas's own two stanzas (read that section first): Preware keeps the **first** stanza of a
+name, `Min` is the only un-bypassable filter, so the stanza that must win where the *other* one is excluded
+by a soft `Max` has to come first. Both stanzas name the same `Filename`+`MD5Sum`, so the ipkg dedupe trap
+does not apply. **`Min 3.0.5`, not 3.0.0**, everywhere here: the meta depends on `tls-updates`, which is
+`Min 3.0.5`, and a looser floor would recreate the `accountsapp` dep-gap drift. **No `DeviceCompatibility`**
+— 3.0.x is TouchPad-exclusive and `Min`/`Max` is the hard filter (the `accountsapp` precedent); this also
+avoids propagating the known-inert `"Touchpad Go"` string into 54 new stanzas.
+
+**Why Atlas is a dependency of *every* Part 2 package** (user's call, 2026-08-24): the OAuth sign-in flow
+lives in `com.palm.app.cloud-auth` (inside `generic`) and `cloudAuth.js` swaps `enyo.BasicWebView`'s plugin
+mime to `application/x-atlas-browser`, i.e. it renders the sign-in page through **BrowserServer-atlas** —
+the stock webview cannot complete a modern TLS handshake. Floored at `>= 0.9.11` because `cloudAuth.js`
+notes it needs "the BrowserServer-atlas fix that makes setWindowSize's mult=1 viewport" and 0.9.11 is the
+first release since 0.9.8 whose engine binary changed; **which build actually carries that fix is unconfirmed
+— ask Herrie.** Note a few connectors never open a browser (`mega` email+password, `kdrive` token, `s3`
+SigV4, `cdav` user/password, and the IM ones), so for them the dep is a uniformity choice, not a requirement.
+
+**Why the meta depends on `tls-updates`:** `_cloudcore/httpcurl.js` shells every cloud request out to
+`/usr/bin/curl` ("the device node runtime is OpenSSL 0.9.8k … all TLS lives in curl"), which is exactly what
+`curl-tls13` replaces.
+
+### Retiring `accountsapp` — and the migration postinst both metas now carry
+
+`com.palm.app.accounts` 3.1.1 supersedes `org.webosarchive.accountsapp` 3.1.0 (superset; see that bullet).
+`accountsapp` was removed from the feed and from `tls-updates`, which went **1.0.17 → 1.0.18** with
+`com.palm.app.accounts (>= 3.1.1)` in its place. Rebuild was the standard meta recipe — `debian-binary` and
+`data.tar.gz` reused verbatim, only `control.tar.gz` rewritten — verified by unpack-diff.
+
+The hazard is that both packages replace `/usr/palm/applications/com.palm.app.accounts` and **each keeps its
+own backup of what it found there**, under different names:
+
+- accountsapp: `/media/cryptofs/webosarchive-accounts/stock-app.tar` (+ an `installed` marker)
+- core-apps: `/media/cryptofs/core-apps-backup_usr_palm_applications_com.palm.app.accounts.tar` — note
+  `BAK_ROOT` has **no trailing slash** and `$DST` starts with `/`, so this is a file sitting *beside* the
+  empty `core-apps-backup` directory, not inside it.
+
+With accountsapp still installed when 3.1.1 goes on, the core-apps postinst captures *accountsapp's build*
+as "stock", and accountsapp's own prerm later restores its build over 3.1.1. So **both metas got a
+`postinst`** that (1) adopts the genuine stock tar as our restore point and (2) re-points accountsapp's
+backup at whatever is installed now, making its prerm a no-op. Idempotent, temp-file + `mv`, exits 0 when
+accountsapp was never installed. Tested in a sandboxed fake root: adopt/re-point/idempotent all correct.
+
+⚠️ **Two things that must not be "simplified" later:**
+- **It must NOT delete accountsapp's backup.** That prerm treats "no backup + our marker file
+  (`source/palmID/UsernameDialog.js`) present at the target" as *remove the app* — and 3.1.1 carries that
+  same marker, being a superset. Deleting the backup converts "restores an older app" into "deletes the
+  Accounts app outright with nothing put back".
+- **It must NOT call `ipkg`.** The postinst runs *inside* Preware's own
+  `ipkg -o /media/cryptofs/apps -force-overwrite install` (`luna_methods.c:1692`); a nested ipkg blocks on
+  the lock or races the outer process's `status` write. (`tls-updates` 1.0.17 also *declared* accountsapp as
+  a dep, so removing it behind Preware's back would leave an installed meta with an unmet dependency.)
+
+### Four upstream installer bugs — found, fixed and hardware-verified (2026-08-25)
+
+All four are in the **shared `packaging/lib/{postinst,prerm}`** that every one of Herrie's trees
+copy-pastes (core-apps, app-services, chatthreader, enyo, luna-systemui). Fixed in
+`~/Projects/webos-core-apps` on branch **`herrie/milestone2-servers-tab`** (PR to Herrie); the feed
+ships repackaged ipks carrying the same fixes for the trees not yet forked. Issues #2/#3/#4 on
+`Herrie82/webos-synergy-revival`; the deadlock is a fifth, separate issue.
+
+1. **postinst deletes its own cwd → no Contacts/Messaging app.** The App Installer runs
+   `pmPostInstall.script` with cwd = `/media/cryptofs/apps/usr/palm/applications/<pkg-id>`. On a
+   TouchPad, Contacts and Messaging are ipkg-managed apps living at exactly that path, so `dest.txt`
+   names it and `rm -rf "$DST"` removes the script's own cwd; GNU tar then fails `getcwd()` before it
+   ever honours `-C` (`tar: Cannot save working directory`), exits 2, and the rollback restores an
+   empty backup. **Fix: `cd /` before anything is deleted.** Only these two packages are affected —
+   every other `dest.txt` is a rootfs path, not the installer's cwd.
+2. **prerm never restores.** It locates its work through `$OV/dest.txt`, but postinst `rm -rf "$OV"`s
+   as its last act, so on a real uninstall the lookup finds nothing and the restore is skipped
+   silently. **Fix: fall back to `.last-installed/<pkg-id>.dest.txt`** (postinst already writes it for
+   the WOSQI double-invocation guard), require an absolute path before any `rm -rf`, and clear the
+   marker on success — otherwise a second uninstall call deletes the stock app the first one restored.
+3. **postinst SIGTERMs its own installer.** The cmdline sweep kills any process matching a fixed
+   string; `ipkg`, `ApplicationInstallerUtility` and the script itself all carry the package name or
+   the `.ipk` path. When the swept string is a substring of the package's own id the installer dies:
+   the package installs fine, webOS reports `FAILED_IPKG_INSTALL`, Preware aborts the batch, and
+   retrying replays it forever (Preware only refreshes its installed list on Update Feeds — four
+   identical retries observed). Hits `com.palm.service.contacts.linker` ("contacts.linker") and
+   `com.palm.messaging.chatthreader` ("chatthreader"). **Fix: `nudge_kill()` skips `$$` and anything
+   matching `pmPostInstall|pmPreRemove|ApplicationInstallerUtility|/usr/lib/ipkg/|\.ipk`.**
+4. **⚠️ Blocking `luna-send` deadlocks the installer AND the UI.** Both scripts ended with
+   `luna-send -n 1 luna://com.palm.applicationManager/rescan '{}'`, which waits for a reply — but the
+   scripts run *inside* LunaSysMgr's own request handling, so the service that owes the reply is the
+   one waiting for the script to exit. Nothing times out. Symptom: Preware stuck on
+   "Downloading/Updating — [core-apps] removal complete", tablet unresponsive, **no error anywhere**;
+   the only evidence is a blocked `luna-send` in `ps -ef`. Killing that one process releases the whole
+   chain. **Fix: fire-and-forget —
+   `( luna-send … & ) >/dev/null 2>&1`.** Leave the `putKind`/`putPermissions` calls blocking: they
+   parse their replies and talk to `com.palm.db`, not to the caller.
+
+⚠️ **The deadlock fix cannot apply to its own first upgrade.**
+`/media/cryptofs/apps/.scripts/<pkg-id>/pmPreRemove.script` is written at *install* time and is what
+runs at the next removal, so a device carrying a pre-fix build deadlocks once during the remove half
+before the fixed package can land. Only affects devices that installed during the broken window (a
+plain `ipkg` install/downgrade does NOT refresh those stored copies). Device-local repair, no feed
+change: rewrite the line in place, syntax-check each file, then update normally —
+`sed "s|^luna-send -n 1 luna://com.palm.applicationManager/rescan .*|( & \& ) >/dev/null 2>\&1|"`
+over `/media/cryptofs/apps/.scripts/*/pm{PreRemove,PostInstall}.script` (25 files on the affected
+device; verified byte-identical apart from that line).
+
+**Recovery for a missing core app: uninstall, then REBOOT.** Once our package is unregistered,
+webOS's own boot-time `app-install` service reinstalls the stock ipk from `/usr/palm/ipkgs/<id>/`.
+That is also why a half-broken device *stays* broken — while our higher version is registered the
+service logs "already installed. skipping...". No special backup machinery is needed or wanted; the
+postinst now simply refuses to save an empty-directory backup (a restore point that restores nothing)
+and says so.
+
+### ⚠️ Deferred: `generic`'s prerm SIGBUSes a live UI (not fixed)
+
+Replacing a **live** `com.palm.synergy.generic` crashed LunaSysMgr on a real device: its prerm does
+`umount /usr/lib/purple-2` and `umount /usr/lib/synergy-runtime`, and unmounting a filesystem out
+from under processes holding mappings from it is a bus error. dmesg showed the cascade in the
+expected order — `WebAppMgr` → `LunaSysMgr` → `BrowserServer`, all `received 7` (SIGBUS). Only bites
+on remove/replace of a live install (a fresh install has nothing mounted yet), and it aborts the
+whole Preware batch. Its prerm lives in **`webos-synergy-revival`**, not core-apps. Candidate fixes:
+`umount -l` (smallest — existing mappings stay valid until the processes exit), stopping the
+consumers first, or doing the teardown after a Luna restart. Deliberately left alone 2026-08-25;
+re-test needs a device where the transport is genuinely live.
+
+### Repackaging convention for upstream ipks: append `.N`
+
+When we patch an upstream ipk whose version we do not control, ship it as `<upstream>.1` (then `.2`,
+…): it sorts **above** upstream's version and **below** their next release, so their fix supersedes
+ours automatically with no same-name-same-version collision in the index. Used for
+`contacts 3.0.6701.2`, `messaging 3.0.6607.2`, `contacts.linker 1.1.0.2`, `chatthreader 1.1.0.2`,
+`generic 0.9.3.1`, `service.accounts 1.1.0.1`, `enyo-accounts 1.1.1.1`, `enyo-contactsui 1.0.1.1`,
+`messaging.library 1.3.1.1`, `contacts.plugin.messaging 12.2.0.1`, `luna-systemui 3.1.1.1`,
+`accounts 3.1.1.1`, `phone 2.0.1.1` — with the roll-up at **1.0.3** floored to all of them. ⚠️ Never
+re-cut at the same version once anything is on the server: Preware compares the version STRING only.
+
+### Hardware status (2026-08-25)
+
+**Both paths verified on 3.0.5 TouchPads, unassisted, through Preware from the feed:**
+- **Clean/stock device** — fresh install of all 16 (28-package chain incl. Atlas): 0 blocked rescans,
+  0 `FAILED_IPKG`, 0 `runScriptCwd` errors, all apps complete on disk, and — the point — all 12
+  stored `pmPreRemove.script` copies are the *fixed* ones, so that device can never hit the deadlock.
+- **Previously-broken device** (survived two failed attempts) — after the stale-script repair above:
+  full chain including eleven remove-then-install replacements, 0 crashes, 0 blocked, 0 failures.
+
+⚠️ **The 20 Part 2 connectors have never been installed on any device.** Part 1 and the roll-up are
+well tested; the connectors are not. Cheapest first test: one cloud connector (Dropbox) and one IM
+connector, both of which pull the meta + Atlas.
+
+### Icons, and the rest of the metadata
+
+Icons were extracted from the packages' own payloads into `ipkgs/assets/icons/synergy/synergy-*.png`
+(24 files, script in this session's scratchpad: pick `icon-256x256.png` > `icon.png` > `-64` > `-48`,
+allowing non-square since several vendor logos are e.g. 48x45). `flickr`'s own icons are 97–176-byte
+placeholders, so it uses `synergy-generic.png` (the cloud-auth icon, also used by the meta and the
+framework/service packages). `cdav` had to be forced to `caldav-48.png` — a naive "largest `_64`" pick
+grabbed `icloud_64.png`. `Feed: "WOSA Modernize"` with **`Category: "Synergy"`** (user's call — same feed
+group, new category). `Type`: `OS Application` for Part 1 + meta, `Application` for connectors.
+`PostInstallFlags`/`PostUpdateFlags`: **`RestartDevice`** for the meta, `generic` and every connector (new
+ls2 roles / dbus services, which the hub only reads at startup), `RestartLuna` for the Part 1 app and
+framework replacements; `PostRemoveFlags: RestartLuna` throughout.
+
+**Titles and icons (user's calls, 2026-08-24, index-only — no ipk was rebuilt for any of this).** The
+12 Part 1 app/framework/service packages are titled `<Name> (For Synergy Revival)`; the connectors are
+`<Service> (Synergy)`; the runtime is `Synergy Shared Runtime` and deliberately carries **no `Icon`**,
+so Preware shows its default box (same as `tls-updates`). The meta is
+**`" Synergy Revival Roll-up (Touchpad)"`** — note the deliberate leading space (see the sorting note
+above) and the user's spelling of "Touchpad" here, which differs from the `(TouchPad)` used elsewhere
+in the feed. Its description opens with "This roll-up installation prepares your 3.0.5 Touchpad for
+Synergy Revival." and it uses `assets/icons/synergy/synergy-rollup.png` (supplied by the user).
+`com.palm.app.accounts`'s index `Maintainer` is **`webOS Archive`**, not Herrie: that app started life
+as our `accountsapp` build and was given to him. The remaining Part 1 packages correctly credit him.
+`synergy-generic.png` (the cloud-auth icon) is now used only by `Flickr` — whose own icons are
+97–176-byte placeholders — and `Luna System UI`.
+
+**Not yet run on any hardware.** First test should be a 3.0.5 TouchPad: install `synergy-revival` from the
+feed (expect ~130MB before connectors, one reboot at the end), then one OAuth connector (Dropbox is the
+cheapest) and one IM connector. Then a CE 3.1.0 device, where the same connector must install with **no**
+Part 1 and no meta.
 
 ## Phone support (webOS 2.2.4: Pre3 / Veer / Pre2) — LIVE + **Pre 3 hardware-verified**
 
@@ -876,6 +1140,9 @@ Phone stanzas: `Min 2.2.4` / `Max 2.9.9` + `DeviceCompatibility ["Pre3","Veer","
 title suffix, bold not-for-TouchPad lead. `Min 2.2.4` deliberately excludes an un-upgraded Veer
 (2.2.0) or Pre 2 (2.1.0) — their stock binaries differ from what the patches were built against.
 
+**`tls-updates-phone`** is titled `" TLS 1.3 Updates (Phones)"` — ⚠️ deliberate leading space, same
+as the TouchPad meta, see the sorting note above.
+
 **`tls-updates-phone` 1.0.1 carries the phone meta's first version floor**
 (`luna-tls13-phone (>= 1.1.4)`); every other dep of that meta is still unversioned. It shipped at
 1.0.0 with no floors at all, so an existing phone install would never have been dragged up to a new
@@ -890,28 +1157,32 @@ dedupe trap. Note the qualifier: Atlas deliberately has two stanzas on one file,
 `loadPackage` per device** (TouchPad 3.0.5 / CE 3.1.0 / Pre3 2.2.4 / Veer 2.2.4+2.2.0 / Pre2
 2.2.4+2.1.0) and assert every visible package's deps are also visible. That second check is what
 found `curl-tls13`'s and `mail-tls13`'s stale deps. The visibility check also verifies **version
-floors** resolve against what the feed actually ships, not just that the dep is visible. Current
-result — 36 stanzas, all valid:
+floors** resolve against what the feed actually ships, not just that the dep is visible.
 
-Current result — **37 stanzas** (36 packages; Atlas has two), all valid, with the sweep now run at
-**both settings of the `ignoreDevices` pref** (added 2026-08-23, since `Max`/`DeviceCompatibility` are
-soft and only `Min` survives that toggle):
+Current result — **90 stanzas** (69 packages; Atlas and each of the 20 Synergy connectors have two),
+all valid, with the sweep run at **both settings of the `ignoreDevices` pref** (added 2026-08-23, since
+`Max`/`DeviceCompatibility` are soft and only `Min` survives that toggle):
 
 ```
 ignoreDevices = OFF (default)
-TouchPad 3.0.5    30 visible  atlas deps: tls-updates  one-tap: tls-updates        deps OK
-TouchPad CE 3.1.0 15 visible  atlas deps: (none)       one-tap: (none)             deps OK
-Pre3 2.2.4        20 visible  atlas: not visible       one-tap: tls-updates-phone  deps OK
-Veer 2.2.4        11 visible  atlas: not visible       one-tap: tls-updates-phone  deps OK
-Pre2 2.2.4        11 visible  atlas: not visible       one-tap: tls-updates-phone  deps OK
-Veer 2.2.0         3 visible  atlas: not visible       one-tap: (none)             deps OK
-Pre2 2.1.0         3 visible  atlas: not visible       one-tap: (none)             deps OK
+TouchPad 3.0.5    63 visible  synergy 21  atlas deps: tls-updates  metas: tls-updates, synergy-revival  deps OK
+TouchPad CE 3.1.0 35 visible  synergy 20  atlas deps: (none)       metas: (none)                        deps OK
+Pre3 2.2.4        20 visible  synergy  0  atlas: not visible       metas: tls-updates-phone             deps OK
+Veer 2.2.4        11 visible  synergy  0  atlas: not visible       metas: tls-updates-phone             deps OK
+Pre2 2.2.4        11 visible  synergy  0  atlas: not visible       metas: tls-updates-phone             deps OK
+Veer 2.2.0         3 visible  synergy  0  atlas: not visible       metas: (none)                        deps OK
+Pre2 2.1.0         3 visible  synergy  0  atlas: not visible       metas: (none)                        deps OK
 
 ignoreDevices = ON
-TouchPad 3.0.5    36 visible  atlas deps: tls-updates                              deps OK
-TouchPad CE 3.1.0 36 visible  atlas deps: (none)                                   deps OK   <- order works
+TouchPad 3.0.5    69 visible  synergy 21  atlas deps: tls-updates                                       deps OK
+TouchPad CE 3.1.0 69 visible  synergy 21  atlas deps: (none)                                            deps OK  <- order works
 Pre2 2.1.0         5 visible  squid -> glibc/openssl not visible (PRE-EXISTING, Min-gated)
 ```
+
+Two more assertions, added with Synergy and worth re-running: the **connector stanza that wins** must be
+the dep-free-of-Part-1 one at 3.1.0 and the `synergy-revival`-carrying one at 3.0.5, in **both** pref
+states (all 20 connectors checked, all four cases correct); and `synergy 21` vs `synergy 20` is the
+Part 1 runtime (`com.palm.synergy.generic`) correctly disappearing at CE 3.1.0.
 
 The Atlas `deps:` column is the assertion that matters: **`tls-updates` at 3.0.5, nothing at 3.1.0, in
 both pref states.** The lone `squid` gap is pre-existing (verified against `git show HEAD~1:` at the
