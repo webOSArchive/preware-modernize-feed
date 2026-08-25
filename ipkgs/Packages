@@ -430,8 +430,8 @@ Package: com.palm.synergy.generic
 Version: 0.9.3.1
 Section: System
 Architecture: armv7
-MD5Sum: 84fef52ed84f8497e39e052111eea983
-Size: 13035920
+MD5Sum: 513c892e4c6c14e26db4566fa67a3b84
+Size: 13039862
 Filename: com.palm.synergy.generic_0.9.3.1_all.ipk
 Description: webOS Synergy Revival - shared runtime (imlibpurpleservice + libpurple backend, cloudcore, QuickOffice/Photos/DocViewer integration, device-setup fixes). Required by every other com.palm.synergy.* connector package.
 Maintainer: Herman van Hazendonk <github.com@herrie.org>

@@ -1073,17 +1073,43 @@ byte-equal to upstream's, `sh -n` clean, index md5/size refreshed on **41 stanza
 `~/Desktop/synergy-revival-connector-deadlock.md` (the write-up for Herrie, now superseded upstream but
 still the reference for the repair).
 
-### ⚠️ Deferred: `generic`'s prerm SIGBUSes a live UI (not fixed)
+### The SIGBUS: fixed upstream, and our diagnosis was WRONG (2026-08-25)
 
-Replacing a **live** `com.palm.synergy.generic` crashed LunaSysMgr on a real device: its prerm does
-`umount /usr/lib/purple-2` and `umount /usr/lib/synergy-runtime`, and unmounting a filesystem out
-from under processes holding mappings from it is a bus error. dmesg showed the cascade in the
-expected order — `WebAppMgr` → `LunaSysMgr` → `BrowserServer`, all `received 7` (SIGBUS). Only bites
-on remove/replace of a live install (a fresh install has nothing mounted yet), and it aborts the
-whole Preware batch. Its prerm lives in **`webos-synergy-revival`**, not core-apps. Candidate fixes:
-`umount -l` (smallest — existing mappings stay valid until the processes exit), stopping the
-consumers first, or doing the teardown after a Luna restart. Deliberately left alone 2026-08-25;
-re-test needs a device where the transport is genuinely live.
+Filed as issue #8; `Herrie82/webos-synergy-revival` **7db2aa6** fixed it the same day, and the feed's
+`com.palm.synergy.generic 0.9.3.1` was re-cut from his scripts. **The `umount` was a bystander.** Do
+not repeat the reasoning that got this wrong: we saw `prerm` unmount two live fuse bind mounts, saw
+`WebAppMgr`/`LunaSysMgr`/`BrowserServer` die with `received 7`, and joined them. But a **non-lazy
+`umount` of a busy mount returns `EBUSY`** — it detaches nothing and signals nobody. Proximity in the
+script is not causation.
+
+The real cause was three lines further up, and the crash trio identifies it exactly: those three
+processes are precisely the set that **mmap `/usr/lib/libWebKitLuna.so`**, and prerm's restore was
+
+```sh
+restore() { [ -f "$1" ] && cp "$1" "$2" && log "  restored $2"; }
+restore /media/internal/libWebKitLuna.so.prewebm /usr/lib/libWebKitLuna.so
+```
+
+A plain `cp` **truncates and rewrites the live inode in place**; any mapper faulting a page during
+that window — or past the truncation point — takes SIGBUS. `generic`'s own postinst already knew this
+and used temp+rename for the same library in its webkit-webm-mime patch; only prerm didn't.
+
+Upstream's fix, now in the feed:
+- `restore()` copies to a same-directory temp and **atomic `mv`** (rename leaves current mappers on
+  the old inode). Also fixes a silent `ETXTBSY` when restoring the running `PmBtEngine`, and an
+  `[ -e "$2" ]` guard stops it conjuring a spare 12.8MB `libWebKitLuna.so` onto the 559MB root.
+- **`atomic_cp()`** in postinst for the same bug class on the *upgrade* path — the Thai font
+  (`HeiT_nb.ttf`, mapped by every FreeType user) and the gst-0.10 plugins (mapped by a mid-playback
+  media-pipeline). It `cmp`-skips identical files, so a routine reinstall doesn't churn the inode.
+- **`umount -l`** on both bind mounts — not the crash cause, but a plain `umount` strands the
+  mountpoint (`EBUSY` → failed `rmdir`) if a straggler still holds it.
+- `tests/test-prerm-atomic-restore.sh` holds an open fd across a sandboxed prerm run: 6 failures
+  pre-fix, 12/12 pass post-fix.
+
+**The general rule this leaves behind:** never `cp` over a file the running system has mapped or is
+executing — write beside it and `mv`. That covers every binary-swap package in this feed, not just
+Synergy.
+
 
 ### Repackaging convention for upstream ipks: append `.N`
 
