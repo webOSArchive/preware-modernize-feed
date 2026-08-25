@@ -66,7 +66,10 @@ Internalz Pro and stops swallowing files onto internal storage; see the package 
 pulls in `ntpdate-sync`, `downloadmgr-tls13` and `com.palm.app.backup` — apps break
 when the clock is wrong, TLS cert validity checks fail).
 
-**Synergy Revival is built but UNRELEASED — branch `synergy-connectors`, not merged, not deployed.**
+**Synergy Revival is DEPLOYED and hardware-verified, but branch `synergy-connectors` is NOT MERGED
+to `main`** (6 commits; `main` still has zero Synergy packages, so a rebuild from `main` would drop
+them). Four upstream installer bugs were found and fixed along the way — see "Four upstream installer
+bugs" below before touching any of these packages.
 34 new packages (Part 1 runtime + core-app updates, 20 pick-and-choose connectors, and our
 `org.webosarchive.synergy-revival 1.0.0` roll-up) take the feed to **69 packages / 90 stanzas**. The same
 work retired `org.webosarchive.accountsapp` in favour of `com.palm.app.accounts` 3.1.1 and took
@@ -914,20 +917,96 @@ accountsapp was never installed. Tested in a sandboxed fake root: adopt/re-point
   the lock or races the outer process's `status` write. (`tls-updates` 1.0.17 also *declared* accountsapp as
   a dep, so removing it behind Preware's back would leave an installed meta with an unmet dependency.)
 
-### Known upstream defects (shipped anyway, deliberately)
+### Four upstream installer bugs — found, fixed and hardware-verified (2026-08-25)
 
-- **Uninstall does not restore the stock app** for 11 of the 13 Part 1 packages: the shared prerm reads
-  `dest.txt` out of the staged dir that its own postinst `rm -rf`'d at the end, so removal is a silent no-op
-  and the backup tar is orphaned. Per the user (2026-08-24) **this is low priority** — the stock apps' back
-  ends died with Palm's cloud — so the stanzas carry one factual line, not a warning. The accounts package's
-  own comments call this out as a known bug in "the sibling core-apps packaging"; report it to Herrie.
-- **No hard device guard anywhere in the 34 packages** — zero matches on `palm-build-info`, `machineName`
-  or board names. The Downloads accounts build had `EXPECT_OSVER_PREFIX=3.0`; the shipped Desktop one lost
-  it with the switch to the shared script. Feed gating (`Min 3.0.5`, hard) covers Preware; **WOSQI and
-  `ipkg install` are uncovered**, which is the path that bricked a 2.2.4 phone before. User's call
-  (2026-08-24): **feed gating is enough** — Preware is the supported path, and every stanza says so. Still
-  worth asking Herrie for a `case "$osv" in 3.0*)` at the top of the three shared scripts; one edit would
-  cover all 34.
+All four are in the **shared `packaging/lib/{postinst,prerm}`** that every one of Herrie's trees
+copy-pastes (core-apps, app-services, chatthreader, enyo, luna-systemui). Fixed in
+`~/Projects/webos-core-apps` on branch **`herrie/milestone2-servers-tab`** (PR to Herrie); the feed
+ships repackaged ipks carrying the same fixes for the trees not yet forked. Issues #2/#3/#4 on
+`Herrie82/webos-synergy-revival`; the deadlock is a fifth, separate issue.
+
+1. **postinst deletes its own cwd → no Contacts/Messaging app.** The App Installer runs
+   `pmPostInstall.script` with cwd = `/media/cryptofs/apps/usr/palm/applications/<pkg-id>`. On a
+   TouchPad, Contacts and Messaging are ipkg-managed apps living at exactly that path, so `dest.txt`
+   names it and `rm -rf "$DST"` removes the script's own cwd; GNU tar then fails `getcwd()` before it
+   ever honours `-C` (`tar: Cannot save working directory`), exits 2, and the rollback restores an
+   empty backup. **Fix: `cd /` before anything is deleted.** Only these two packages are affected —
+   every other `dest.txt` is a rootfs path, not the installer's cwd.
+2. **prerm never restores.** It locates its work through `$OV/dest.txt`, but postinst `rm -rf "$OV"`s
+   as its last act, so on a real uninstall the lookup finds nothing and the restore is skipped
+   silently. **Fix: fall back to `.last-installed/<pkg-id>.dest.txt`** (postinst already writes it for
+   the WOSQI double-invocation guard), require an absolute path before any `rm -rf`, and clear the
+   marker on success — otherwise a second uninstall call deletes the stock app the first one restored.
+3. **postinst SIGTERMs its own installer.** The cmdline sweep kills any process matching a fixed
+   string; `ipkg`, `ApplicationInstallerUtility` and the script itself all carry the package name or
+   the `.ipk` path. When the swept string is a substring of the package's own id the installer dies:
+   the package installs fine, webOS reports `FAILED_IPKG_INSTALL`, Preware aborts the batch, and
+   retrying replays it forever (Preware only refreshes its installed list on Update Feeds — four
+   identical retries observed). Hits `com.palm.service.contacts.linker` ("contacts.linker") and
+   `com.palm.messaging.chatthreader` ("chatthreader"). **Fix: `nudge_kill()` skips `$$` and anything
+   matching `pmPostInstall|pmPreRemove|ApplicationInstallerUtility|/usr/lib/ipkg/|\.ipk`.**
+4. **⚠️ Blocking `luna-send` deadlocks the installer AND the UI.** Both scripts ended with
+   `luna-send -n 1 luna://com.palm.applicationManager/rescan '{}'`, which waits for a reply — but the
+   scripts run *inside* LunaSysMgr's own request handling, so the service that owes the reply is the
+   one waiting for the script to exit. Nothing times out. Symptom: Preware stuck on
+   "Downloading/Updating — [core-apps] removal complete", tablet unresponsive, **no error anywhere**;
+   the only evidence is a blocked `luna-send` in `ps -ef`. Killing that one process releases the whole
+   chain. **Fix: fire-and-forget —
+   `( luna-send … & ) >/dev/null 2>&1`.** Leave the `putKind`/`putPermissions` calls blocking: they
+   parse their replies and talk to `com.palm.db`, not to the caller.
+
+⚠️ **The deadlock fix cannot apply to its own first upgrade.**
+`/media/cryptofs/apps/.scripts/<pkg-id>/pmPreRemove.script` is written at *install* time and is what
+runs at the next removal, so a device carrying a pre-fix build deadlocks once during the remove half
+before the fixed package can land. Only affects devices that installed during the broken window (a
+plain `ipkg` install/downgrade does NOT refresh those stored copies). Device-local repair, no feed
+change: rewrite the line in place, syntax-check each file, then update normally —
+`sed "s|^luna-send -n 1 luna://com.palm.applicationManager/rescan .*|( & \& ) >/dev/null 2>\&1|"`
+over `/media/cryptofs/apps/.scripts/*/pm{PreRemove,PostInstall}.script` (25 files on the affected
+device; verified byte-identical apart from that line).
+
+**Recovery for a missing core app: uninstall, then REBOOT.** Once our package is unregistered,
+webOS's own boot-time `app-install` service reinstalls the stock ipk from `/usr/palm/ipkgs/<id>/`.
+That is also why a half-broken device *stays* broken — while our higher version is registered the
+service logs "already installed. skipping...". No special backup machinery is needed or wanted; the
+postinst now simply refuses to save an empty-directory backup (a restore point that restores nothing)
+and says so.
+
+### ⚠️ Deferred: `generic`'s prerm SIGBUSes a live UI (not fixed)
+
+Replacing a **live** `com.palm.synergy.generic` crashed LunaSysMgr on a real device: its prerm does
+`umount /usr/lib/purple-2` and `umount /usr/lib/synergy-runtime`, and unmounting a filesystem out
+from under processes holding mappings from it is a bus error. dmesg showed the cascade in the
+expected order — `WebAppMgr` → `LunaSysMgr` → `BrowserServer`, all `received 7` (SIGBUS). Only bites
+on remove/replace of a live install (a fresh install has nothing mounted yet), and it aborts the
+whole Preware batch. Its prerm lives in **`webos-synergy-revival`**, not core-apps. Candidate fixes:
+`umount -l` (smallest — existing mappings stay valid until the processes exit), stopping the
+consumers first, or doing the teardown after a Luna restart. Deliberately left alone 2026-08-25;
+re-test needs a device where the transport is genuinely live.
+
+### Repackaging convention for upstream ipks: append `.N`
+
+When we patch an upstream ipk whose version we do not control, ship it as `<upstream>.1` (then `.2`,
+…): it sorts **above** upstream's version and **below** their next release, so their fix supersedes
+ours automatically with no same-name-same-version collision in the index. Used for
+`contacts 3.0.6701.2`, `messaging 3.0.6607.2`, `contacts.linker 1.1.0.2`, `chatthreader 1.1.0.2`,
+`generic 0.9.3.1`, `service.accounts 1.1.0.1`, `enyo-accounts 1.1.1.1`, `enyo-contactsui 1.0.1.1`,
+`messaging.library 1.3.1.1`, `contacts.plugin.messaging 12.2.0.1`, `luna-systemui 3.1.1.1`,
+`accounts 3.1.1.1`, `phone 2.0.1.1` — with the roll-up at **1.0.3** floored to all of them. ⚠️ Never
+re-cut at the same version once anything is on the server: Preware compares the version STRING only.
+
+### Hardware status (2026-08-25)
+
+**Both paths verified on 3.0.5 TouchPads, unassisted, through Preware from the feed:**
+- **Clean/stock device** — fresh install of all 16 (28-package chain incl. Atlas): 0 blocked rescans,
+  0 `FAILED_IPKG`, 0 `runScriptCwd` errors, all apps complete on disk, and — the point — all 12
+  stored `pmPreRemove.script` copies are the *fixed* ones, so that device can never hit the deadlock.
+- **Previously-broken device** (survived two failed attempts) — after the stale-script repair above:
+  full chain including eleven remove-then-install replacements, 0 crashes, 0 blocked, 0 failures.
+
+⚠️ **The 20 Part 2 connectors have never been installed on any device.** Part 1 and the roll-up are
+well tested; the connectors are not. Cheapest first test: one cloud connector (Dropbox) and one IM
+connector, both of which pull the meta + Atlas.
 
 ### Icons, and the rest of the metadata
 
