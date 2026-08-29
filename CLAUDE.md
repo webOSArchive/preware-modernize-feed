@@ -25,7 +25,7 @@ The feed (35 pkgs) is built, live and **hardware-verified on both device familie
   Preferences → *Ignore Device Compat.* toggle diagnoses in one step.
 
 **Atlas (modern browser) + "make Atlas default" patch, both in the feed:**
-`org.webosports.app.atlas` (**0.9.11**, WPE WebKit 2.52 browser, 103MB) and
+`org.webosports.app.atlas` (**0.9.12**, WPE WebKit 2.52 browser, 103MB) and
 `org.webosarchive.atlas-default-browser` (**1.0.0**, the redirect+hide patch). Dep chain:
 `atlas-default-browser → org.webosports.app.atlas → org.webosarchive.tls-updates` (Atlas links the
 ssl11 OpenSSL 1.1 stack for HTTPS). Installing the patch from the feed on a fresh device pulls Atlas
@@ -60,15 +60,18 @@ HTTPS; depends browser-tls13. **1.1.0** adds the one-byte code patch that stops 
 bullet), `usbsettings 1.1.9` (**new** — a mounted USB drive now lands on
 `/media/usb` instead of a folder inside `/media/internal`, so it stops showing as an empty folder in
 Internalz Pro and stops swallowing files onto internal storage; see the package bullet),
-`com.palm.app.backup 3.1.0` (see below), `tls-updates 1.0.18`
+`com.palm.app.backup 3.1.1` (**3.1.1** fixes a restore that silently restored only part of a backup
+and still reported success; see the package bullet), `tls-updates 1.0.19`
 (version-floors browser `>= 1.1.2` / usbsettings `>= 1.1.9` / btgamepad `>= 1.1.0` / luna
-`>= 1.1.4` / mail `>= 1.3.2` / downloadmgr `>= 1.1.0` / **`com.palm.app.accounts >= 3.1.1`**; also
+`>= 1.1.4` / mail `>= 1.3.2` / downloadmgr `>= 1.1.0` / **`com.palm.app.accounts >= 3.1.1`** /
+**`com.palm.app.backup >= 3.1.1`**; also
 pulls in `ntpdate-sync`, `downloadmgr-tls13` and `com.palm.app.backup` — apps break
 when the clock is wrong, TLS cert validity checks fail).
 
-**Synergy Revival is DEPLOYED and hardware-verified, but branch `synergy-connectors` is NOT MERGED
-to `main`** (6 commits; `main` still has zero Synergy packages, so a rebuild from `main` would drop
-them). Four upstream installer bugs were found and fixed along the way — see "Four upstream installer
+**Synergy Revival is DEPLOYED and hardware-verified.** ~~Branch `synergy-connectors` is NOT MERGED~~
+— **merged as of 2026-08-29**: `synergy-connectors` is now a fully-merged ancestor of `main`, and `main`
+is ahead of it (the connector re-cuts and the SIGBUS fix landed there). Build from `main`.
+Four upstream installer bugs were found and fixed along the way — see "Four upstream installer
 bugs" below before touching any of these packages.
 34 new packages (Part 1 runtime + core-app updates, 20 pick-and-choose connectors, and our
 `org.webosarchive.synergy-revival 1.0.0` roll-up) take the feed to **69 packages / 90 stanzas**. The same
@@ -435,14 +438,15 @@ connectors have two; phones detailed below)
   `UrlManager.js` `helpUrl` (drives all content) + `HelpApp.js` palm.com domain check + device.do
   → `http://help.webosarchive.org`. Backs up `*.webosce-orig`, restores on removal, RestartLuna.
 - **`org.webosarchive.tls-updates`** (`" TLS 1.3 Updates (TouchPad)"` — ⚠️ deliberate leading
-  space, see the sorting note above; **1.0.18**) — **meta** package
+  space, see the sorting note above; **1.0.19**) — **meta** package
   (README-only payload; it gained a `postinst` in 1.0.18, see below)
   package. Depends: rootcerts, browser-tls13, ntpdate-sync, curl/luna/mail-tls13,
   **downloadmgr-tls13 (>= 1.1.0)**, mojomail-imap-tagfix, help-redirect, enyo-findapps,
   **usbsettings (>= 1.1.9)**, **btgamepad (>= 1.1.0)**, **`com.palm.app.accounts (>= 3.1.1)`**
   (**1.0.18** — replaced `org.webosarchive.accountsapp`, which was a member from 1.0.13 and is now
   retired; see the Synergy Revival section),
-  **`com.palm.app.backup`** (unversioned — added in 1.0.15). `ntpdate-sync` sits **after** browser-tls13
+  **`com.palm.app.backup (>= 3.1.1)`** (added unversioned in 1.0.15; floored in **1.0.19** to drag
+  existing installs onto the restore fix). `ntpdate-sync` sits **after** browser-tls13
   and **before** luna — added because apps break when the clock is wrong (TLS cert validity windows
   fail); left unversioned (new dep, nothing to drag up). ⚠️ The old rationale "it's browser's own dep,
   so browser installs first regardless" is **no longer true** — upstream dropped ntpdate-sync's
@@ -483,7 +487,7 @@ connectors have two; phones detailed below)
   `Type: OS Application`,
   no icon, **webOS 3.0.X only** (Min 3.0.0/Max 3.0.9, TouchPad/Touchpad Go), RestartDevice. This is
   the recommended one-tap install.
-- **`org.webosports.app.atlas`** ("Atlas", **0.9.11**, WPE WebKit 2.52 browser, **103MB**, arch `all`)
+- **`org.webosports.app.atlas`** ("Atlas", **0.9.12**, WPE WebKit 2.52 browser, **103MB**, arch `all`)
   — the modern browser, shipped as **TWO index stanzas over ONE ipk** (see below). **We repackage the
   upstream WebOS Ports ipk on every bump**, rebuilding **only `control.tar.gz`** and keeping every
   other ar member byte-identical. What we change in the control: add the Preware `Source` block (Feed
@@ -514,7 +518,7 @@ connectors have two; phones detailed below)
     the flag on removal).
   - **Version history in the feed:** 0.9.7 → 0.9.8 → (0.9.9 shipped and was **reverted** to 0.9.8 —
     a WPE engine regression upstream, packaging verified sound, see the `atlas-0-9-9-known-engine-bug`
-    memory) → 0.9.10 → **0.9.11** (current). 0.9.10 dropped the self-triggering engine watchdog 0.9.8
+    memory) → 0.9.10 → 0.9.11 → **0.9.12** (current). 0.9.10 dropped the self-triggering engine watchdog 0.9.8
     added (it could not tell a hung engine from an idle one and was reloading cards mid-session),
     replaced it with a user-triggered **Restart Browser Engine** menu item, and folded in 0.9.9's
     fresh-install GPU fix (`libEGL.so` bundled as a fallback); its WPE engine binary was
@@ -531,7 +535,48 @@ connectors have two; phones detailed below)
     `deviceroot/wpe-252/lib/libWPEBackend-atlas.so`. postinst/prerm and the two `pm*.script` members
     are byte-identical to 0.9.10, and the upstream build is again `PKG_TARGET=feed` (checked, not
     assumed). So the repackage was the standard one — control.tar.gz only — with no new surprises.
-    **Not yet run on hardware.**
+    Never run on hardware as 0.9.11 itself, but **its engine is now hardware-verified**: 0.9.12 ships it
+    byte-for-byte and is deployed and working.
+  - **0.9.12 is a one-line fix — and the FIRST build handed over was not.** DEPLOYED and confirmed
+    working on hardware 2026-08-29. `appinfo.json` drops exactly one `mimeTypes` entry,
+    `{"urlPattern": "^file:"}`, which Atlas had been using to claim every local `file:` link — so a
+    photo, video or song opened from a file manager came to the browser instead of Photos, Video or
+    Music. A non-scheme redirect handler outranks every mime and extension handler, so that one line
+    beat every media app on the device. Payload diff vs 0.9.11: **1 of 1588 files**, engine binaries
+    hash-identical; both `pm*.script` members byte-identical to 0.9.11.
+    - ⚠️ **The first `0.9.12` ipk delivered (md5 `6b4478e6…`, 103,664,622B) was rejected — do not
+      resurrect it.** It carried two problems the "just an appinfo.json change" handover did not
+      mention, both found by the standard unpack-and-hash-every-file pass:
+      1. **13 payload files changed, not 1.** Six added (`source/engine/{AtlasHost,ShellPalmSystem,
+         ChromiumWebView,ChromiumOverlay,TabLayer}.js`, `css/chromium-tabs.css` — ~1,800 lines of an
+         in-progress **LuneOS `browser_shell`/Chromium** second host backend) plus its wiring in
+         `index.html`, `depends.js`, `Browser.js`, `AtlasEngineOverride.js`, and an unrelated
+         find-bar match counter in `FindBar.js`/`browser.css`. Guarded behind `window.__atlasChromium`
+         (capability detection, defaults to `wpe`) so *mostly* inert on a TouchPad — but the FindBar
+         control is added to the component tree unconditionally.
+      2. ⚠️ **A blocking `luna-send` to LunaSysMgr in BOTH postinst and prerm** —
+         `luna-send -n 1 palm://com.palm.applicationManager/removeHandlersForAppId …`. Same deadlock
+         class as Synergy issues #4/#6: `com.palm.applicationManager` is served **by LunaSysMgr**, the
+         scripts run synchronously inside its own request handling (the prerm's own comment says so),
+         and `-n 1` waits for a reply the blocked service can never send. `2>/dev/null` does not help.
+         The replacement build dropped both calls; the scripts are now byte-identical to 0.9.11's.
+    - **The trade-off that leaves, and the one-time note in the description.** Those calls existed to
+      clear a real cache: webOS persists the *resolved* handler table to
+      `/var/usr/palm/command-resource-handlers-active.json` and reloads it at startup in preference to
+      rebuilding it, so an older Atlas's claim survives both the install and the restart — i.e. the
+      `appinfo.json` fix alone lands for fresh installs but not for people upgrading from 0.9.11.
+      Rather than ship the deadlock, **both Atlas stanzas carry a one-time instruction at the top of
+      `FullDescription`** (user's call, 2026-08-29) telling upgraders to run the same call by hand and
+      reboot:
+      `luna-send -n 1 -f palm://com.palm.applicationManager/removeHandlersForAppId '{"appId":"org.webosports.app.atlas"}'`
+      Index-only, so it needed no version bump. **Remove it when 0.9.13 ships** — it is a note for this
+      upgrade, not a permanent part of the description.
+    - **Lesson worth generalising: never `luna-send -n 1` to a service LunaSysMgr itself provides from
+      a postinst/prerm** (`com.palm.applicationManager`, `com.palm.appinstaller` — both in its
+      `allowedNames` in `/usr/share/ls2/roles/prv/com.palm.luna.json`). Background it:
+      `( luna-send … & ) >/dev/null 2>&1`. `com.palm.configurator` is a *separate* daemon and is safe
+      to call blocking, which is why the two `configurator/run` calls in Atlas's postinst are fine.
+      And **grep every incoming ipk for it** — this is the third package family to ship the bug.
   - Its postinst lays the WPE engine (runs in place on cryptofs deviceroot), stages the device Adreno
     driver to the versioned GPU sonames (falling back to the bundled copy), symlinks
     `/var/atlas252 → deviceroot/wpe-252`, installs the NPAPI adapter
@@ -723,7 +768,7 @@ not the name triple alone** — the check in this repo was updated accordingly.
   - Note the id is `com.webosarchive.*`, not the preferred `org.webosarchive.*` — it is baked into
     appinfo.json/serviceId, so renaming is not a feed-side edit.
 
-- **`com.palm.app.backup`** ("Backup and Restore", **3.1.0**, arch `all`, TouchPad only) — a working
+- **`com.palm.app.backup`** ("Backup and Restore", **3.1.1**, arch `all`, TouchPad only) — a working
   local Backup/Restore, bringing back what died when Palm's cloud went dark in 2013. Backups live on
   the device in `/media/internal/webos-backups` as plain, content-addressed files you can copy off
   over USB; deliberately **not encrypted** (stock encrypted with a device key that survives neither a
@@ -779,8 +824,72 @@ not the name triple alone** — the check in this repo was updated accordingly.
     `palm-install` skips postinst entirely and the app says so in a "limited mode" banner — so
     Preware/WOSQI is the supported route. prerm restores `/etc/palm/mojodb.conf` from saved bytes and
     keeps `/media/internal/webos-backups`.
-  - **Member of the TouchPad `tls-updates` roll-up** (unversioned, at the END of Depends —
-    self-contained and order-independent), which took the meta to 1.0.15.
+  - **Member of the TouchPad `tls-updates` roll-up**, at the END of Depends (self-contained and
+    order-independent). Added unversioned in meta 1.0.15; **floored `(>= 3.1.1)` in meta 1.0.19**, since
+    an unversioned depend is only "is any version installed?" and would never drag an existing 3.1.0
+    install onto the restore fix.
+  - **3.1.0 → 3.1.1 fixes a silently-partial restore, and 3.1.0 should be considered unsafe to restore
+    from.** Payload diff: 5 files modified, 1 added. Three of the five are pure version strings
+    (`appinfo.json`, `packageinfo.json`, and the `VERSION`/`SERVICE_BUILD` build stamps in
+    `device/woce-backupd.js` and `assistants/service-assistant.js`); `postinst` and `prerm` are
+    **byte-identical**, so the ROM-app swap and its guards are unchanged. The one real change is
+    `util/backup-service.js` → `syncManifests()`.
+    - The bug: manifest names are `NNNNNN-<nduId>` and the counter **restarts whenever the backup store
+      is cleared**, while `/media/internal` survives a Doctor. So a stale local `000001-19Q` can name a
+      completely different backup than the target's `000001-19Q`. The old code reconciled by **name
+      only** — fetch what is missing, drop what the target lacks — which left any name present on both
+      sides untouched, so the stale local copy shadowed the real one. Measured once upstream: the
+      device read a 6-file manifest, restored 6 files out of a **115-package** backup, and reported
+      success.
+    - The fix re-fetches **every** manifest the target lists, and a fetch that fails deletes the local
+      copy rather than trusting it. Upstream's comment explains why there is no cheaper content test:
+      manifests carry no Etag (only the content-addressed `files/` store does), `get()` does not
+      preserve mtime, sizes collide because manifests are lists of fixed-width checksums, and the
+      `nduId` inside is identical between the colliding copies since they come from the same device.
+    - Minor, not blocking: the "newest manifest" the function returns is still picked from the target's
+      full list, so if the newest one is the one that failed to fetch, the name is returned while the
+      local copy has been dropped. It logs `UNFETCHABLE:` when that happens.
+  - ⚠️ **3.1.1 was RE-CUT AT THE SAME VERSION on 2026-08-29 — there are two different `3.1.1` ipks.**
+    The first was published briefly, then **pulled off the server by the user before anyone downloaded
+    it**, because it shipped a bug that filled `/media/internal`. The replacement keeps the version
+    string `3.1.1` (user's call, reaffirmed after the version risk was raised). This is a deliberate
+    exception to "never re-cut at the same version once anything is on the server", and it rests
+    entirely on nobody having installed the first one — Preware compares the version STRING, so any
+    device that *did* take the first 3.1.1 will never be offered the replacement.
+    - shipped (current): md5 `b8f2a57cb32114c6600b64f3ec429890`, 177,346B, 54 payload files
+    - pulled: md5 `31af1c8089b730f19beff05c3cc535ab`, 182,148B, 55 files (and our stray-stripped re-cut
+      of it, `c9e2e2e04ae89441d5f693850ec00ef5`) — **do not resurrect either**
+  - **What the replacement fixes: a failed backup used to leak its partial output.** One file changed,
+    `handlers/backup.js` `handleError()` (the other two diffs are build stamps). A backup stores each
+    file as it goes and writes the manifest **last**, so a run that dies partway leaves stored files
+    that no manifest references — and only the success path purged. Every failure leaked at full size,
+    which made the next run likelier to fail the same way. Measured upstream on a daily driver: two
+    failed runs in one day left two unreferenced copies of a 295MB app archive, `/media/internal` hit
+    100%, and every subsequent backup failed with ENOSPC. The failure path now also calls
+    `backup.purge(target, 100000)`.
+    - The `100000` is not a magic number, it is "sweep orphans but trim **no** manifests":
+      `purge(target, keep)` computes `excess = max(0, manifests.length - keep)`, so a huge `keep` means
+      nothing is trimmed and only unreferenced files are deleted. `list-backups.js` uses the identical
+      idiom for the same reason. Checked and correct — a failed backup must not delete the user's older
+      good backups.
+    - Safe against the stale-cache hazard: `syncManifests()` runs early in `doBackup` (backup.js:709),
+      well before anything is stored, and `getReferencedFiles(false)` counts **all** local manifests
+      including other devices', so the sweep is conservative. A failure before the sync has stored
+      nothing to sweep.
+    - ⚠️ **Known weakness, reported not blocking:** the new `f.nest(purge…)` sits *after* a
+      `var result = f.result;` in the same handler, and in Palm Foundations reading `.result` on a
+      future carrying an exception throws — this codebase's own idiom is to test `f.exception` first
+      (`list-backups.js:121`). `cleanup` is `fileUtil.rmFiles(stageDir, true)`, so **if stage cleanup
+      itself fails the orphan sweep is skipped** — and that is exactly the ENOSPC case the fix exists
+      for. Moving the `f.nest()` above the dead `var result` read closes it. The dead read predates
+      this change, and error reporting is unaffected (`f.exception = err` is set in the next handler).
+  - **The stray `CLAUDE.md` is gone from the build** — the delivered ipk is now 54 files and needs no
+    stripping, so it is back to being kept **as-delivered**. (The previous build shipped the
+    developer's Enyo-gotchas agent notes inside the app payload; that was stripped here by hand. If a
+    future release brings it back, the TarInfo-preserving method is in this file's git history.)
+    Note the incoming control's `Source.Changelog` still has **3.1.0** as its newest entry — the 3.1.1
+    notes exist only in our curated index stanza.
+
 - **`org.webosarchive.accountsapp`** — ⚠️ **RETIRED 2026-08-24, no longer in the feed.** Superseded by
   `com.palm.app.accounts` **3.1.1** (Synergy Revival Part 1), which is a *strict superset*: byte-identical
   files apart from `appinfo.json` version strings and `AccountManager.js`, plus 9 localization files.
