@@ -66,7 +66,12 @@ and still reported success; see the package bullet), `tls-updates 1.0.19`
 `>= 1.1.4` / mail `>= 1.3.2` / downloadmgr `>= 1.1.0` / **`com.palm.app.accounts >= 3.1.1`** /
 **`com.palm.app.backup >= 3.1.1`**; also
 pulls in `ntpdate-sync`, `downloadmgr-tls13` and `com.palm.app.backup` — apps break
-when the clock is wrong, TLS cert validity checks fail).
+when the clock is wrong, TLS cert validity checks fail), and `btgamepad` **1.1.0 + 1.2.0 side by
+side** — 1.2.0 is a **TouchPad Go-only** build (board `opal` or `shortloin`) that replaces 1.1.0's
+`/dev/input` jail bind mount (which blacks out PDK games on the Go) with jailer `mknod` nodes; a plain
+TouchPad keeps 1.1.0 and `tls-updates` was deliberately not bumped. Its bullet also records the audit
+finding that **nothing in the roll-up gates on board name** — on the 3.0.x line the version fence is
+the only fence. See the package bullet.
 
 **Synergy Revival is DEPLOYED and hardware-verified.** ~~Branch `synergy-connectors` is NOT MERGED~~
 — **merged as of 2026-08-29**: `synergy-connectors` is now a fully-merged ancestor of `main`, and `main`
@@ -74,7 +79,8 @@ is ahead of it (the connector re-cuts and the SIGBUS fix landed there). Build fr
 Four upstream installer bugs were found and fixed along the way — see "Four upstream installer
 bugs" below before touching any of these packages.
 34 new packages (Part 1 runtime + core-app updates, 20 pick-and-choose connectors, and our
-`org.webosarchive.synergy-revival 1.0.0` roll-up) take the feed to **69 packages / 90 stanzas**. The same
+`org.webosarchive.synergy-revival 1.0.0` roll-up) take the feed to **69 packages / 90 stanzas**
+(**70 / 91** since btgamepad 1.2.0, the Go-only build, joined 1.1.0 in the feed on 2026-08-31). The same
 work retired `org.webosarchive.accountsapp` in favour of `com.palm.app.accounts` 3.1.1 and took
 `tls-updates` to **1.0.18**. Index checks all pass; **nothing has been run on hardware yet.** Read the
 "Synergy Revival" section before touching any of it.
@@ -86,6 +92,14 @@ qt5's own floor); `qt5sdk → qt5 (>= 5.9.7-0)`; `qt5 → qt5qpaplugins (>= 1.0.
 earlier "leave the depends tree alone" stance for this chain (index-only edit; ipks kept as-delivered).
 
 **Open / TODO:**
+- **btgamepad 1.2.0 (TouchPad Go) — built 2026-08-31, needs a Go to confirm the device string.**
+  On a real Go, check in this order: does `Bluetooth Gamepad Support (TouchPad Go)` appear in Preware
+  with *Ignore Device Compat.* **off**? If only with it on, both `DeviceCompatibility` spellings in the
+  stanza are wrong — record the real `modelNameAscii`, which also settles whether the 11 nizovn
+  stanzas' `"Touchpad Go"` has been inert on the Go all along. Then
+  `cat /etc/prefs/properties/machineName` and record it: the postinst accepts `opal` **or**
+  `shortloin`, so only a third value would still make it decline. A device-list fix is index-only and
+  needs no version bump; a board-name fix would need a re-cut.
 - **Synergy Revival: hardware test, then merge + deploy.** Branch `synergy-connectors`. Test order in the
   Synergy section (3.0.5 TouchPad first: meta, then one OAuth connector and one IM connector; then a CE
   3.1.0 device where the connector must install with no Part 1). Two things to report to Herrie while
@@ -346,7 +360,7 @@ floors) resolves.
   `c931…` (the bricked one). No hostnames set, so they're hard to tell apart — check health first
   (`hostname`, version, `ps | grep LunaSysMgr`, installed pkgs) before patching.
 
-## Package inventory (single feed = 69 packages / 90 stanzas — Atlas and each of the 20 Synergy
+## Package inventory (single feed = 70 packages / 91 stanzas — Atlas, btgamepad and each of the 20 Synergy
 connectors have two; phones detailed below)
 
 - **nizovn stack** (hand-curated stanzas): cacert, glibc, openssl, qt5* (`qt5qpaplugins` **1.0.4**,
@@ -710,10 +724,96 @@ not the name triple alone** — the check in this repo was updated accordingly.
   unfinished Bluetooth HID path via `libpmbtgamepad.so` + a udev rule under
   `/usr/palm/applications/org.webosarchive.btgamepad/files/` (no binary patch); DS4 / classic BR/EDR
   pads pair under **Other** in Bluetooth settings. No `Depends`. `Type: Application`, Category
-  Modernize, Min 3.0.0 / **Max 3.9.9**, RestartDevice. **Member of the TouchPad `tls-updates`
+  Modernize, Min 3.0.0 / **Max 3.0.9** (the index says `3.0.9`, not the `3.9.9` this file used to
+  claim), RestartDevice. **Member of the TouchPad `tls-updates`
   roll-up** as `btgamepad (>= 1.1.0)`. The only thing we added to the delivered stanza was
   `"Icon": .../assets/icons/bt-gamepad.png` (the ipk's own control Source has no Icon — index is the
   curated copy, per the pattern above).
+  - **1.2.0 is a TouchPad Go-only release and 1.1.0 STAYS IN THE FEED (2026-08-31).** Both versions
+    ship side by side, as two stanzas of the same package name separated only by
+    `DeviceCompatibility`: 1.1.0 carries none (so every 3.0.x device sees it, and the roll-up's
+    `btgamepad (>= 1.1.0)` resolves on a plain TouchPad), 1.2.0 carries the Go-only device list. Added
+    index-only, ipk kept as-delivered; **`tls-updates` was deliberately NOT bumped** — `>= 1.1.0` is
+    satisfied by both, so a TouchPad keeps getting 1.1.0 and a Go gets 1.2.0 with no re-download or
+    reboot pushed to anyone else.
+  - **Why two versions of one name is safe here** (this is the *different-version* cousin of Atlas's
+    two-stanza trick, and unlike Atlas the order does NOT matter). `infoUpdate`
+    (`package.js:84`) with **neither installed and the new one newer** is **Replace Type 1**: the
+    newer stanza wins outright. Reverse the order and the pair falls through to **Type 6**
+    (`return false`), which keeps the one already in the list — the newer one again. And with 1.1.0
+    **installed**, the feed's 1.2.0 hits **Type 5**: `hasUpdate = true`,
+    `versionInstalled = 1.1.0` — i.e. Preware offers it as an ordinary *update*, which is exactly the
+    intended "install the roll-up first, then get offered the Go build" flow. `infoLoadFromPkg` only
+    fills **missing** fields (`if (!this.filename)` etc.), so the winner keeps its own file, icon and
+    device list; the `// join devices` branch is a no-op because 1.2.0's list is non-empty.
+    It also does not trip the ipkg dedupe trap — that key is name+**version**+arch, and the versions
+    differ.
+  - ⚠️ **The Go's real `modelNameAscii` is still unverified, and it is the one thing this release
+    rests on.** The delivered control said `["Touchpad Go"]` — the lowercase-p string this file has
+    long flagged as matching nothing. The index stanza therefore lists **both** spellings,
+    `["TouchPad Go","Touchpad Go"]`: `deviceIncompatible()` is `!devices.include(modelNameAscii)`
+    (`package.js:896`), so extra candidates cost nothing and a plain TouchPad (exact `"TouchPad"`,
+    hardware-confirmed) still matches neither. If the Go reports something else again, 1.2.0 is simply
+    invisible there — a safe failure, and an **index-only fix needing no version bump**, since
+    `Source` is re-read on Update Feeds. Diagnose in one step with Preferences → *Ignore Device
+    Compat.*: if 1.2.0 appears with the toggle ON and not OFF, the string is wrong.
+  - **The same unknown decides an older question:** the 11 nizovn stanzas (QupZilla, the whole Qt5
+    stack, VLC, squid, dbus…) list only `"Touchpad Go"`. So if the Go reports `"TouchPad Go"`, that
+    entire stack is invisible on it today — 52 packages visible instead of 63. Whichever way the
+    hardware answers, record it and fix the losing side. Worth capturing at the same time:
+    `cat /etc/prefs/properties/machineName`.
+  - **The postinst's own hard gate is `machineName` matching `opal|shortloin`**, and only step 3c (the
+    jail config rewrite) is behind it — steps 1/2/4/5 are byte-identical to 1.1.0's, so on any non-Go
+    machine 1.2.0 is functionally a 1.1.0 reinstall that leaves `/etc/jail_pdk.conf` alone and says so
+    in the log. That is what makes the soft device filter tolerable: the only way a TouchPad reaches
+    1.2.0 is with *Ignore Device Compat.* on, and the outcome there is a no-op.
+  - **Why the guard accepts BOTH board names (widened 2026-08-31; the delivered build was `opal`-only).**
+    The Go's board name is presumed `opal` (by analogy with the TouchPad's `topaz`, with
+    `shortloin`/`tenderloin` alongside them), but it only ever existed as a prototype and some units
+    may report `shortloin`. That is not a cosmetic worry, because of what the roll-up audit below
+    found: a `shortloin` Go **was** offered and could install `tls-updates`, hence 1.1.0, whose
+    postinst patched `jail_pdk.conf` with **no machine check at all**. An `opal`-only fix would
+    therefore have been strictly *narrower than the damage* — and since the two names are independent
+    (`machineName` gates the postinst, `modelNameAscii` gates feed visibility), a `shortloin` unit
+    reporting `"TouchPad Go"` would see 1.2.0, install it, and get a **partial repair that regresses**:
+    3a/3b run on every machine and clean up, but 3c declines, leaving `mount ro /dev/input` in the
+    config so the bind mount returns at the next jail build — with a log saying the install succeeded.
+    Accepting both names costs nothing (a TouchPad matches neither).
+  - ⚠️ **The roll-up has NO board-level protection whatsoever, and never did.** Audited 2026-08-31:
+    `tls-updates` is `Min 3.0.5`/`Max 3.0.9` with **no `DeviceCompatibility`**, and *not one* of its 14
+    members carries one either — every gate in the bundle is Min/Max only. Grepping every member's
+    postinst for `machineName`/`palm-build-info`/board strings, the only guards that exist anywhere are
+    `browser-tls13` and `downloadmgr-tls13` (**OS version + stock-binary md5**, not board) and
+    btgamepad 1.2.0's new one. So anything reporting 3.0.5 — any TouchPad variant, any Go, either board
+    name — got the whole bundle. Worth remembering before assuming any package here is TouchPad-only:
+    on the 3.0.x line the version fence *is* the only fence.
+  - **Sandbox-tested before shipping** (9 cases): `opal` and `shortloin` both splice the mknod block
+    and migrate a 1.1.0-patched config (bind mount gone), idempotent on a second run;
+    `topaz`/`tenderloin`/`mantaray`/empty all leave the config untouched and name the board in the log;
+    a Go with no `jail_pdk.conf` now says exactly that instead of misreporting the board. Also
+    confirmed the restore point captured **from a 1.1.0-patched config** is genuine stock — the same
+    restore-point-poisoning class that bit `downloadmgr-tls13` 1.0.0 and `qt5sdk` 1.0.2.
+  - **The re-cut was the standard repackage:** `debian-binary` and `data.tar.gz` reused **verbatim**,
+    only `control.tar.gz` re-rolled (via Python `tarfile`, preserving every `TarInfo` — same entry
+    order, modes 0755/0664, root:root) with `./postinst` replaced. Verified by unpack-diff: the only
+    byte that differs anywhere in the ipk is that one script. Version stayed **1.2.0**, which is safe
+    only because it was never published — confirmed by `curl`-ing the live `Packages.gz` (1.1.0 only)
+    and HEAD-ing the 1.2.0 ipk (404) **before** re-cutting, not by assuming.
+  - **What 1.2.0 actually changes** (verified by unpack-diff against 1.1.0): the shim and udev rule
+    are byte-identical, one payload file is added (`jail-input-block.conf`), and the whole release is
+    step 3 of the postinst. 1.1.0 exposed the pad to jailed PDK apps with `mount ro /dev/input` — a
+    genuine bind mount of the host's `/dev/input` into the jail, which on the Go blacks out PDK games
+    (sound, no picture) and, while mounted, lets a jail teardown delete the device's **real** input
+    nodes. 1.2.0 uses jailer's `mknod` verb to create independent nodes inside the jail instead, so
+    the host is never referenced. postinst also unmounts any live 1.1.0 bind mount **on every
+    machine** (pure hazard removal) and re-creates input nodes an earlier teardown already deleted.
+    Checked before adding: `sh -n` clean on both scripts, no `killall`/reboot/nested `ipkg`/blocking
+    `luna-send`, root:root, no macOS strays, payload correctly rooted at `./usr/palm/applications/…`
+    for the offline root.
+  - The ipk keeps its delivered filename, `org.webosarchive.btgamepad_1.2.0_armv7-go.ipk`. The `-go`
+    is a **human marker only** — the control declares `Architecture: armv7`, same as 1.1.0, and ipkg
+    never parses arch out of a filename. Do not turn `-go` into a real arch: an unknown architecture
+    is rejected unless every device's `ipkg.conf` declares it first.
 
 - **`com.webosarchive.usbsettings`** ("USB Settings", **1.1.9**, arch `all`, TouchPad only) — Enyo app
   + JS bridge service + a root upstart daemon (`usbctl-watchd`) controlling the USB port: **USB host
@@ -1430,25 +1530,35 @@ dedupe trap. Note the qualifier: Atlas deliberately has two stanzas on one file,
 found `curl-tls13`'s and `mail-tls13`'s stale deps. The visibility check also verifies **version
 floors** resolve against what the feed actually ships, not just that the dep is visible.
 
-Current result — **90 stanzas** (69 packages; Atlas and each of the 20 Synergy connectors have two),
-all valid, with the sweep run at **both settings of the `ignoreDevices` pref** (added 2026-08-23, since
-`Max`/`DeviceCompatibility` are soft and only `Min` survives that toggle):
+Current result — **91 stanzas** (70 packages; Atlas, `btgamepad` and each of the 20 Synergy connectors
+have two), all valid, with the sweep run at **both settings of the `ignoreDevices` pref** (added
+2026-08-23, since `Max`/`DeviceCompatibility` are soft and only `Min` survives that toggle). The
+`btgp` column was added 2026-08-31 and is the assertion for the Go-only release: **1.1.0 on a
+TouchPad, 1.2.0 on a Go, at the default pref**:
 
 ```
 ignoreDevices = OFF (default)
-TouchPad 3.0.5    63 visible  synergy 21  atlas deps: tls-updates  metas: tls-updates, synergy-revival  deps OK
-TouchPad CE 3.1.0 35 visible  synergy 20  atlas deps: (none)       metas: (none)                        deps OK
-Pre3 2.2.4        20 visible  synergy  0  atlas: not visible       metas: tls-updates-phone             deps OK
-Veer 2.2.4        11 visible  synergy  0  atlas: not visible       metas: tls-updates-phone             deps OK
-Pre2 2.2.4        11 visible  synergy  0  atlas: not visible       metas: tls-updates-phone             deps OK
-Veer 2.2.0         3 visible  synergy  0  atlas: not visible       metas: (none)                        deps OK
-Pre2 2.1.0         3 visible  synergy  0  atlas: not visible       metas: (none)                        deps OK
+TouchPad 3.0.5    63 visible  btgp 1.1.0  synergy 21  atlas deps: tls-updates  metas: tls-updates, synergy-revival  deps OK
+TouchPad CE 3.1.0 35 visible  btgp     -  synergy 20  atlas deps: (none)       metas: (none)                        deps OK
+Go 3.0.5 "TouchPad Go"  52 vis btgp 1.2.0                                      <- nizovn stack invisible, see below
+Go 3.0.5 "Touchpad Go"  63 vis btgp 1.2.0
+Pre3 2.2.4        20 visible  btgp     -  synergy  0  atlas: not visible       metas: tls-updates-phone             deps OK
+Veer 2.2.4        11 visible  btgp     -  synergy  0  atlas: not visible       metas: tls-updates-phone             deps OK
+Pre2 2.2.4        11 visible  btgp     -  synergy  0  atlas: not visible       metas: tls-updates-phone             deps OK
+Veer 2.2.0         3 visible  btgp     -  synergy  0  atlas: not visible       metas: (none)                        deps OK
+Pre2 2.1.0         3 visible  btgp     -  synergy  0  atlas: not visible       metas: (none)                        deps OK
 
 ignoreDevices = ON
-TouchPad 3.0.5    69 visible  synergy 21  atlas deps: tls-updates                                       deps OK
-TouchPad CE 3.1.0 69 visible  synergy 21  atlas deps: (none)                                            deps OK  <- order works
+TouchPad 3.0.5    69 visible  btgp 1.2.0  synergy 21  atlas deps: tls-updates                           deps OK  <- see btgamepad bullet
+TouchPad CE 3.1.0 69 visible  btgp 1.2.0  synergy 21  atlas deps: (none)                                deps OK  <- order works
 Pre2 2.1.0         5 visible  squid -> glibc/openssl not visible (PRE-EXISTING, Min-gated)
 ```
+
+Both Go rows are simulations, not hardware: **which of the two spellings a real Go reports is unknown**,
+so the btgamepad stanza lists both and the sweep checks both. The 52-vs-63 split is the fallout —
+11 nizovn stanzas list only the lowercase `"Touchpad Go"`. A TouchPad seeing `btgp 1.2.0` under
+`ignoreDevices` ON is expected and harmless: 1.2.0's postinst leaves `jail_pdk.conf` untouched off
+`opal`. See the `org.webosarchive.btgamepad` bullet for all of this.
 
 Two more assertions, added with Synergy and worth re-running: the **connector stanza that wins** must be
 the dep-free-of-Part-1 one at 3.1.0 and the `synergy-revival`-carrying one at 3.0.5, in **both** pref
