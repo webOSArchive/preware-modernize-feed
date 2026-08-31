@@ -80,7 +80,7 @@ work retired `org.webosarchive.accountsapp` in favour of `com.palm.app.accounts`
 "Synergy Revival" section before touching any of it.
 
 QupZilla/Qt5 chain now carries version floors so installing QupZilla drags the Qt5 stack up:
-`qupzilla → qt5sdk (>= 1.0.2), qt5qpaplugins (>= 1.0.4)` (the qt5qpaplugins floor is a **direct**
+`qupzilla → qt5sdk (>= 1.0.3), qt5qpaplugins (>= 1.0.4)` (the qt5qpaplugins floor is a **direct**
 edge, added because Preware won't recurse into the already-installed qt5/qt5sdk nodes to notice
 qt5's own floor); `qt5sdk → qt5 (>= 5.9.7-0)`; `qt5 → qt5qpaplugins (>= 1.0.4)`. This reverses the
 earlier "leave the depends tree alone" stance for this chain (index-only edit; ipks kept as-delivered).
@@ -350,16 +350,51 @@ floors) resolves.
 connectors have two; phones detailed below)
 
 - **nizovn stack** (hand-curated stanzas): cacert, glibc, openssl, qt5* (`qt5qpaplugins` **1.0.4**,
-  qt5 5.9.7-0, qt5sdk 1.0.2), qtwebbrowser, `qupzilla` (**2.3.1**), squid (kept for old phones,
+  qt5 5.9.7-0, **qt5sdk 1.0.3**), qtwebbrowser, `qupzilla` (**2.3.1**), squid (kept for old phones,
   min 1.3.5), + vlcplayer, dbus. Dep chain: qupzilla→qt5sdk→qt5→qt5qpaplugins. Originally all
   **unversioned**, which meant bumping qupzilla did NOT drag qt5qpaplugins up (Preware stops at the
   first already-installed dep and won't recurse into satisfied qt5/qt5sdk to check qt5's own floor).
   **Now version-floored** (user asked, reversing the earlier leave-the-tree-alone stance):
-  `qupzilla → qt5sdk (>= 1.0.2), qt5qpaplugins (>= 1.0.4)` — the qt5qpaplugins floor is a **direct**
+  `qupzilla → qt5sdk (>= 1.0.3), qt5qpaplugins (>= 1.0.4)` — the qt5qpaplugins floor is a **direct**
   edge on qupzilla (the reliable trick; the transitive `qt5 → qt5qpaplugins (>= 1.0.4)` floor alone
   won't fire on existing installs); plus `qt5sdk → qt5 (>= 5.9.7-0)`. All **index-only** edits.
   qupzilla/qt5qpaplugins ipks are stock-packaged/GNU-ar; we curate the index Source (retag
   Feed/Category, host Icon) and keep the ipk as-delivered.
+  - **`qt5sdk` 1.0.2 → 1.0.3 (2026-08-31).** Payload is **content-identical** (jailer wrapper,
+    `jail_qt5.conf`, `json_parse.js` all unchanged) and `prerm` is byte-identical; the entire release
+    is `postinst`, which gained two things:
+    1. **Upgrade-safety.** The old postinst always ran the "are the target files in factory
+       condition?" md5 check, but on an upgrade `/usr/bin/jailer` is already *our wrapper* — and ipkg
+       in offline-root mode does **not** run the old package's `prerm` first — so installing over an
+       existing install was refused outright. 1.0.3 detects the prior install (`/usr/bin/jailer-bin`
+       present AND matching the stock md5 from `jail.md5sums`), skips the virgin check, and
+       deliberately **does not re-create `backup.tar.gz`** — re-creating it would capture the wrapper
+       as "stock" and leave `prerm` unable to restore. Same restore-point-poisoning class as
+       `downloadmgr-tls13` 1.0.0; note it also *rebuilds* a missing backup from `jailer-bin`.
+    2. **Drops stale qt5 jails on install.** `/var/palm/jail/<appid>` is built once and cached
+       forever. A qt5 app jailed *before* this package patched `/usr/bin/jailer` is stuck with a
+       `jail_pdk.conf` jail that has no `com.nizovn.*` bind mounts — the app dir is empty inside the
+       jail and the app **silently fails to launch** (Launcher does nothing; running the binary by
+       hand escapes the jail and reports misleading GL errors). This happens routinely after an OS
+       reflash, which wipes `/var/palm/jail` (store-var) but not `/media/cryptofs/apps`. postinst now
+       walks `/var/palm/jail/*`, keeps the ones whose `appinfo.json` contains `qt5sdk` (the *same*
+       cheap substring test the wrapper itself uses), and runs `jailer -D -i <appid>`; next launch
+       rebuilds from `jail_qt5.conf`.
+    Checked before adding: `sh -n` clean on all three scripts, GNU-ar with nizovn's member order
+    (`debian-binary, data.tar.gz, control.tar.gz`), root:root, no stray macOS files, and **no
+    `killall`/reboot/blocking `luna-send`/nested `ipkg`** — so it is safe inside a Preware dependency
+    batch. Shipped with the qupzilla floor moved to `qt5sdk (>= 1.0.3)`; qupzilla's **own** version was
+    deliberately NOT bumped (that would push a 5.5MB no-op re-download), so the floor only fires for
+    fresh qupzilla installs — existing users get 1.0.3 because Preware lists it as an ordinary update
+    in its own right.
+  - **`qt5qpaplugins` 1.0.4: the ipk was already current, only the index stanza was stale.** The
+    delivered file is **byte-identical** to the feed's (`f7b4d9c7…`, 320,878B), but the curated index
+    `Source` still carried the 2020 `LastUpdated` and a changelog table topping out at **1.0.3** — the
+    1.0.4 row (autorotate app launched in portrait no longer renders stretched; window creation stops
+    resetting the sensor-set compositor rotation) existed only in the ipk's own control. Fixed
+    index-only, **no version bump**: `Source` is re-read on Update Feeds, so descriptions refresh
+    without one. ⚠️ Worth a periodic sweep — the same drift can hide in any stanza where we curate
+    `Source` by hand and the upstream control moves on.
 - **TLS 1.2/1.3 chain** (`org.webosinternals.*`, armv7): `browser-tls13` (**1.1.2**)→`com.palm.rootcertsupdate`;
   `curl-tls13` (1.0.1), `luna-tls13` (**1.1.4**), `mail-tls13` (**1.3.2**), `downloadmgr-tls13`
   (**1.0.0**) → browser-tls13; `mojomail-imap-tagfix` → mail-tls13; `ntpdate-sync`. (These came

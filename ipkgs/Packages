@@ -44,19 +44,19 @@ Size: 320878
 Filename: com.nizovn.qt5qpaplugins_1.0.4_armv7.ipk
 Description: webOS Qt5 QPA Plugins
 Maintainer: nizovn <nizovn@gmail.com>
-Source: { "Feed":"WOSA Modernize", "Type":"Linux Application", "Category":"Modernize", "LastUpdated":"1579448389", "Title":"webOS Qt5 QPA Plugins", "FullDescription":"webOS Qt5 QPA Plugins<br>Changelog:<br><table> <tr><td valign=top>1.0.3:</td> <td>Add integration with webOS clipboard<br> Use sym key as ctrl on phones, back gestures as esc, unicode handling</td></tr> <tr><td valign=top>1.0.2:</td> <td>Upgrade Qt to 5.9.7; Add screen rotation support.</td></tr> <tr><td valign=top>1.0.1:</td> <td>Upgrade Qt to 5.9.5</td></tr> <tr><td valign=top>1.0.0:</td> <td>First public release</td></tr> </table>", "Homepage":"https://gitlab.com/nizovn/qt5-qpa-webos-plugin", "Icon":"http://stacks.webosarchive.org/feeds/modernize/ipkgs/assets/icons/qt5_64x64.png", "License":"LGPL v3 Open Source", "MinWebOSVersion":"2.2.0", "DeviceCompatibility":["Pre3","TouchPad","Touchpad Go"] }
+Source: { "Feed":"WOSA Modernize", "Type":"Linux Application", "Category":"Modernize", "LastUpdated":"1788134400", "Title":"webOS Qt5 QPA Plugins", "FullDescription":"webOS Qt5 QPA Plugins<br>Changelog:<br><table> <tr><td valign=top>1.0.4:</td> <td>Fix stretched UI when an autorotate app is launched while the device is held portrait (window creation no longer resets the sensor-set compositor rotation)</td></tr> <tr><td valign=top>1.0.3:</td> <td>Add integration with webOS clipboard<br> Use sym key as ctrl on phones, back gestures as esc, unicode handling</td></tr> <tr><td valign=top>1.0.2:</td> <td>Upgrade Qt to 5.9.7; Add screen rotation support.</td></tr> <tr><td valign=top>1.0.1:</td> <td>Upgrade Qt to 5.9.5</td></tr> <tr><td valign=top>1.0.0:</td> <td>First public release</td></tr> </table>", "Homepage":"https://gitlab.com/nizovn/qt5-qpa-webos-plugin", "Icon":"http://stacks.webosarchive.org/feeds/modernize/ipkgs/assets/icons/qt5_64x64.png", "License":"LGPL v3 Open Source", "MinWebOSVersion":"2.2.0", "DeviceCompatibility":["Pre3","TouchPad","Touchpad Go"] }
 
 Package: com.nizovn.qt5sdk
-Version: 1.0.2
+Version: 1.0.3
 Depends: com.nizovn.qt5 (>= 5.9.7-0)
 Section: Infrastructure
 Architecture: armv7
-MD5Sum: 9316bb4994b604d745a603c09a3f204c
-Size: 4030
-Filename: com.nizovn.qt5sdk_1.0.2_armv7.ipk
+MD5Sum: 376829121c0776372a884b32d4e2624d
+Size: 5222
+Filename: com.nizovn.qt5sdk_1.0.3_armv7.ipk
 Description: Qt5 webOS SDK
 Maintainer: nizovn <nizovn@gmail.com>
-Source: { "Feed":"WOSA Modernize", "Type":"OS Application", "Category":"Modernize", "LastUpdated":"1581758044", "Title":"Qt5 webOS SDK", "FullDescription":"This is a webOS package that replaces jailer with wrapper, which processes jailer\'s arguments and provides support for new \'qt5\' jail type.<br><br>Changelog:<br><table> <tr><td valign=top>1.0.2:</td> <td>Allow system-wide clipboard</td></tr> <tr><td valign=top>1.0.1:</td> <td>Enable QQC2 popup menus in qtwebengine by default</td></tr> <tr><td valign=top>1.0.0:</td> <td>First public release</td></tr> </table>", "Homepage":"https://gitlab.com/nizovn/qt5-webos-sdk", "Icon":"http://stacks.webosarchive.org/feeds/modernize/ipkgs/assets/icons/qt5_64x64.png", "License":"LGPL v3 Open Source", "MinWebOSVersion":"2.2.0", "DeviceCompatibility":["Pre3","TouchPad","Touchpad Go"] }
+Source: { "Feed":"WOSA Modernize", "Type":"OS Application", "Category":"Modernize", "LastUpdated":"1788134400", "Title":"Qt5 webOS SDK", "FullDescription":"This is a webOS package that replaces jailer with wrapper, which processes jailer\'s arguments and provides support for new \'qt5\' jail type.<br><br>Changelog:<br><table> <tr><td valign=top>1.0.3:</td> <td>Drop stale jails of qt5 apps on install, so apps jailed before this package was present are rebuilt with the qt5 jail type (fixes Qt5 apps silently refusing to launch after an OS reflash); make the installer upgrade-safe -- it previously refused to install over an existing installation, because ipkg does not run the old prerm in offline-root mode</td></tr> <tr><td valign=top>1.0.2:</td> <td>Allow system-wide clipboard</td></tr> <tr><td valign=top>1.0.1:</td> <td>Enable QQC2 popup menus in qtwebengine by default</td></tr> <tr><td valign=top>1.0.0:</td> <td>First public release</td></tr> </table>", "Homepage":"https://gitlab.com/nizovn/qt5-webos-sdk", "Icon":"http://stacks.webosarchive.org/feeds/modernize/ipkgs/assets/icons/qt5_64x64.png", "License":"LGPL v3 Open Source", "MinWebOSVersion":"2.2.0", "DeviceCompatibility":["Pre3","TouchPad","Touchpad Go"] }
 
 Package: com.nizovn.qt5
 Version: 5.9.7-0
@@ -84,7 +84,7 @@ Source: { "Feed":"WOSA Modernize", "Type":"Application", "Category":"Modernize",
 
 Package: com.nizovn.qupzilla
 Version: 2.3.1
-Depends: com.nizovn.qt5sdk (>= 1.0.2), com.nizovn.qt5qpaplugins (>= 1.0.4)
+Depends: com.nizovn.qt5sdk (>= 1.0.3), com.nizovn.qt5qpaplugins (>= 1.0.4)
 Section: News And Internet
 Architecture: all
 MD5Sum: 0228c34ae1050b0612fa3b79b44a9099
