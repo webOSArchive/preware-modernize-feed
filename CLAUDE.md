@@ -67,9 +67,9 @@ and still reported success; see the package bullet), `tls-updates 1.0.19`
 **`com.palm.app.backup >= 3.1.1`**; also
 pulls in `ntpdate-sync`, `downloadmgr-tls13` and `com.palm.app.backup` — apps break
 when the clock is wrong, TLS cert validity checks fail), and `btgamepad` **1.1.0 + 1.2.0 side by
-side** — 1.2.0 is a **TouchPad Go-only** build (board `opal` or `shortloin`) that replaces 1.1.0's
-`/dev/input` jail bind mount (which blacks out PDK games on the Go) with jailer `mknod` nodes; a plain
-TouchPad keeps 1.1.0 and `tls-updates` was deliberately not bumped. Its bullet also records the audit
+side** — 1.2.0 is a **TouchPad Go-only** build (board `opal` or `shortloin`), **hardware-verified on a
+real Go**, that replaces 1.1.0's `/dev/input` jail bind mount (which blacks out PDK games on the Go)
+with jailer `mknod` nodes; a plain TouchPad keeps 1.1.0 and `tls-updates` was deliberately not bumped. Its bullet also records the audit
 finding that **nothing in the roll-up gates on board name** — on the 3.0.x line the version fence is
 the only fence. See the package bullet.
 
@@ -92,14 +92,21 @@ qt5's own floor); `qt5sdk → qt5 (>= 5.9.7-0)`; `qt5 → qt5qpaplugins (>= 1.0.
 earlier "leave the depends tree alone" stance for this chain (index-only edit; ipks kept as-delivered).
 
 **Open / TODO:**
-- **btgamepad 1.2.0 (TouchPad Go) — built 2026-08-31, needs a Go to confirm the device string.**
-  On a real Go, check in this order: does `Bluetooth Gamepad Support (TouchPad Go)` appear in Preware
-  with *Ignore Device Compat.* **off**? If only with it on, both `DeviceCompatibility` spellings in the
-  stanza are wrong — record the real `modelNameAscii`, which also settles whether the 11 nizovn
-  stanzas' `"Touchpad Go"` has been inert on the Go all along. Then
-  `cat /etc/prefs/properties/machineName` and record it: the postinst accepts `opal` **or**
-  `shortloin`, so only a third value would still make it decline. A device-list fix is index-only and
-  needs no version bump; a board-name fix would need a re-cut.
+- **~~btgamepad 1.2.0 (TouchPad Go)~~ — DONE: HARDWARE-VERIFIED on a real TouchPad Go, 2026-08-31.**
+  Installed from the feed through Preware and reported working by the user. That confirms, in one
+  shot: the package is **visible** on a Go at the default pref (so one of the two
+  `DeviceCompatibility` spellings equals the real `modelNameAscii` — the Go is now the third device
+  family whose string is proven, after TouchPad and Pre3), the **board guard resolves** (machineName
+  is `opal` or `shortloin`), and the **mknod jail block fixes the PDK black-screen** the bind mount
+  caused. Two smaller things went unrecorded because listing both candidates made the install succeed
+  either way — see the nizovn item below, which is the only one that still costs anything.
+- **Which `"Touchpad Go"` spelling is real — still open, and it gates the whole nizovn stack.**
+  btgamepad 1.2.0 lists both spellings so it works regardless, but the 11 nizovn stanzas (QupZilla,
+  the whole Qt5 stack, VLC, squid, dbus) list **only** the lowercase `"Touchpad Go"`. If a Go's
+  `modelNameAscii` is `"TouchPad Go"`, that entire stack is invisible on it — 52 packages instead of
+  63 — and nobody would notice, because the failure is silence. Next time a Go is attached, capture
+  `modelNameAscii` (and `cat /etc/prefs/properties/machineName`, still unrecorded) and fix the losing
+  side. Index-only, no version bump.
 - **Synergy Revival: hardware test, then merge + deploy.** Branch `synergy-connectors`. Test order in the
   Synergy section (3.0.5 TouchPad first: meta, then one OAuth connector and one IM connector; then a CE
   3.1.0 device where the connector must install with no Part 1). Two things to report to Herrie while
@@ -748,20 +755,23 @@ not the name triple alone** — the check in this repo was updated accordingly.
     device list; the `// join devices` branch is a no-op because 1.2.0's list is non-empty.
     It also does not trip the ipkg dedupe trap — that key is name+**version**+arch, and the versions
     differ.
-  - ⚠️ **The Go's real `modelNameAscii` is still unverified, and it is the one thing this release
-    rests on.** The delivered control said `["Touchpad Go"]` — the lowercase-p string this file has
-    long flagged as matching nothing. The index stanza therefore lists **both** spellings,
-    `["TouchPad Go","Touchpad Go"]`: `deviceIncompatible()` is `!devices.include(modelNameAscii)`
-    (`package.js:896`), so extra candidates cost nothing and a plain TouchPad (exact `"TouchPad"`,
-    hardware-confirmed) still matches neither. If the Go reports something else again, 1.2.0 is simply
-    invisible there — a safe failure, and an **index-only fix needing no version bump**, since
-    `Source` is re-read on Update Feeds. Diagnose in one step with Preferences → *Ignore Device
-    Compat.*: if 1.2.0 appears with the toggle ON and not OFF, the string is wrong.
-  - **The same unknown decides an older question:** the 11 nizovn stanzas (QupZilla, the whole Qt5
-    stack, VLC, squid, dbus…) list only `"Touchpad Go"`. So if the Go reports `"TouchPad Go"`, that
-    entire stack is invisible on it today — 52 packages visible instead of 63. Whichever way the
-    hardware answers, record it and fix the losing side. Worth capturing at the same time:
-    `cat /etc/prefs/properties/machineName`.
+  - ✅ **HARDWARE-VERIFIED on a real TouchPad Go (2026-08-31)** — installed from the feed through
+    Preware and confirmed working by the user. The Go is now the third device family whose
+    `DeviceCompatibility` string is proven on hardware, after TouchPad and Pre3.
+  - **Listing both spellings is what made that possible, and it is the technique to reuse.** The
+    delivered control said `["Touchpad Go"]` — the lowercase-p string this file has long flagged as
+    matching nothing — so shipping it verbatim was a coin flip. `deviceIncompatible()` is
+    `!devices.include(modelNameAscii)` (`package.js:896`), a plain exact-match `include()`, so **extra
+    candidate spellings cost nothing** while a wrong single guess costs a silent invisible package.
+    The stanza lists `["TouchPad Go","Touchpad Go"]`; a plain TouchPad (exact `"TouchPad"`) matches
+    neither. When a device string is uncertain, list every plausible spelling rather than guessing one.
+  - ⚠️ **Which spelling actually matched was NOT recorded, and that still matters elsewhere.** The
+    install succeeding proves one of the two is right, not which. The 11 nizovn stanzas (QupZilla, the
+    whole Qt5 stack, VLC, squid, dbus…) list **only** the lowercase `"Touchpad Go"`, so if the real
+    string is `"TouchPad Go"` that entire stack is invisible on a Go — 52 packages instead of 63, and
+    the failure mode is silence. Same for the board name: `opal` and `shortloin` are both accepted, so
+    the install cannot tell us which. Capture `modelNameAscii` and
+    `cat /etc/prefs/properties/machineName` next time a Go is attached.
   - **The postinst's own hard gate is `machineName` matching `opal|shortloin`**, and only step 3c (the
     jail config rewrite) is behind it — steps 1/2/4/5 are byte-identical to 1.1.0's, so on any non-Go
     machine 1.2.0 is functionally a 1.1.0 reinstall that leaves `/etc/jail_pdk.conf` alone and says so
@@ -1554,11 +1564,13 @@ TouchPad CE 3.1.0 69 visible  btgp 1.2.0  synergy 21  atlas deps: (none)        
 Pre2 2.1.0         5 visible  squid -> glibc/openssl not visible (PRE-EXISTING, Min-gated)
 ```
 
-Both Go rows are simulations, not hardware: **which of the two spellings a real Go reports is unknown**,
-so the btgamepad stanza lists both and the sweep checks both. The 52-vs-63 split is the fallout —
-11 nizovn stanzas list only the lowercase `"Touchpad Go"`. A TouchPad seeing `btgp 1.2.0` under
-`ignoreDevices` ON is expected and harmless: 1.2.0's postinst leaves `jail_pdk.conf` untouched off
-`opal`. See the `org.webosarchive.btgamepad` bullet for all of this.
+A Go has since **run btgamepad 1.2.0 from the feed successfully** (2026-08-31), so one of the two
+spellings is right — but the stanza lists both, so the sweep still checks both and **which one matched
+was not recorded**. The 52-vs-63 split is why that is worth pinning down: 11 nizovn stanzas list only
+the lowercase `"Touchpad Go"`, so the wrong answer means the whole Qt5/QupZilla/VLC stack is silently
+invisible on a Go. A TouchPad seeing `btgp 1.2.0` under `ignoreDevices` ON is expected and harmless:
+1.2.0's postinst leaves `jail_pdk.conf` untouched off `opal`/`shortloin`. See the
+`org.webosarchive.btgamepad` bullet for all of this.
 
 Two more assertions, added with Synergy and worth re-running: the **connector stanza that wins** must be
 the dep-free-of-Part-1 one at 3.1.0 and the `synergy-revival`-carrying one at 3.0.5, in **both** pref
