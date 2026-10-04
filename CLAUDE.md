@@ -602,10 +602,17 @@ floors) resolves.
   - 2.1.1 **deletes** any `wosa-appmuseum.conf{,.disabled,.new}` and `lists/appmuseum` on install, so it also
     cleans up devices that installed 2.1.0 (which wrote the feed enabled). Sandbox-checked from all 3 states.
     PR #55 carries 5 commits: removal, sed fix, service binary, delete-existing, upstart version parse.
-  - Index: `Min 2.0.0` / `Max 3.9.9`, no
+  - Index: `Min 1.4.5` / `Max 3.9.9`, no
   `DeviceCompatibility`, no `Depends`, `RestartLuna` like Preware 1, icon `preware2-icon.png` (the payload's
-  512×512 scaled to 64). **Nothing may depend on it** (user's call), and we don't carry its whole dependency
-  chain, so its description just says "Requires the Enyo library". Not in either roll-up.
+  512×512 scaled to 64). **Nothing may depend on it** (user's call). Not in either roll-up.
+  - **PR #4 (2026-10-04, index-only, no version bump)** lowered `Min` from 2.0.0 to **1.4.5** (the PR author
+    reports it working there; not verified by us) and rewrote the description. The old "Requires the Enyo
+    library" line was wrong: the app bundles Enyo 2 as `build/enyo.js` and needs no framework package. The
+    description now also tells 2.0.x–2.1.2 users to install the V8 Fix (`org.webosarchive.v8fix`) from the
+    original Preware first, since Preware 2 can't render there without it. The lower floor adds no install
+    risk: `pmPostInstall.script` mirrors Preware 1's postinst (own floor "Requires webOS 1.3.5 or later") and
+    installs the same service binary, and our Preware 1 stanza has no `Min`, so 1.4.x devices already run
+    both. The worst case if 1.4.x doesn't work after all is a broken UI, not a broken device.
   - **Why it is safe alongside Preware 1.9.20:** it ships the **same `org.webosinternals.ipkgservice`**. The
     binary, upstart job and dbus/ls2 files are byte-identical to 1.9.20's (binary md5 `32611fac…`).
     Its `pmPostInstall.script` runs `bin/install-service.sh`, which only reinstalls the service (after
