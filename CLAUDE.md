@@ -653,7 +653,7 @@ floors) resolves.
   unfixed 2.1.0 device (it is the app that's broken), so users need Preware 1 or WOSQI. Source,
   probes and the OFF/ON test results (90 launches, no regressions, RSS unchanged):
   `github.com/alan-morford/enyofix`.
-- **`org.webosarchive.webos-chat`** ("webOS Chat (AIM) for Legacy webOS", **1.0.0**, arch `all`, 6KB, no
+- **`org.webosarchive.webos-chat`** ("webOS Chat Enabler (AIM)", **1.0.0**; retitled 2026-10-12 in the index AND the ipk control, re-cut in place at 1.0.0 because it had never reached the server (live `Packages.gz` checked, ipk 404). Current md5 `dcc7a862…`, 5,998B; only `./control`'s Title differs from the first build `dc5106eb…`, arch `all`, 6KB, no
   `Depends`, added 2026-10-12, **built here from scratch**: the first package in this feed that wasn't someone
   else's build) — makes stock webOS AIM sign in to webOS Chat (`oscar.webosarchive.org`). The built-in AIM
   always signs in to `login.messaging.aol.com` (dead since 2017) and has no server setting, so the postinst
