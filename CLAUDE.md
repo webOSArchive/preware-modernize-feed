@@ -385,7 +385,7 @@ floors) resolves.
   `c931…` (the bricked one). No hostnames set, so they're hard to tell apart — check health first
   (`hostname`, version, `ps | grep LunaSysMgr`, installed pkgs) before patching.
 
-## Package inventory (single feed = 73 packages / 96 stanzas — Atlas, btgamepad, media-tls13 and each of the
+## Package inventory (single feed = 74 packages / 97 stanzas — Atlas, btgamepad, media-tls13 and each of the
 20 Synergy connectors have two; phones detailed below)
 
 - **nizovn stack** (hand-curated stanzas): cacert, glibc, openssl, qt5* (`qt5qpaplugins` **1.0.4**,
@@ -653,6 +653,30 @@ floors) resolves.
   unfixed 2.1.0 device (it is the app that's broken), so users need Preware 1 or WOSQI. Source,
   probes and the OFF/ON test results (90 launches, no regressions, RSS unchanged):
   `github.com/alan-morford/enyofix`.
+- **`org.webosarchive.webos-chat`** ("webOS Chat (AIM) for Legacy webOS", **1.0.0**, arch `all`, 6KB, no
+  `Depends`, added 2026-10-12, **built here from scratch**: the first package in this feed that wasn't someone
+  else's build) — makes stock webOS AIM sign in to webOS Chat (`oscar.webosarchive.org`). The built-in AIM
+  always signs in to `login.messaging.aol.com` (dead since 2017) and has no server setting, so the postinst
+  adds `173.230.142.249 login.messaging.aol.com login.oscar.aol.com # webos-chat` to `/etc/hosts`. Packages
+  the user's guide `~/Desktop/webOS-Chat-legacy-devices.md` (tested by its author on 3.0.5, 2.1.0, 1.4.5.1).
+  - **Gate (user's calls): `Min 1.0.0` / `Max 3.0.9`, no `DeviceCompatibility`, `Type: Linux Application`,
+    no restart flags** (AIM resolves the name when it signs in; the description says to sign out and back in).
+    Stand-alone, not in either roll-up. The postinst's own guard is a no-op on `CE`/`Lunacy` build strings or
+    3.1+, since those reach webOS Chat by themselves.
+  - ⚠️ **The IP is baked in (user's call, option "a").** If the server moves, ship **1.0.1** with the new
+    address. Its postinst replaces the old line on upgrade, because it always strips the marked line first.
+    No DNS lookup at install time and no boot-time job.
+  - Edits are line-level, never a backup restore: postinst drops our marked line **and any other non-marked
+    line for those two names** (e.g. one added by hand from the guide), appends ours, writes
+    `/etc/hosts.webos-chat-tmp` and `mv`s it into place. prerm removes only the marked line and has no
+    `luna-send`, since it runs inside LunaSysMgr. Both detect a read-only rootfs (a `touch` probe), remount
+    rw only if needed and put it back the way they found it. Regexes are plain BRE with no `\|`, for old
+    busybox. Five ar members (`pm*.script` = copies of postinst/prerm), V8 Fix layout, README-only payload.
+  - Sandbox-tested 2026-10-12 (macOS sh, **not busybox**): 3.0.5 / 1.4.5.1 / 2.1.0 install, idempotent
+    reinstall, double prerm back to the original file byte-for-byte; CE and 3.1.0 untouched; a look-alike
+    `login.messaging.aol.com.example.net` line kept. **Not yet run on hardware.**
+  - Not checked: whether Synergy Revival's libpurple AIM on 3.0.5 already points at webOS Chat. The user's
+    call is that the line is harmless either way.
 - **`org.webosarchive.tls-updates`** (`" TLS 1.3 Updates (TouchPad)"` — ⚠️ deliberate leading
   space, see the sorting note above; **1.0.20**) — **meta** package
   (README-only payload; it gained a `postinst` in 1.0.18, see below)
