@@ -306,9 +306,13 @@ fixes upstream in `Herrie82/webos-synergy-revival`, `~/Projects/webos-core-apps`
   `RestartDevice`; no DeviceCompatibility. The Palm appinstaller can't remove it; Preware can. Source:
   `github.com/alan-morford/enyofix`.
 - `org.webosarchive.webos-chat`: 1.0.0 (legacy ≤3.0.9) adds a marked `/etc/hosts` line pointing AOL
-  login hosts at `173.230.142.249` (baked in; if the server moves, ship 1.0.1). 3.1.0 (CE) installs
+  login hosts at `173.230.142.249` (baked in; if the server moves, ship 1.0.1). 3.1.x (CE) installs
   libaim + account/service; prerm only spawns a detached cleanup (`start-stop-daemon -b -x <script>`,
-  not `/bin/sh`).
+  not `/bin/sh`). 3.1.1 also swaps in a one-line fix to the chatthreader's `newmessageassistant.js`.
+  The bug: a message from a sender who isn't a linked buddy was never filed into a thread. The swap
+  happens only if the installed file has md5 `37c050bc…` (Synergy chatthreader 1.1.0), and prerm
+  restores the original. The same buggy file ships in our 3.0.5 `com.palm.messaging.chatthreader
+  1.1.0.2`, so report it upstream.
 - nizovn stack (QupZilla/Qt5/VLC/squid/dbus): hand-curated stanzas, ipks as-delivered. Floors:
   `qupzilla → qt5sdk (>= 1.0.3), qt5qpaplugins (>= 1.0.4)`, `qt5sdk → qt5 (>= 5.9.7-0)`. qt5sdk 1.0.3
   fixes upgrade-over-self and drops stale `/var/palm/jail/<id>` jails for qt5 apps.

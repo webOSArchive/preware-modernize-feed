@@ -1133,16 +1133,16 @@ Maintainer: webOS Archive
 Source: { "Type":"Linux Application", "Feed":"WOSA Modernize", "Category":"Modernize", "LastUpdated":"1791035900", "MinWebOSVersion":"2.0.0", "MaxWebOSVersion":"2.1.2", "Title":"V8 Fix for webOS 2.0 and 2.1", "FullDescription":"<b>For webOS 2.0.x to 2.1.x only</b>: a Palm Pre 2 on 2.0 or 2.1, an HP Veer on 2.1.2, or a Pre / Pre Plus / Pixi meta-doctored to 2.0 or 2.1. It does nothing on any other version. webOS 2.2 and later do not need it.<br><br>Makes Enyo 2 apps such as Preware 2 display and work. The JavaScript engine in these webOS versions has a code generation bug that breaks minified Enyo 2: the app opens, but its screens stay broken or never finish loading. This package switches the engine that runs apps to its full code generator, which does not have the bug, by adding --always_full_compiler to the JavaScript flags in /etc/palm/browser.conf. Before changing anything it checks the webOS version and tests the device for the bug. The web browser is not changed.<br><br>Install it with the original Preware or WebOS Quick Install (Preware 2 needs this fix before it can display). After installing this package, Preware prompts you to reboot the device; reboot so the fix takes effect (with WebOS Quick Install, reboot by hand). Remove it from Preware: the flag is taken out again. No other packages are needed.", "PostInstallFlags":"RestartDevice", "PostUpdateFlags":"RestartDevice", "PostRemoveFlags":"RestartDevice" }
 
 Package: org.webosarchive.webos-chat
-Version: 3.1.0
+Version: 3.1.1
 Depends: 
 Section: System
 Architecture: armv7
-MD5Sum: c774c88d97b918a1b8af4b2c6f816fc9
-Size: 334224
-Filename: org.webosarchive.webos-chat_3.1.0_armv7.ipk
+MD5Sum: 13b54cd3d81f4538565e9a1e65d171bb
+Size: 341490
+Filename: org.webosarchive.webos-chat_3.1.1_armv7.ipk
 Description: webOS Chat Enabler (AIM)
 Maintainer: webOS Archive
-Source: { "Type":"Linux Application", "Feed":"WOSA Modernize", "Category":"Modernize", "LastUpdated":"1791907164", "Title":"webOS Chat Enabler (AIM)", "Icon":"http://stacks.webosarchive.org/feeds/modernize/ipkgs/assets/icons/synergy/synergy-messaging.png", "FullDescription":"Lets this device chat over webOS Chat, the community AIM service at oscar.webosarchive.org. Sign in to your webOS Account (with a public username, not just an email) and a webOS Chat account appears in Accounts and signs in to Messaging by itself: no screen name or password to type. It follows your webOS Account: signing out removes the chat account, and a new pass phrase from your account page is picked up within the hour.<br><br>For webOS CE 3.1.0 and later. Adds libpurple's AIM plugin, the webOS Chat account type and a small background service. Nothing appears in the Launcher. A restart is needed after install, update and removal.", "MinWebOSVersion":"3.1.0", "PostInstallFlags":"RestartDevice", "PostUpdateFlags":"RestartDevice", "PostRemoveFlags":"RestartDevice" }
+Source: { "Type":"Linux Application", "Feed":"WOSA Modernize", "Category":"Modernize", "LastUpdated":"1791917961", "Title":"webOS Chat Enabler (AIM)", "Icon":"http://stacks.webosarchive.org/feeds/modernize/ipkgs/assets/icons/synergy/synergy-messaging.png", "FullDescription":"Lets this device chat over webOS Chat, the community AIM service at oscar.webosarchive.org. Sign in to your webOS Account (with a public username, not just an email) and a webOS Chat account appears in Accounts and signs in to Messaging by itself: no screen name or password to type. It follows your webOS Account: signing out removes the chat account, and a new pass phrase from your account page is picked up within the hour.<br><br>For webOS CE 3.1.0 and later. Adds libpurple's AIM plugin, the webOS Chat account type and a small background service. Nothing appears in the Launcher. A restart is needed after install, update and removal.", "MinWebOSVersion":"3.1.0", "PostInstallFlags":"RestartDevice", "PostUpdateFlags":"RestartDevice", "PostRemoveFlags":"RestartDevice" }
 
 Package: org.webosarchive.webos-chat
 Version: 1.0.0
