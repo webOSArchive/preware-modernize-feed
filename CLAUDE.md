@@ -345,6 +345,13 @@ control and **keep the existing stanza's `Source` verbatim**, editing only what 
   Rebuilding an ipk *in place at the same version* (new md5, new content) will **never** show as an
   update — the device sees `1.0.1 == 1.0.1` and ignores it. This bit us on `tls-updates`: we changed
   its deps but kept it `1.0.1`; fix was to bump to `1.0.2`.
+- **Update = install-over, EXCEPT for `updateAsReplace` types.** Only Kernel, Kernel Module, Patch, Font,
+  Theme, OS Application and OS Daemon (`packages.js`, `updateAsReplace: true`) update through
+  `IPKGService.replace`, i.e. prerm + remove, then install (`luna_methods.c:2225`). Every other type
+  (`Application`, `Linux Application`, …) updates with a plain install over the old version, and **no
+  prerm runs**. The "Preware updates by remove-then-install" notes elsewhere in this file are about
+  Synergy's `OS Application` packages. Check the stanza's `Type` before reasoning about what an update
+  runs.
 - **Replacing one package by name** (e.g. luna `1.1.0`→`1.1.1`, single stanza, higher version, old ipk
   removed) is all you need: Preware shows it as an *update* to anyone on the old version and a fresh
   *install* to anyone with neither. There's no feed way to offer an update "only if already installed".
@@ -385,8 +392,8 @@ floors) resolves.
   `c931…` (the bricked one). No hostnames set, so they're hard to tell apart — check health first
   (`hostname`, version, `ps | grep LunaSysMgr`, installed pkgs) before patching.
 
-## Package inventory (single feed = 74 packages / 97 stanzas — Atlas, btgamepad, media-tls13 and each of the
-20 Synergy connectors have two; phones detailed below)
+## Package inventory (single feed = 74 packages / 98 stanzas — Atlas, btgamepad, media-tls13, webos-chat and each of
+the 20 Synergy connectors have two; phones detailed below)
 
 - **nizovn stack** (hand-curated stanzas): cacert, glibc, openssl, qt5* (`qt5qpaplugins` **1.0.4**,
   qt5 5.9.7-0, **qt5sdk 1.0.3**), qtwebbrowser, `qupzilla` (**2.3.1**), squid (kept for old phones,
@@ -677,6 +684,37 @@ floors) resolves.
     `login.messaging.aol.com.example.net` line kept. **Not yet run on hardware.**
   - Not checked: whether Synergy Revival's libpurple AIM on 3.0.5 already points at webOS Chat. The user's
     call is that the line is harmless either way.
+  - **CE build, `3.1.0` (`armv7`, 334,224B, md5 `c774c88d…`, added 2026-10-13), a second stanza placed
+    FIRST.** Built by another agent, reviewed here, and **hardware-tested by the user on a CE tablet
+    ("D")**. CE ships a newer libpurple without AIM, so this build is a different package in all but
+    name. It installs:
+    - `libaim.so` into `/media/cryptofs/synergy-purple-plugins/` (which imwrap.sh bind-mounts over
+      `/usr/lib/purple-2`) and into the CE seed;
+    - a webOS Chat account template, a node service `com.palm.webosarchive.chat` with ls2 roles,
+      dbus launchers on both buses and activities;
+    - a hidden setup app;
+    - a fixed `/usr/bin/imlibpurpletransport`, plus `/var/imdaemon.sh` and a `com.palm.lunasend`
+      inbound on the transport's private role. Each original is kept once as `.webos-chat-orig` and
+      restored only if its md5 still matches ours.
+    The account follows the user's webOS Account; there is no screen name or password to type.
+    - Payload is staged at `usr/palm/webosarchive/webos-chat/`, so there is no cryptofs `appinfo.json`
+      and Preware's removal never goes through LunaSysMgr's appinstaller.
+    - The prerm only writes a cleanup script and starts it detached with `start-stop-daemon -b -x
+      <script>`. Do not use `-x /bin/sh`: it matches any running shell and starts nothing. A one-shot
+      boot job finishes the cleanup if the device restarts first. The postinst cancels a pending
+      cleanup before copying.
+    - postinst guard: `PRODUCT_VERSION_STRING=webOS CE` or `exit 1`. Otherwise it always exits 0, so
+      as not to abort an OTA.
+    - Gate, as delivered: `Min 3.1.0`, **no Max**, no `DeviceCompatibility`, no `Depends`,
+      `RestartDevice` ×3, `Type: Linux Application`. Index `Source` = the control's own, verbatim.
+    - **Two versions of one name: the btgamepad pattern, not Atlas's.** On 3.0.x and below, the hard
+      Min drops 3.1.0. On CE at the default pref, the legacy stanza's `Max 3.0.9` drops 1.0.0. With
+      *Ignore Device Compat.* on, both survive, and Replace Type 1 makes the newer 3.1.0 win, so
+      **stanza order doesn't matter**. The legacy version must stay below 3.1.0. The two stanzas
+      point at different files with different versions and arches, so the ipkg dedupe trap doesn't
+      apply. Sweep (both prefs): 1.0.0 on 1.0.0 / 1.4.5 / 2.1.0 / 2.2.4 / 3.0.5, and 3.1.0 on CE.
+    - Its first review wrongly assumed Preware updates it by remove-then-install. It doesn't (see
+      "Offering updates").
 - **`org.webosarchive.tls-updates`** (`" TLS 1.3 Updates (TouchPad)"` — ⚠️ deliberate leading
   space, see the sorting note above; **1.0.20**) — **meta** package
   (README-only payload; it gained a `postinst` in 1.0.18, see below)
