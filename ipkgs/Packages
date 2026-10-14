@@ -1144,6 +1144,17 @@ Description: Photos & Videos (webOS CE)
 Maintainer: webOS Archive
 Source: { "Type":"Application", "Feed":"WOSA Modernize", "Category":"Modernize", "LastUpdated":"1791988184", "Title":"Photos & Videos (webOS CE)", "FullDescription":"The built-in Photos & Videos app, updated for webOS CE.<br><br>Photos on the device can now be rotated and cropped: tap the pencil in a photo's toolbar, turn it a quarter at a time, drag the crop frame or pick a shape (square, 4 x 3, 3 x 2, 16 x 9 or the original proportions), then save the result as a copy or over the original.<br><br>Exhibition mode shows the time and date over the slideshow, with a toolbar button to hide it, and remembers your slide timing between sessions. The single-photo toolbar shows the file's name. Videos play in the built-in player, and cloud photo sources from Synergy Revival appear in the library.<br><br>Replaces the stock Photos & Videos in place. Luna restarts after installing. Removing it restarts the device, which puts the stock app back.", "Changelog":"3.2.0: Rotate and crop photos. First release outside the image: exhibition clock and slide timing, filename in the photo toolbar, CE video player hand-off (the built-in player when Video Player is not installed), Synergy Revival cloud sources.", "MinWebOSVersion":"3.0.5", "MaxWebOSVersion":"3.0.9", "DeviceCompatibility":["TouchPad", "TouchPad Go", "Touchpad Go"], "PostInstallFlags":"RestartLuna", "PostUpdateFlags":"RestartLuna", "PostRemoveFlags":"RestartDevice", "Icon":"http://stacks.webosarchive.org/feeds/modernize/ipkgs/assets/icons/photos.png" }
 
+Package: com.palm.app.calculator
+Version: 3.2.0
+Section: Utilities
+Architecture: all
+MD5Sum: 2c0afc04da316403ce17a99a77d973b9
+Size: 188172
+Filename: com.palm.app.calculator_3.2.0_all.ipk
+Description: Calculator (webOS CE)
+Maintainer: webOS Archive
+Source: { "Type":"Application", "Feed":"WOSA Modernize", "Category":"Modernize", "LastUpdated":"1791991113", "Title":"Calculator (webOS CE)", "FullDescription":"The built-in Calculator, with a scientific calculator in landscape.<br><br>Turn the TouchPad sideways and the familiar keypad gains 24 scientific keys: parentheses, squares, cubes and powers, square, cube and nth roots, 10<sup>x</sup>, 2<sup>x</sup>, e<sup>x</sup>, logarithms (natural, base 10, base 2 and any base), factorials, trig and hyperbolic functions with their inverses in degrees or radians, &pi;, e and a random number. A line above the readout shows the expression as you build it, and calculations follow normal algebraic precedence. Portrait looks and works exactly as before.<br><br>Replaces the stock Calculator in place. Luna restarts after installing. Removing it restarts the device, which puts the stock app back.", "Changelog":"3.2.0: Scientific keys in landscape; parentheses and full operator precedence; expression line above the readout.", "MinWebOSVersion":"3.0.5", "MaxWebOSVersion":"3.9.9", "DeviceCompatibility":["TouchPad", "TouchPad Go", "Touchpad Go"], "PostInstallFlags":"RestartLuna", "PostUpdateFlags":"RestartLuna", "PostRemoveFlags":"RestartDevice", "Icon":"http://stacks.webosarchive.org/feeds/modernize/ipkgs/assets/icons/calculator.png" }
+
 Package: org.webosarchive.v8fix
 Version: 1.0.2
 Depends: 

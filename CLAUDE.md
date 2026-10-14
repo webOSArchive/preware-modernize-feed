@@ -15,7 +15,7 @@ device:
 - **Git:** `git@github.com:webOSArchive/preware-modernize-feed`, branch `main`.
 - `ipkgs/` = ipks + `Packages`/`Packages.gz`. `ipkgs/assets/{icons,screenshots}/` are hosted for
   `Source.Icon`/`Screenshots`. `staging/` = held packages, never served.
-- Current size: **75 packages / 100 stanzas** (`grep -c ^Package: ipkgs/Packages`). For live versions
+- Current size: **76 packages / 101 stanzas** (`grep -c ^Package: ipkgs/Packages`). For live versions
   and gates, read `ipkgs/Packages`, not this file.
 - No build system (the old `package.sh`/`IpkgFeedGenerator.jar` tooling is not here). We hand-build
   ipks and hand-maintain the index.
@@ -265,6 +265,9 @@ whatever Photos is there. Launcher delete/WOSQI still bypass that (decided: Vide
 Stock Photos lives on cryptofs (not ROM), so the plain ipk overwrites it; no scripts. Ships a node
 service `org.webosarchive.photos.service` (rotate/crop saves; caller- and `/media/internal`-gated).
 `PostRemoveFlags: RestartDevice` so boot-time `app-install` restores stock. CE's baked Photos is ≤3.1.0.
+`com.palm.app.calculator` 3.2.0 "Calculator (webOS CE)" (standalone, no scripts): scientific keys in
+landscape. One stanza, `Min 3.0.5`/`Max 3.9.9`, TouchPads, same flags as Photos. Its appinfo `id` is
+`com.palm.calculator` (HP's original; Open webOS later renamed it). Not yet run from the feed on hardware.
 
 **Synergy Revival** (Herrie's account aggregation; sources in `~/Downloads/synergy_revival_0.9.3_*`;
 fixes upstream in `Herrie82/webos-synergy-revival`, `~/Projects/webos-core-apps`):
