@@ -256,7 +256,7 @@ blocking `removeHandlersForAppId` luna-sends and a half-done Chromium backend wa
 
 **Media/Video:** `org.webosarchive.media-tls13` replaces GStreamer `souphttpsrc` with a libcurl element
 that `dlopen`s ssl11 curl. It must drop the GStreamer registry cache, and it's in the roll-up.
-`com.palm.app.videos` 3.2.0 (CE-only, experimental, depends media-tls13). Only build 3 (`e3db23b5…`) is safe: builds 1–2 have the deadlocking prerm, and devices with them need
+`com.palm.app.videos` 3.2.0 (CE-only, experimental, depends media-tls13). Only build 3 (`e3db23b5…`, re-cut same-version as `d16a3dd5…` for the "Video Player" rename) is safe: builds 1–2 have the deadlocking prerm, and devices with them need
 `.scripts/com.palm.app.videos/pmPreRemove.script` repaired first.
 `com.palm.app.photos` 3.2.0 (standalone, not in any meta): two-stanza pattern, CE stanza first
 (`Min 3.1.0`, `Depends: com.palm.app.videos`), then 3.0.5–3.0.9 dep-free. The Depends exists so Preware
