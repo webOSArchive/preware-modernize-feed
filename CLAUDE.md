@@ -15,7 +15,7 @@ device:
 - **Git:** `git@github.com:webOSArchive/preware-modernize-feed`, branch `main`.
 - `ipkgs/` = ipks + `Packages`/`Packages.gz`. `ipkgs/assets/{icons,screenshots}/` are hosted for
   `Source.Icon`/`Screenshots`. `staging/` = held packages, never served.
-- Current size: **74 packages / 98 stanzas** (`grep -c ^Package: ipkgs/Packages`). For live versions
+- Current size: **75 packages / 100 stanzas** (`grep -c ^Package: ipkgs/Packages`). For live versions
   and gates, read `ipkgs/Packages`, not this file.
 - No build system (the old `package.sh`/`IpkgFeedGenerator.jar` tooling is not here). We hand-build
   ipks and hand-maintain the index.
@@ -256,9 +256,15 @@ blocking `removeHandlersForAppId` luna-sends and a half-done Chromium backend wa
 
 **Media/Video:** `org.webosarchive.media-tls13` replaces GStreamer `souphttpsrc` with a libcurl element
 that `dlopen`s ssl11 curl. It must drop the GStreamer registry cache, and it's in the roll-up.
-`com.palm.app.videos` 3.2.0 (CE-only, experimental, depends media-tls13). Only build 3
-(`e3db23b5…`) is safe: builds 1–2 have the deadlocking prerm, and devices with them need
+`com.palm.app.videos` 3.2.0 (CE-only, experimental, depends media-tls13). Only build 3 (`e3db23b5…`) is safe: builds 1–2 have the deadlocking prerm, and devices with them need
 `.scripts/com.palm.app.videos/pmPreRemove.script` repaired first.
+`com.palm.app.photos` 3.2.0 (standalone, not in any meta): two-stanza pattern, CE stanza first
+(`Min 3.1.0`, `Depends: com.palm.app.videos`), then 3.0.5–3.0.9 dep-free. The Depends exists so Preware
+refuses to remove Videos under Photos: Videos' prerm restores its `AlbumGridView.js.webosce-orig` over
+whatever Photos is there. Launcher delete/WOSQI still bypass that (decided: Videos stays untouched).
+Stock Photos lives on cryptofs (not ROM), so the plain ipk overwrites it; no scripts. Ships a node
+service `org.webosarchive.photos.service` (rotate/crop saves; caller- and `/media/internal`-gated).
+`PostRemoveFlags: RestartDevice` so boot-time `app-install` restores stock. CE's baked Photos is ≤3.1.0.
 
 **Synergy Revival** (Herrie's account aggregation; sources in `~/Downloads/synergy_revival_0.9.3_*`;
 fixes upstream in `Herrie82/webos-synergy-revival`, `~/Projects/webos-core-apps`):
