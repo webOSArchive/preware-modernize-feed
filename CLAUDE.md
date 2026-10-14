@@ -266,8 +266,10 @@ Stock Photos lives on cryptofs (not ROM), so the plain ipk overwrites it; no scr
 service `org.webosarchive.photos.service` (rotate/crop saves; caller- and `/media/internal`-gated).
 `PostRemoveFlags: RestartDevice` so boot-time `app-install` restores stock. CE's baked Photos is ≤3.1.0.
 `com.palm.app.calculator` 3.2.0 "Calculator (webOS CE)" (standalone, no scripts): scientific keys in
-landscape. One stanza, `Min 3.0.5`/`Max 3.9.9`, TouchPads, same flags as Photos. Its appinfo `id` is
-`com.palm.calculator` (HP's original; Open webOS later renamed it). Not yet run from the feed on hardware.
+landscape. One stanza, `Min 3.0.5`/`Max 3.9.9`, TouchPads, same flags as Photos. Appinfo `id`
+`com.palm.calculator` is the stock TouchPad ID (stock 1.0.0; Open webOS's rename never shipped on a
+TouchPad), so it replaces stock with one icon. Stock lives on cryptofs on 3.0.5 and CE 3.1.0, like Photos.
+Upgrade over stock hardware-tested with a 3.1.1 build; 3.2.0 itself not yet run from the feed.
 
 **Synergy Revival** (Herrie's account aggregation; sources in `~/Downloads/synergy_revival_0.9.3_*`;
 fixes upstream in `Herrie82/webos-synergy-revival`, `~/Projects/webos-core-apps`):
