@@ -239,16 +239,16 @@ Maintainer: N/A <nobody@example.com>
 Source: {"LastUpdated":"1790535560", "Type":"Application", "Feed":"WOSA Modernize", "Category":"Modernize", "Title":"webOS App Catalog (Phones)", "FullDescription":"Community updated webOS App Catalog (findapps) client for webOS 1.4 and 2.x phones. Installable on webOS 1.4 and higher, through the 2.x series.<br><br><b>New in 3.1:</b> installs go to whichever app handles .ipk files (Preware or Preware 2), and if none will take the package, the catalog opens the app's page in Preware instead. A request the network drops now times out and retries instead of hanging. \"Find More\" from Just Type, Exhibition and Accounts now works. Google Analytics tracking is switched off.", "MinWebOSVersion":"1.4.0", "MaxWebOSVersion":"2.9.9", "Icon":"http://stacks.webosarchive.org/feeds/modernize/ipkgs/assets/icons/webos-appcatalog-phone.png"}
 
 Package: com.palm.app.enyo-findapps
-Version: 6.2.2929
+Version: 6.2.2931
 Depends: 
 Section: misc
 Architecture: all
-MD5Sum: 5e4e084cc6adfbd131c319c9ee53097e
-Size: 1847706
-Filename: com.palm.app.enyo-findapps_6.2.2929_all.ipk
+MD5Sum: ad0e793ed24375e919f12b052b8ec384
+Size: 1693652
+Filename: com.palm.app.enyo-findapps_6.2.2931_all.ipk
 Description: This is a webOS application.
 Maintainer: N/A <nobody@example.com>
-Source: {"LastUpdated":"1790536461", "Type":"Application", "Feed":"WOSA Modernize", "Category":"Modernize", "Title":"webOS App Catalog (TouchPad)", "FullDescription":"Community updated Enyo-based webOS App Catalog (enyo-findapps) for the TouchPad, on webOS 3.0.x and webOS CE 3.1.0.<br><br><b>New in 6.2:</b> installs work again. HP's install service checked every package against signing servers that have been gone since 2015, so every install failed. The catalog now installs packages itself, and hands any package with install scripts to Preware. The Pivot magazine now downloads its latest edition after install instead of shipping it inside the app, which makes the app about 13MB smaller. Google Analytics tracking and the failing carrier data-connection lookup are removed, and the catalog now offers its own updates.", "MinWebOSVersion":"3.0.0", "MaxWebOSVersion":"3.9.9", "Icon":"http://stacks.webosarchive.org/feeds/modernize/ipkgs/assets/icons/webos-appcatalog.png"}
+Source: {"LastUpdated":"1792262385", "Type":"Application", "Feed":"WOSA Modernize", "Category":"Modernize", "Title":"webOS App Catalog (TouchPad)", "FullDescription":"Community updated Enyo-based webOS App Catalog (enyo-findapps) for the TouchPad, on webOS 3.0.x and webOS CE 3.1.0.<br><br><b>New in 6.2:</b> installs work again. HP's install service checked every package against signing servers that have been gone since 2015, so every install failed. The catalog now installs packages itself, and hands any package with install scripts to Preware. The Pivot magazine now downloads its latest edition after install instead of shipping it inside the app, which makes the app about 13MB smaller. Google Analytics tracking and the failing carrier data-connection lookup are removed, and the catalog now offers its own updates.<br><br><b>New in 6.2.2931:</b> when a package goes to Preware, the catalog hands over the file it already downloaded instead of making Preware download it again.", "MinWebOSVersion":"3.0.0", "MaxWebOSVersion":"3.9.9", "Icon":"http://stacks.webosarchive.org/feeds/modernize/ipkgs/assets/icons/webos-appcatalog.png"}
 
 Package: org.webosinternals.preware
 Version: 1.9.21
