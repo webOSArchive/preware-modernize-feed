@@ -244,7 +244,9 @@ Ruled out: subdir `Filename` (ipkg cache-path bug), per-board arch, `Provides:` 
 `luna-tls13-phone` 1.1.4 adds static `jailer`/`setcpushares-task` env-scrub wrappers (without them,
 PDK apps and Preware/WOSQI installs died at exec from inherited `LD_BIND_NOW`).
 `tls-updates-phone` 1.0.2 floors `luna-tls13-phone (>= 1.1.4)` and `downloadmgr-tls13-phone (>= 1.0.1)`.
-Full roll-up install hardware-verified on a fresh Pre3 (2026-10-29), with 1.0.0 downloadmgr.
+Full roll-up install hardware-verified on a fresh Pre3 (2026-10-29), with 1.0.0 downloadmgr. The
+1.0.2/1.0.1 update over it is also verified there: no restart mid-batch, no `ipkgservice` crash, and
+the new build runs after the reboot. Fresh install with 1.0.1 has not been run.
 ⚠️ `build-ipks.sh` is **behind the shipped phone ipks**: it lacks the downloadmgr webOS-version guard
 and the 1.0.1 script fix, so don't rebuild `-phone` packages from it without syncing first.
 Build host needs GNU ar + patchelf. ⚠️
