@@ -204,6 +204,11 @@ cases; `webos-chat` 1.0.0 everywhere ≤3.0.x and 3.1.0 on CE. Known pre-existin
 9. `/media` is on the read-only rootfs: `mkdir` there needs rw. Remount only if needed and put it back.
 10. Never mount anything under `/media/internal`. Internalz Pro lists that path with mtools, which is
     blind to mounts, so it shows an empty folder and writes land on internal storage.
+11. **Never restart `LunaDownloadMgr` from a postinst/prerm.** Seen on a Pre3 (2026-10-29): the
+    stop/kill/start made Preware's `ipkgservice` abort (`LSMessageReply → _lshandle_validate`
+    assert, SIGABRT) mid-batch. The hub relaunched it that time and the roll-up finished. A phone
+    where it didn't was left half-installed and had to be reset. Swap the binary with temp + `mv`
+    and let a `RestartDevice` flag activate it.
 
 ## Package notes (gates/versions: see `ipkgs/Packages`)
 
@@ -214,8 +219,9 @@ cases; `webos-chat` 1.0.0 everywhere ≤3.0.x and 3.1.0 on CE. Known pre-existin
   (`media-pipeline`, `setcpushares-pdk`, `setcpushares-task`). 1.1.4 is cosmetic on TouchPad (parity
   with phone). `mail-tls13` 1.3.2 pins TLS 1.2 + RSA cert for Gmail (ECDSA false "not trusted"/4010).
   `downloadmgr-tls13` 1.1.0 RPATHs LunaDownloadMgr onto ssl11 curl, with a 1-byte patch for a
-  `curl_multi_remove_handle` SIGSEGV (1.0.0 is broken; phones don't crash, so `-phone` stays 1.0.0).
-  Remove before browser-tls13. `mojomail-imap-tagfix`, `ntpdate-sync` are standalone.
+  `curl_multi_remove_handle` SIGSEGV (1.0.0 is broken). Phones don't hit that crash, so `-phone`
+  1.0.1 is 1.0.0's payload with scripts that no longer restart the daemon (rule 11). TouchPad 1.1.0
+  still restarts it in postinst and prerm. Remove before browser-tls13. `mojomail-imap-tagfix`, `ntpdate-sync` are standalone.
 - `curl-tls13` and `mail-tls13` have **empty `Depends`** (they can't name both `browser-tls13` and
   `-phone`). Their postinsts refuse without `/usr/lib/ssl11`; the metas give the order.
 - ⚠️ **Never sync `curl-tls13` from upstream.** Upstream's same-version 1.0.1 has different OpenSSL
@@ -237,7 +243,11 @@ are required because ipkg dedupes on name+version+arch across all feeds and Prew
 Ruled out: subdir `Filename` (ipkg cache-path bug), per-board arch, `Provides:` (Preware ignores it).
 `luna-tls13-phone` 1.1.4 adds static `jailer`/`setcpushares-task` env-scrub wrappers (without them,
 PDK apps and Preware/WOSQI installs died at exec from inherited `LD_BIND_NOW`).
-`tls-updates-phone` 1.0.1 floors `luna-tls13-phone (>= 1.1.4)`. Build host needs GNU ar + patchelf. ⚠️
+`tls-updates-phone` 1.0.2 floors `luna-tls13-phone (>= 1.1.4)` and `downloadmgr-tls13-phone (>= 1.0.1)`.
+Full roll-up install hardware-verified on a fresh Pre3 (2026-10-29), with 1.0.0 downloadmgr.
+⚠️ `build-ipks.sh` is **behind the shipped phone ipks**: it lacks the downloadmgr webOS-version guard
+and the 1.0.1 script fix, so don't rebuild `-phone` packages from it without syncing first.
+Build host needs GNU ar + patchelf. ⚠️
 **Don't prune `ipks/{topaz,mantaray,roadrunner,broadway}/` upstream**: `phone` rebuilds reuse them.
 
 **Atlas** (`org.webosports.app.atlas`, WPE WebKit browser, 103MB, upstream WebOS Ports):
