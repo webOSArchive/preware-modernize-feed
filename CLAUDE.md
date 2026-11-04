@@ -15,7 +15,7 @@ device:
 - **Git:** `git@github.com:webOSArchive/preware-modernize-feed`, branch `main`.
 - `ipkgs/` = ipks + `Packages`/`Packages.gz`. `ipkgs/assets/{icons,screenshots}/` are hosted for
   `Source.Icon`/`Screenshots`. `staging/` = held packages, never served.
-- Current size: **76 packages / 101 stanzas** (`grep -c ^Package: ipkgs/Packages`). For live versions
+- Current size: **77 packages / 102 stanzas** (`grep -c ^Package: ipkgs/Packages`). For live versions
   and gates, read `ipkgs/Packages`, not this file.
 - No build system (the old `package.sh`/`IpkgFeedGenerator.jar` tooling is not here). We hand-build
   ipks and hand-maintain the index.
@@ -324,6 +324,17 @@ fixes upstream in `Herrie82/webos-synergy-revival`, `~/Projects/webos-core-apps`
 - App Catalog: `enyo-findapps` (TouchPad, 6.2.2929; installs via `installNoVerify`/.ipk handler since
   HP signing is dead) and `findapps` (phones, 3.1.23302). Both titled "webOS App Catalog (…)". Don't
   resurrect same-version earlier builds (https URLs / Mojo `onChoice` instead of `onChoose`).
+- `org.webosarchive.emoji` 1.0.0 "Emoji for webOS" (standalone, `Linux Application`, `RestartDevice`
+  all three, `Min 3.0.5`/`Max 3.9.9`, TouchPads). Installs `/usr/share/fonts/CE-Emoji.ttf` (Noto Emoji
+  mono, OFL) and byte-patches `libWebKitLuna.so` at 4 sites shipped as `webkit/<offset>.{orig,new}`
+  (ELF phdr grow + code cave + 2 branch sites). Patches only if every site matches `orig` (else exits 1,
+  so phones/unknown builds are refused by content); copy + verify + `mv`. Records what it did in
+  `/var/palm/org.webosarchive.emoji.state`; prerm undoes only that (CE's built-in patch stays). Coexists
+  with Synergy generic's webm MIME patch (different bytes). Corner case: emoji installed before Synergy
+  means Synergy's `.prewebm` backup contains the emoji patch, so removing emoji then Synergy leaves the
+  patch without the font (the cave null-checks the font load). Index uses `&#x…;` entities, not raw
+  emoji: keep the index ASCII. Credits (achunt2143 webOS-Emoji, Noto OFL, OpenMoji CC BY-SA) are in
+  `FullDescription`. No icon yet.
 - `org.webosarchive.v8fix` 1.0.2: adds `--always_full_compiler` to `/etc/palm/browser.conf` on webOS
   2.0.x–2.1.x (V8 miscompile breaks Enyo 2). Postinst guards on version and a node probe;
   `RestartDevice`; no DeviceCompatibility. The Palm appinstaller can't remove it; Preware can. Source:
