@@ -335,6 +335,8 @@ fixes upstream in `Herrie82/webos-synergy-revival`, `~/Projects/webos-core-apps`
   patch without the font (the cave null-checks the font load). Index uses `&#x…;` entities, not raw
   emoji: keep the index ASCII. Credits (achunt2143 webOS-Emoji, Noto OFL, OpenMoji CC BY-SA) are in
   `FullDescription`, plus Twemoji (CC BY 4.0) for the icon `assets/icons/emoji.png`.
+  Installed from the feed and working on a fresh TouchPad (2026-11-04). It shows under Linux
+  Application → Modernize only until installed (Preware hides installed packages unless Show Installed).
 - `org.webosarchive.v8fix` 1.0.2: adds `--always_full_compiler` to `/etc/palm/browser.conf` on webOS
   2.0.x–2.1.x (V8 miscompile breaks Enyo 2). Postinst guards on version and a node probe;
   `RestartDevice`; no DeviceCompatibility. The Palm appinstaller can't remove it; Preware can. Source:
