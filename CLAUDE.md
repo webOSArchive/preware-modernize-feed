@@ -322,7 +322,7 @@ fixes upstream in `Herrie82/webos-synergy-revival`, `~/Projects/webos-core-apps`
 - `help-redirect`: points Help at `help.webosarchive.org` (content repo `~/Projects/help.palm.com`;
   rewrite absolute hosts anchored on `//host`; reboot device to clear Enyo caches when verifying).
 - App Catalog: `enyo-findapps` (TouchPad, 6.3.2931, floored in the roll-up; installs via `installNoVerify`/.ipk handler since
-  HP signing is dead; downloads go to `/media/internal/.developer` so a Preware hand-off installs in place, verified on CE 3.1.0 for a script-free app, Preware hand-off itself untested) and `findapps` (phones, 3.1.23302). Both titled "webOS App Catalog (…)". Don't
+  HP signing is dead; downloads go to `/media/internal/.developer` so a Preware hand-off installs in place; both paths, direct and Preware hand-off, hardware-verified on CE 3.1.0, 2026-11-15) and `findapps` (phones, 3.1.23302). Both titled "webOS App Catalog (…)". Don't
   resurrect same-version earlier builds (https URLs / Mojo `onChoice` instead of `onChoose`).
 - `org.webosarchive.emoji` 1.0.0 "Emoji for webOS" (standalone, `Linux Application`, `RestartDevice`
   all three, `Min 3.0.5`/`Max 3.9.9`, TouchPads). Installs `/usr/share/fonts/CE-Emoji.ttf` (Noto Emoji
