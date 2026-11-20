@@ -40,7 +40,7 @@ device:
 - **Atlas:** remove the one-time `removeHandlersForAppId` note from both Atlas `FullDescription`s
   when 0.9.13 ships.
 - **Preware 1** (`~/Projects/preware`): check for uncommitted/unpushed work before building.
-  `Type=static` is in 1.9.21; Preware 2 2.1.3 enforces it too.
+  `Type=static` is in 1.9.21+; Preware 2 2.1.3 enforces it too.
 - **`~/Projects/webos-docs`:** had uncommitted changes (two-path layout collapsed). Commit when ready.
 - **staging/:** `swupdate-redirect` needs an UpdateDaemon binary patch
   (`staging/swupdate-redirect-FINDINGS.md`). `luna-update` (webOS CE 3.1.0 / LunaCE swap) bricked a
@@ -355,7 +355,7 @@ fixes upstream in `Herrie82/webos-synergy-revival`, `~/Projects/webos-core-apps`
 
 ## Preware 1 & 2 (the feed ships both)
 
-- **Preware 1** `org.webosinternals.preware` 1.9.21 from `~/Projects/preware` (`webOSArchive/preware`).
+- **Preware 1** `org.webosinternals.preware` 1.9.22 from `~/Projects/preware` (`webOSArchive/preware`).
   Its postinst writes the feed confs incl. `modernize.conf` and **deletes the App Museum feed** (never
   re-add it). CE preloads 1.9.19, so ours must be > that. Build: `./build.sh arm` (delete the copied
   `source/bin/org.webosinternals.ipkgservice` after), then repack: `control.tar.gz` = curated control
