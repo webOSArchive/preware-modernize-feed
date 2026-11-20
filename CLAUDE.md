@@ -360,7 +360,11 @@ fixes upstream in `Herrie82/webos-synergy-revival`, `~/Projects/webos-core-apps`
   re-add it). CE preloads 1.9.19, so ours must be > that. Build: `./build.sh arm` (delete the copied
   `source/bin/org.webosinternals.ipkgservice` after), then repack: `control.tar.gz` = curated control
   + `postinst` + `prerm` from `source/control/`; members `debian-binary, control.tar.gz, data.tar.gz,
-  pmPostInstall.script, pmPreRemove.script`. Drop build.sh's signature files.
+  pmPostInstall.script, pmPreRemove.script`. Drop build.sh's signature files: they're a fixed copy
+  from an old WebOS Internals build (cert expired 2012) that doesn't verify against any new build,
+  despite build.sh's "will NOT run properly" warning. Unsigned 1.9.22 (`dd5c4877…`) was installed and
+  working on a bone-stock 3.0.5 TouchPad that had never had Preware (2026-11-20). Every Preware ipk
+  this feed has shipped (1.9.17 onward) is unsigned.
 - **Preware 2** `com.palm.app.preware2` 2.1.3 (Enyo 2, WebOS Ports). Clone `~/Projects/webos-ports-preware`,
   `origin` = user's fork `codepoet80/preware2`, work on its default branch (**no feature branches**).
   PRs go to **webOS-ports/preware**, never a contributor's fork. Build with `build-legacy.sh`.
