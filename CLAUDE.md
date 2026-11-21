@@ -15,7 +15,7 @@ device:
 - **Git:** `git@github.com:webOSArchive/preware-modernize-feed`, branch `main`.
 - `ipkgs/` = ipks + `Packages`/`Packages.gz`. `ipkgs/assets/{icons,screenshots}/` are hosted for
   `Source.Icon`/`Screenshots`. `staging/` = held packages, never served.
-- Current size: **77 packages / 102 stanzas** (`grep -c ^Package: ipkgs/Packages`). For live versions
+- Current size: **78 packages / 103 stanzas** (`grep -c ^Package: ipkgs/Packages`). For live versions
   and gates, read `ipkgs/Packages`, not this file.
 - No build system (the old `package.sh`/`IpkgFeedGenerator.jar` tooling is not here). We hand-build
   ipks and hand-maintain the index.
@@ -349,6 +349,17 @@ fixes upstream in `Herrie82/webos-synergy-revival`, `~/Projects/webos-core-apps`
   happens only if the installed file has md5 `37c050bc…` (Synergy chatthreader 1.1.0), and prerm
   restores the original. The same buggy file ships in our 3.0.5 `com.palm.messaging.chatthreader
   1.1.0.2`, so report it upstream.
+- `org.webosce.zh` 1.0.12 "Chinese Language Pack (webOS CE)": **contributor-maintained (Harvy Tao), not
+  ours**. We accepted it on a black-box script review and don't review or take on his source. Simplified + Traditional
+  zh UI, Pinyin IME via a replacement LunaSysMgr (`5129d3d1…`), and the Browser default search set to Baidu
+  (disclosed). `OS Application`, `RestartDevice` x3, `Min 3.1.0`/`Max 3.1.9`, `["TouchPad"]`, in no
+  meta. The data is only the guide app `com.webosce.zhguide`, plus `payload.tar.gz` that the postinst applies.
+  Postinst guard: `topaz` + `webOS CE 3.1.0` + stock LunaSysMgr md5. Manifest `/var/backup/zh-ipk/manifest`
+  (created/replaced + md5), backup on `/media/internal/zh-ipk-backup` (user-approved location). Prerm
+  skips everything if LunaSysMgr isn't his build, and md5-checks each file. Known cosmetic leftovers:
+  empty created dirs; CE's `ce-cryptofs-seed` copies his `ce-seed/cryptofs` zh files into cryptofs,
+  outside the manifest. The FullDescription is English + his Chinese (as `&#x…;` entities). Icon
+  `assets/icons/zh.png` is from him. 1.0.5 and 1.0.11 were rejected (rooted at `/`, preinst/postrm-only).
 - nizovn stack (QupZilla/Qt5/VLC/squid/dbus): hand-curated stanzas, ipks as-delivered. Floors:
   `qupzilla → qt5sdk (>= 1.0.3), qt5qpaplugins (>= 1.0.4)`, `qt5sdk → qt5 (>= 5.9.7-0)`. qt5sdk 1.0.3
   fixes upgrade-over-self and drops stale `/var/palm/jail/<id>` jails for qt5 apps.
