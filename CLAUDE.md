@@ -94,6 +94,10 @@ ar rc out.ipk debian-binary control.tar.gz data.tar.gz [pmPostInstall.script pmP
   "Unknown"), `Post{Install,Update,Remove}Flags` (`RestartLuna`/`RestartDevice`). Preware does
   `.replace(/\\'/g,"'")` then `JSON.parse`; validate the same way.
 - **Description/gate edits are index-only and need no version bump** (re-read on Update Feeds).
+- **Screenshots fall through from other feeds.** If the winning stanza has an empty `Screenshots`,
+  Preware copies the losing same-name stanza's list (`package.js:572`). Preware 1 showed 14 blank
+  frames from the WebOS Internals feed's dead `webos-internals.org` links until we gave it our own.
+  Any package that's also in another feed needs its own non-empty list (`[]` doesn't block the copy).
 - **Leading space in `Title` sorts it to the top** (raw untrimmed compare, `packages.js:789`;
   verified on device). `" TLS 1.3 Updates (TouchPad)"`, `" TLS 1.3 Updates (Phones)"`,
   `" Synergy Revival Roll-up (Touchpad)"` rely on it. **Do not tidy those spaces away.**
